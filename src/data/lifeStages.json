@@ -1,0 +1,61 @@
+[
+  {
+    "id": "early",
+    "title": "Early Childhood",
+    "icon": "\ud83d\udc76",
+    "domains": [
+      "family",
+      "education"
+    ],
+    "blurbs": [
+      "early_demo"
+    ]
+  },
+  {
+    "id": "primary",
+    "title": "Primary Education",
+    "icon": "\ud83c\udf92",
+    "domains": [
+      "education"
+    ],
+    "blurbs": []
+  },
+  {
+    "id": "secondary",
+    "title": "Secondary Education",
+    "icon": "\ud83d\udcda",
+    "domains": [
+      "education"
+    ],
+    "blurbs": []
+  },
+  {
+    "id": "tertiary",
+    "title": "Tertiary Education",
+    "icon": "\ud83c\udf93",
+    "domains": [
+      "education"
+    ],
+    "blurbs": []
+  },
+  {
+    "id": "adult",
+    "title": "Adult Life",
+    "icon": "\ud83d\udcbc",
+    "domains": [
+      "work",
+      "family"
+    ],
+    "blurbs": []
+  },
+  {
+    "id": "senior",
+    "title": "Senior Life",
+    "icon": "\ud83d\udc74",
+    "domains": [
+      "health",
+      "leisure"
+    ],
+    "blurbs": []
+  }
+]
