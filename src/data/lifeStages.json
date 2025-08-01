@@ -9,7 +9,8 @@
     ],
     "blurbs": [
       "early_demo"
-    ]
+    ],
+    "color": "#e53e3e"
   },
   {
     "id": "primary",
@@ -18,7 +19,8 @@
     "domains": [
       "education"
     ],
-    "blurbs": []
+    "blurbs": [],
+    "color": "#e53e3e"
   },
   {
     "id": "secondary",
@@ -27,7 +29,8 @@
     "domains": [
       "education"
     ],
-    "blurbs": []
+    "blurbs": [],
+    "color": "#e53e3e"
   },
   {
     "id": "tertiary",
@@ -36,7 +39,8 @@
     "domains": [
       "education"
     ],
-    "blurbs": []
+    "blurbs": [],
+    "color": "#e53e3e"
   },
   {
     "id": "adult",
@@ -46,7 +50,8 @@
       "work",
       "family"
     ],
-    "blurbs": []
+    "blurbs": [],
+    "color": "#e53e3e"
   },
   {
     "id": "senior",
@@ -56,6 +61,7 @@
       "health",
       "leisure"
     ],
-    "blurbs": []
+    "blurbs": [],
+    "color": "#e53e3e"
   }
 ]

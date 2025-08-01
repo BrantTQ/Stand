@@ -15,6 +15,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "cytoscape": "^3.32.1",
     "framer-motion": "^12.23.9",
+    "lottie-react": "^2.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
@@ -32,6 +33,6 @@
     "tailwindcss": "^4.1.11",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
-    "vite": "^7.0.4"
+    "vite": "^7.0.6"
   }
 }
