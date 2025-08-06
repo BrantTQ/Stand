@@ -14,15 +14,21 @@ interface StageNavProps {
 }
 
 export const StageNav: React.FC<StageNavProps> = ({ setCurrentStage, currentStageId }) => (
-  <div className="flex gap-4 justify-center py-8">
+  <div className="flex gap-4 justify-center py-8" style={{gap: "20px"}}>
     {lifeStages.map(stage => (
       <motion.button
         key={stage.id}
-        className={`px-6 py-3 rounded-lg font-bold text-lg shadow-lg transition border-2`}
+        // className={`px-6 py-3 rounded-lg font-bold text-lg shadow-lg transition border-2`}
         style={{
           background: currentStageId === stage.id ? stage.color : "#fff",
           borderColor: stage.color,
-          color: currentStageId === stage.id ? "#fff" : stage.color
+          color: currentStageId === stage.id ? "#fff" : stage.color,
+          height: "350px",
+          width: "300px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center", 
+          textAlign: "center"       
         }}
         variants={stageEnter}
         initial="initial"

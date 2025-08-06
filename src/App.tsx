@@ -37,20 +37,6 @@ function App() {
     }
   }, [attractMode]);
 
-  // Reset selected domain when stage changes
-//    useEffect(() => {
-//   if (currentStageId) {
-//     // Find the stage and select its first domain
-//     const stage = lifeStages.find((s: any) => s.id === currentStageId);
-//     if (stage && stage.domains && stage.domains.length > 0) {
-//       setSelectedDomain(stage.domains[0]);
-//     } else {
-//       setSelectedDomain(null);
-//     }
-//   } else {
-//     setSelectedDomain(null);
-//   }
-// }, [currentStageId]);
 useEffect(() => {
     setSelectedDomain(null);
   }, [currentStageId]);
@@ -58,7 +44,6 @@ useEffect(() => {
   const handleInteraction = () => {
     setAttractMode(false);
   };
-
   
   // Handle domain selection
   const handleDomainSelect = (domainId: string) => {
@@ -99,37 +84,55 @@ useEffect(() => {
           </motion.div>
         ) : (
           // Main navigation and domain buttons
-          <div className="flex items-center justify-center h-screen w-screen bg-gradient-to-br from-blue-500 to-purple-600 cursor-pointer">
-
-        <motion.div
-            key="main"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.05 }}
-            transition={{ duration: 0.5 }}
-          >
-            <StageNav setCurrentStage={setCurrentStageId} currentStageId={currentStageId} />
-            {currentStageId ? (
+          <div className="flex flex-col justify-between items-stretch h-screen w-screen bg-gradient-to-br from-blue-500 to-purple-600">
+            {/* 1st row: Title left, Logo right */}
+            <div className="flex justify-between items-center px-8 pt-8 pb-4">
+              <h1 className="text-3xl font-bold text-white drop-shadow">
+                <motion.div
+                  key="heading"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={{ duration: 0.5 }}
+                >Life Jorney with Data</motion.div></h1>
+              {/* Replace with your logo image or component */}
+              <img src="/logo192.png" alt="Logo" className="h-12 w-12 object-contain" />
+            </div>
+            {/* 2nd row: Domain Buttons */}
+            <div className="flex-1 flex flex-col justify-center items-center">
+              {currentStageId ? (
+                <motion.div
+                  key="domain-buttons"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="text-center p-8 text-white text-xl font-semibold">Please select a domain</div>
+                  <DomainButtons
+                    selectedStageId={currentStageId}
+                    selectedDomain={selectedDomain}
+                    onSelect={handleDomainSelect}
+                  />
+                </motion.div>
+              ) : (
+                <div className="text-center p-8 text-white text-xl font-semibold">Please select a life stage</div>
+              )}
+            </div>
+            {/* 3rd row: Stage Buttons */}
+            <div className="pb-8">
               <motion.div
-                key="domain-buttons"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.05 }}
-                transition={{ duration: 1.5 }}
-              >
-                <DomainButtons
-                  selectedStageId={currentStageId}
-                  selectedDomain={selectedDomain}
-                  onSelect={handleDomainSelect}
-                />
-                <div className="text-center p-8">Please select a domain</div>
-              </motion.div>
-            ) : (
-              <div className="text-center p-8">Please select a life stage</div>
-            )}
-          </motion.div>
+                  key="heading"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  
+              <StageNav setCurrentStage={setCurrentStageId} currentStageId={currentStageId} />
+            </motion.div>
+            </div>
           </div>
-          
         )}
       </AnimatePresence>
     </div>

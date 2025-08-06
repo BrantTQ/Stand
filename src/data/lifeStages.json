@@ -10,7 +10,7 @@
     "blurbs": [
       "early_demo"
     ],
-    "color": "#e53e3e",
+    "color": "#2a2986",
     "metrics": []
   },
   {
@@ -18,10 +18,11 @@
     "title": "Primary Education",
     "icon": "\ud83c\udf92",
     "domains": [
-      "education"
+      "education",
+      "family"
     ],
     "blurbs": [],
-    "color": "#e53e3e",
+    "color": "#2a2986",
     "metrics": []
   },
   {
@@ -29,10 +30,11 @@
     "title": "Secondary Education",
     "icon": "\ud83d\udcda",
     "domains": [
-      "education"
+      "education",
+      "family"
     ],
     "blurbs": [],
-    "color": "#e53e3e",
+    "color": "#2a2986",
     "metrics": []
   },
   {
@@ -40,10 +42,12 @@
     "title": "Tertiary Education",
     "icon": "\ud83c\udf93",
     "domains": [
-      "education"
+      "education",
+      "work",
+      "family"
     ],
     "blurbs": [],
-    "color": "#e53e3e",
+    "color": "#2a2986",
     "metrics": []
   },
   {
@@ -52,10 +56,11 @@
     "icon": "\ud83d\udcbc",
     "domains": [
       "family",
-      "work"
+      "work",
+      "health"
     ],
     "blurbs": [],
-    "color": "#e53e3e",
+    "color": "#2a2986",
     "metrics": []
   },
   {
@@ -64,10 +69,11 @@
     "icon": "\ud83d\udc74",
     "domains": [
       "leisure",
-      "health"
+      "health",
+      "family"
     ],
     "blurbs": [],
-    "color": "#e53e3e",
+    "color": "#2a2986",
     "metrics": []
   }
 ]
