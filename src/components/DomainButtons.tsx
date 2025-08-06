@@ -1,12 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
+import domains from "../data/domains.json";
+import lifeStages from "../data/lifeStages.json";
 
-const DOMAINS = [
-  { id: "poverty", label: "Poverty", color: "#e53e3e", icon: "💸" },
-  { id: "family", label: "Family", color: "#38a169", icon: "👨‍👩‍👧‍👦" },
-  { id: "education", label: "Education", color: "#3182ce", icon: "🎓" },
-  { id: "wellbeing", label: "Well-being", color: "#d69e2e", icon: "😊" },
-];
 
 const containerVariants = {
   show: {
@@ -24,20 +20,31 @@ const buttonVariants = {
 interface DomainButtonsProps {
   selectedDomain: string | null;
   onSelect: (domainId: string) => void;
+  selectedStageId: string | null; // Added to filter domains by stage
 }
 
-const DomainButtons: React.FC<DomainButtonsProps> = ({ selectedDomain, onSelect }) => (
-  <motion.div
-    className="flex gap-4 justify-center my-4"
-    variants={containerVariants}
-    initial="hidden"
-    animate="show"
-  >
-    {DOMAINS.map(domain => (
-      <motion.button
-        key={domain.id}
-        variants={buttonVariants}
-        aria-label={`Select domain: ${domain.label}`}
+const DomainButtons: React.FC<DomainButtonsProps> = ({ selectedDomain, onSelect, selectedStageId }) => {
+  const initialDomains = lifeStages.find(s => s.id === selectedStageId)?.domains || [];
+
+  const domainsToShow = selectedStageId
+    ? domains.filter(domain => initialDomains.includes(domain.id))
+    : domains;
+
+  // Fallback if no domains match
+  const finalDomainsToShow = domainsToShow.length > 0 ? domainsToShow : domains;
+  
+  return (
+    <motion.div
+      className="flex gap-4 justify-center my-4"
+      variants={containerVariants}
+       initial={{ opacity: 1, y: 0 }}
+      animate={{ opacity: 1, y: 0 }}
+    >
+      {finalDomainsToShow.map(domain => (
+        <motion.button
+          key={domain.id}
+          variants={buttonVariants}
+          aria-label={`Select domain: ${domain.label}`}
         className={`px-4 py-2 rounded font-semibold flex items-center gap-2 transition border-2 focus:outline-none focus:ring-2 focus:ring-offset-2`}
         style={{
           background: selectedDomain === domain.id ? domain.color : "#fff",
@@ -58,6 +65,7 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({ selectedDomain, onSelect 
       </motion.button>
     ))}
   </motion.div>
-);
+  )
+};
 
 export default DomainButtons;

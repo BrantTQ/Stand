@@ -11,12 +11,45 @@
       "label": "Maths score",
       "stage": "primary",
       "domain": "education"
+    },
+    {
+      "id": "s3",
+      "label": "Reading score",
+      "stage": "secondary",
+      "domain": "education"
+    },
+    {
+      "id": "s4",
+      "label": "University enrolment",
+      "stage": "tertiary",
+      "domain": "education"
+    },
+    {
+      "id": "s5",
+      "label": "Employment status",
+      "stage": "adult",
+      "domain": "work"
     }
   ],
   "edges": [
     {
       "source": "s1",
       "target": "s2",
+      "type": "correlation"
+    },
+    {
+      "source": "s2",
+      "target": "s3",
+      "type": "correlation"
+    },
+    {
+      "source": "s3",
+      "target": "s4",
+      "type": "correlation"
+    },
+    {
+      "source": "s4",
+      "target": "s5",
       "type": "correlation"
     }
   ]

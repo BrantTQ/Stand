@@ -19,7 +19,7 @@ interface StageScreenProps {
   onBack?: () => void; // Optional back handler
 }
 
-const StageScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => {
+const DomainScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => {
   const stage = lifeStages.find((s) => s.id === stageId);
 
   if (!stage) {
@@ -62,7 +62,7 @@ const StageScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => {
       tabIndex={0}
       role="region"
       aria-label={`Stage: ${stage.title}`}
-      className="p-6"
+      className="fixed inset-0 bg-white z-40 p-6 flex flex-col"
     >
       {onBack && (
         <button
@@ -80,4 +80,4 @@ const StageScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => {
   );
 };
 
-export default StageScreen;
+export default DomainScreen;

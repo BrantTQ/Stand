@@ -10,7 +10,8 @@
     "blurbs": [
       "early_demo"
     ],
-    "color": "#e53e3e"
+    "color": "#e53e3e",
+    "metrics": []
   },
   {
     "id": "primary",
@@ -20,7 +21,8 @@
       "education"
     ],
     "blurbs": [],
-    "color": "#e53e3e"
+    "color": "#e53e3e",
+    "metrics": []
   },
   {
     "id": "secondary",
@@ -30,7 +32,8 @@
       "education"
     ],
     "blurbs": [],
-    "color": "#e53e3e"
+    "color": "#e53e3e",
+    "metrics": []
   },
   {
     "id": "tertiary",
@@ -40,28 +43,31 @@
       "education"
     ],
     "blurbs": [],
-    "color": "#e53e3e"
+    "color": "#e53e3e",
+    "metrics": []
   },
   {
     "id": "adult",
     "title": "Adult Life",
     "icon": "\ud83d\udcbc",
     "domains": [
-      "work",
-      "family"
+      "family",
+      "work"
     ],
     "blurbs": [],
-    "color": "#e53e3e"
+    "color": "#e53e3e",
+    "metrics": []
   },
   {
     "id": "senior",
     "title": "Senior Life",
     "icon": "\ud83d\udc74",
     "domains": [
-      "health",
-      "leisure"
+      "leisure",
+      "health"
     ],
     "blurbs": [],
-    "color": "#e53e3e"
+    "color": "#e53e3e",
+    "metrics": []
   }
 ]

@@ -4,5 +4,35 @@
     "domain": "family",
     "title": "Demo blurb",
     "text": "Synthetic paragraph for early childhood..."
+  },
+  "primary_demo": {
+    "stage": "primary",
+    "domain": "education",
+    "title": "Demo blurb",
+    "text": "Synthetic paragraph for primary education..."
+  },
+  "secondary_demo": {
+    "stage": "secondary",
+    "domain": "education",
+    "title": "Demo blurb",
+    "text": "Synthetic paragraph for secondary education..."
+  },
+  "tertiary_demo": {
+    "stage": "tertiary",
+    "domain": "education",
+    "title": "Demo blurb",
+    "text": "Synthetic paragraph for tertiary education..."
+  },
+  "adult_demo": {
+    "stage": "adult",
+    "domain": "work",
+    "title": "Demo blurb",
+    "text": "Synthetic paragraph for adult life..."
+  },
+  "senior_demo": {
+    "stage": "senior",
+    "domain": "health",
+    "title": "Demo blurb",
+    "text": "Synthetic paragraph for senior life..."
   }
 }
