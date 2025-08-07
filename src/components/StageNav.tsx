@@ -14,11 +14,18 @@ interface StageNavProps {
 }
 
 export const StageNav: React.FC<StageNavProps> = ({ setCurrentStage, currentStageId }) => (
+  <div className="pb-8 h-12">
+    <motion.div
+      key="heading"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.5 }}
+      transition={{ duration: 0.5 }}
+    >
   <div className="flex gap-4 justify-center py-8" style={{gap: "20px"}}>
     {lifeStages.map(stage => (
       <motion.button
         key={stage.id}
-        // className={`px-6 py-3 rounded-lg font-bold text-lg shadow-lg transition border-2`}
         style={{
           background: currentStageId === stage.id ? stage.color : "#fff",
           borderColor: stage.color,
@@ -36,11 +43,14 @@ export const StageNav: React.FC<StageNavProps> = ({ setCurrentStage, currentStag
         exit="exit"
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         onClick={() => setCurrentStage(stage.id)}
+        className={`rounded-2xl`}
       >
         {/* <span className="mr-2">{stage.icon}</span> */}
         {stage.title}
       </motion.button>
     ))}
+  </div>
+  </motion.div>
   </div>
 );
 

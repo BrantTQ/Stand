@@ -77,9 +77,9 @@ const GraphPanel = ({ selectedDomain, stageId }: GraphPanelProps) => {
   }, [selectedDomain, stageId]);
 
   return (
-    <div>
+    
       <div ref={cyRef} style={{ width: '100%', height: '400px' }} />
-    </div>
+    
   );
 };
 

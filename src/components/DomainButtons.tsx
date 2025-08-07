@@ -37,6 +37,14 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({ selectedDomain, onSelect,
 
   return (
     <motion.div
+                      key="domain-buttons"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.5 }}
+                      transition={{ duration: 0.5 }}
+                    >
+        <div className="text-center p-8 text-white text-xl font-semibold">Please select a domain</div>
+    <motion.div
       className="flex justify-center my-4"
       style={{ gap: "20px" }}
       variants={containerVariants}
@@ -50,7 +58,7 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({ selectedDomain, onSelect,
             key={domain.id}
             variants={buttonVariants}
             aria-label={`Select domain: ${domain.label}`}
-            className={`rounded-full font-semibold flex flex-col items-center justify-center gap-2 transition border-2 focus:outline-none focus:ring-2 focus:ring-offset-2`}
+            className={`rounded-full font-semibold flex flex-col items-center justify-center gap-2 transition border-4 focus:outline-none focus:ring-2 focus:ring-offset-2`}
             style={{
               background: selectedDomain === domain.id ? domain.color : "#fff",
               borderColor: domain.color,
@@ -78,6 +86,7 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({ selectedDomain, onSelect,
           </motion.button>
         ))}
       </AnimatePresence>
+    </motion.div>
     </motion.div>
   )
 };

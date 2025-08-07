@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import Lottie from "lottie-react";
 import attractAnimation from "../assets/animations/sandy_loading.json";
+import { motion } from "framer-motion";
 
 interface AttractScreenProps {
   onInteraction: () => void;
@@ -10,6 +11,11 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
   const lottieRef = useRef(null);
 
   return (
+    <motion.div
+                key="attract"
+                exit={{ opacity: 0, scale: 1.5 }}
+                transition={{ duration: 0.5 }}
+              >
     <div
       onClick={onInteraction}
       className="flex items-center justify-center h-screen w-screen bg-gradient-to-br from-blue-500 to-purple-600 cursor-pointer"
@@ -32,6 +38,7 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
         </div>
       </div>
     </div>
+    </motion.div>
   );
 };
 

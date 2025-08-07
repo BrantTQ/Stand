@@ -1,12 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, use } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import StageNav from "./components/StageNav";
-import DomainButtons from "./components/DomainButtons";
 import DomainScreen from "./pages/DomainScreen";
-import GraphPanel from "./components/GraphPanel";
 import AttractScreen from "./pages/AttractScreen";
-import "./App.css";
+import StageScreen from "./pages/StageScreen";
 import lifeStages from "./data/lifeStages.json";
+import "./App.css";
+
 
 function App() {
   const [currentStageId, setCurrentStageId] = useState<string | null>(null);
@@ -22,7 +21,7 @@ function App() {
       setAttractMode(true);
       setCurrentStageId(null);
       setSelectedDomain(null);
-    }, 45000); // 45 seconds
+    }, 1745000); // 45 seconds
   };
 
   useEffect(() => {
@@ -37,117 +36,53 @@ function App() {
     }
   }, [attractMode]);
 
-useEffect(() => {
-    setSelectedDomain(null);
-  }, [currentStageId]);
+  let pageTitle = "";
+  if (selectedDomain && currentStageId) {
+    // Find the stage object for the current stageId
+    const stageObj = lifeStages.find(s => s.id === currentStageId);
+    pageTitle = stageObj ? stageObj.title : "Domain Details";
+  } else {
+    pageTitle = "Life Journey with Data";
+  }
 
   const handleInteraction = () => {
     setAttractMode(false);
   };
   
-  // Handle domain selection
-  const handleDomainSelect = (domainId: string) => {
-    setSelectedDomain(domainId);
-  };
-
   return (
-    <div className="App">
-      <AnimatePresence>
-        {attractMode ? (
-          <motion.div
-            key="attract"
-            exit={{ opacity: 0, scale: 1.5 }}
-            transition={{ duration: 0.5 }}
-          >
-            <AttractScreen onInteraction={handleInteraction} />
-          </motion.div>
-        ) : selectedDomain && currentStageId ? (
-          // Show DomainScreen as a full overlay when a domain is selected
-           
-            <motion.div
-            key="domain-screen"
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "-100%" }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="fixed inset-0 bg-white z-50 flex flex-col"
-          >
-            <>
-            <DomainScreen
-              stageId={currentStageId}
-              selectedDomain={selectedDomain}
-              onBack={() => setCurrentStageId(null)}
-            />
-            <GraphPanel selectedDomain={selectedDomain} stageId={currentStageId} />
-            </>
-            
-          </motion.div>
-        ) : (
-          // Main navigation and domain buttons
-          <div className="flex flex-col justify-between items-stretch h-screen bg-gradient-to-br from-blue-500 to-purple-600">
-            {/* 1st row: Title left, Logo right */}
-            <div className="flex justify-between items-center px-8 pt-8 pb-4">
-            <motion.div
-                  key="heading"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.5 }}
-                  transition={{ duration: 0.5 }}
-                >
-              <h1 className="text-3xl font-bold text-white drop-shadow">
-                Life Jorney with Data</h1></motion.div>
-              {/* Replace with your logo image or component */}
-              <motion.div
-                  key="heading"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.5 }}
-                  transition={{ duration: 0.5 }}
-                >
-              <div className="flex items-center justify-center h-[500px] w-[400px] aspect-square overflow-hidden">
-                {/* Example logo, replace with your actual logo */}
-              <img src="/liser_logo.png" alt="Logo" className="max-h-full max-w-full object-contain" />
-              </div>
-              </motion.div>
-            </div>
-            {/* 2nd row: Domain Buttons */}
-            <div className="flex-1 flex flex-col justify-center items-center">
-              {currentStageId ? (
-                <motion.div
-                  key="domain-buttons"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.5 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="text-center p-8 text-white text-xl font-semibold">Please select a domain</div>
-                  <DomainButtons
-                    selectedStageId={currentStageId}
-                    selectedDomain={selectedDomain}
-                    onSelect={handleDomainSelect}
-                  />
-                </motion.div>
-              ) : (
-                <div className="text-center p-8 text-white text-xl font-semibold">Please select a life stage</div>
-              )}
-            </div>
-            {/* 3rd row: Stage Buttons */}
-            <div className="pb-8">
-              <motion.div
-                  key="heading"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.5 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  
-              <StageNav setCurrentStage={setCurrentStageId} currentStageId={currentStageId} />
-            </motion.div>
-            </div>
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
+  <div className="App">
+    <AnimatePresence>
+      {attractMode ? (
+        <AttractScreen onInteraction={handleInteraction} />
+      ) : (
+        <div className="flex flex-col justify-between items-stretch h-full">
+        <div className="flex items-center justify-between px-8 pt-8 pb-4">
+        <h1 className="text-3xl font-bold text-white drop-shadow">
+          {pageTitle}
+        </h1>
+        <img src="/liser_logo.png" alt="Logo" className="h-12 w-12 object-contain" />
+      </div>
+          {selectedDomain && currentStageId ? (
+        // DomainScreen with GraphPanel
+          <DomainScreen
+            stageId={currentStageId}
+            selectedDomain={selectedDomain}
+            onBack={() => setCurrentStageId(null)}
+          />
+        
+      ) : (
+        <StageScreen
+          currentStageId={currentStageId}
+          setCurrentStageId={setCurrentStageId}
+          selectedDomain={selectedDomain}
+          setSelectedDomain={setSelectedDomain}
+        />
+      )}
+        </div>
+      )}
+      
+    </AnimatePresence>
+  </div>
   );
 }
 
