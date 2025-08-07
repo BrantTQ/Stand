@@ -73,7 +73,7 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({ selectedDomain, onSelect,
             exit="exit"
             layout
           >
-            <span aria-hidden="true" className="text-2xl">{domain.icon}</span>
+            {/* <span aria-hidden="true" className="text-2xl">{domain.icon}</span> */}
             <span className="text-center text-sm">{domain.label}</span>
           </motion.button>
         ))}

@@ -22,7 +22,7 @@ function App() {
       setAttractMode(true);
       setCurrentStageId(null);
       setSelectedDomain(null);
-    }, 1045000); // 17 minutes and 25 seconds
+    }, 45000); // 45 seconds
   };
 
   useEffect(() => {
@@ -84,19 +84,31 @@ useEffect(() => {
           </motion.div>
         ) : (
           // Main navigation and domain buttons
-          <div className="flex flex-col justify-between items-stretch h-screen w-screen bg-gradient-to-br from-blue-500 to-purple-600">
+          <div className="flex flex-col justify-between items-stretch h-screen bg-gradient-to-br from-blue-500 to-purple-600">
             {/* 1st row: Title left, Logo right */}
             <div className="flex justify-between items-center px-8 pt-8 pb-4">
-              <h1 className="text-3xl font-bold text-white drop-shadow">
-                <motion.div
+            <motion.div
                   key="heading"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.5 }}
                   transition={{ duration: 0.5 }}
-                >Life Jorney with Data</motion.div></h1>
+                >
+              <h1 className="text-3xl font-bold text-white drop-shadow">
+                Life Jorney with Data</h1></motion.div>
               {/* Replace with your logo image or component */}
-              <img src="/logo192.png" alt="Logo" className="h-12 w-12 object-contain" />
+              <motion.div
+                  key="heading"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={{ duration: 0.5 }}
+                >
+              <div className="flex items-center justify-center h-[500px] w-[400px] aspect-square overflow-hidden">
+                {/* Example logo, replace with your actual logo */}
+              <img src="/liser_logo.png" alt="Logo" className="max-h-full max-w-full object-contain" />
+              </div>
+              </motion.div>
             </div>
             {/* 2nd row: Domain Buttons */}
             <div className="flex-1 flex flex-col justify-center items-center">

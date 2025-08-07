@@ -23,8 +23,8 @@ export const StageNav: React.FC<StageNavProps> = ({ setCurrentStage, currentStag
           background: currentStageId === stage.id ? stage.color : "#fff",
           borderColor: stage.color,
           color: currentStageId === stage.id ? "#fff" : stage.color,
-          height: "350px",
-          width: "300px",
+          height: "240px",
+          width: "250px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center", 
@@ -37,7 +37,7 @@ export const StageNav: React.FC<StageNavProps> = ({ setCurrentStage, currentStag
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         onClick={() => setCurrentStage(stage.id)}
       >
-        <span className="mr-2">{stage.icon}</span>
+        {/* <span className="mr-2">{stage.icon}</span> */}
         {stage.title}
       </motion.button>
     ))}
