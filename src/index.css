@@ -1,7 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import "tailwindcss";
+@plugin "daisyui";
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -24,22 +25,40 @@ a {
 }
 a:hover {
   color: #535bf2;
-}
+} */
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  /* display: flex; */
   min-width: 320px;
   min-height: 100vh;
 }
+#root {
+  margin: 0 auto;
+  /* padding: 1rem; */
+  text-align: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+/* .App {
+  width: 1800px;
+  height: 960px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  color: rgba(42, 42, 42, 0.87);
+  color-scheme: dark light;
+  margin: 0 auto;
+  overflow: hidden;
+} */
 
-h1 {
+
+ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
 
-button {
+/* button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -49,8 +68,8 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
-}
-button:hover {
+} */
+/* button:hover {
   border-color: #646cff;
 }
 button:focus,
@@ -69,4 +88,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */

@@ -5,8 +5,8 @@ import AttractScreen from "./pages/AttractScreen";
 import StageScreen from "./pages/StageScreen";
 import QuestionScreen from "./pages/QuestionScreen";
 import lifeStages from "./data/lifeStages.json";
-import "./App.css";
-
+import Header from "./components/Header";
+import domainsData from "./data/domains.json"; // keep if added earlier
 
 function App() {
   const [currentStageId, setCurrentStageId] = useState<string | null>(null);
@@ -47,6 +47,11 @@ function App() {
     pageTitle = "Life Journey with Data";
   }
 
+  const domainLabel =
+    selectedDomain
+      ? (domainsData as Array<{ id: string; label: string }>).find(d => d.id === selectedDomain)?.label ?? selectedDomain
+      : null;
+
   const handleInteraction = () => {
     setAttractMode(false);
   };
@@ -65,86 +70,97 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="items-center bg-gray-100 w-screen h-screen">
       <AnimatePresence>
         {attractMode ? (
           <AttractScreen onInteraction={handleInteraction} />
         ) : (
-          <div className="flex flex-col justify-between items-stretch h-full">
-            {/* Breadcrumbs */}
-            <div className="flex items-center px-8 pt-4 pb-2 text-sm text-gray-300 gap-2">
-              <div className="flex-1 items-center gap-2">
-              <span
-                className={`cursor-pointer hover:underline ${!currentStageId ? "font-bold text-white" : ""}`}
-                onClick={() => {
-                  setCurrentStageId(null);
-                  setSelectedDomain(null);
-                  setShowQuestion(false);
-                }}
-              >
-                Home
-              </span>
-              {currentStageId && (
-                <>
-                  <span className="mx-1">/</span>
-                  <span
-                    className={`cursor-pointer hover:underline ${!selectedDomain ? "font-bold text-white" : ""}`}
-                    onClick={() => {
-                      setSelectedDomain(null);
+          <div className="grid grid-rows-[auto_auto_auto_auto] gap-4 p-8 ">
+            {/* Row 1: Header */}
+            <Header pageTitle={pageTitle} />
+
+            {/* Row 2: Breadcrumbs (DaisyUI), right-aligned */}
+            <div className="flex justify-start">
+              <div className="breadcrumbs text-sm">
+                <ul>
+                  <li>
+                    <button
+                      className={`link link-hover ${!currentStageId ? "font-semibold text-primary" : ""}`}
+                      onClick={() => {
+                        setCurrentStageId(null);
+                        setSelectedDomain(null);
+                        setShowQuestion(false);
+                      }}
+                    >
+                      Home
+                    </button>
+                  </li>
+
+                  {currentStageId && (
+                    <li>
+                      <button
+                        className={`link link-hover ${currentStageId && !selectedDomain ? "font-semibold text-primary" : ""}`}
+                        onClick={() => {
+                          setSelectedDomain(null);
+                          setShowQuestion(false);
+                        }}
+                      >
+                        {lifeStages.find(s => s.id === currentStageId)?.title || "Stage"}
+                      </button>
+                    </li>
+                  )}
+
+                  {selectedDomain && (
+                    <li>
+                      <button
+                        className={`link link-hover ${showQuestion ? "font-semibold text-primary" : ""}`}
+                        onClick={() => setShowQuestion(false)}
+                      >
+                        {domainLabel}
+                      </button>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            </div>
+
+            {/* Row 3: Domain Buttons or Question */}
+            <div>
+              {selectedDomain && currentStageId ? (
+                showQuestion ? (
+                  <QuestionScreen
+                    currentStageId={currentStageId}                 // NEW
+                    selectedDomain={selectedDomain}
+                    onSelectDomain={(id) => handleDomainSelect(id)} // NEW
+                    onBack={() => {
                       setShowQuestion(false);
+                      setSelectedDomain(null); // Go to StageScreen
                     }}
-                  >
-                    {lifeStages.find(s => s.id === currentStageId)?.title || "Stage"}
-                  </span>
-                </>
-                
-              )}
-              {selectedDomain && (
-                <>
-                  <span className="mx-1">/</span>
-                  <span
-                    className={`cursor-pointer hover:underline ${showQuestion ? "font-bold text-white" : ""}`}
-                    onClick={() => setShowQuestion(false)}
-                  >
-                    {selectedDomain}
-                  </span>
-                </>
-              )}</div>
-              {/* Removed Question breadcrumb */}
-            </div>
-            {/* Page Title and Logo */}
-            <div className="flex items-center justify-between px-8 pt-8 pb-4">
-              <h1 className="text-3xl font-bold text-white drop-shadow">
-                {pageTitle}
-              </h1>
-              <img src="/liser_logo.png" alt="Logo" className="h-12 w-12 object-contain" />
-            </div>
-            {/* Main Content */}
-            {selectedDomain && currentStageId ? (
-              showQuestion ? (
-                <QuestionScreen
-                  selectedDomain={selectedDomain}
-                  onBack={() => {
-                    setShowQuestion(false);
-                    setSelectedDomain(null); // Go to StageScreen
-                  }}
-                  onNext={handleQuestionDone}
-                />
+                    onNext={handleQuestionDone}
+                  />
+                ) : (
+                  <DomainScreen
+                    stageId={currentStageId}
+                    selectedDomain={selectedDomain}
+                    onBack={() => setCurrentStageId(null)}
+                  />
+                )
               ) : (
-                <DomainScreen
-                  stageId={currentStageId}
+                <div></div>
+              )}
+            </div>
+
+            {/* Row 4: StageScreen or other content */}
+            <div>
+              {(!selectedDomain || !currentStageId) && (
+                <StageScreen
+                  currentStageId={currentStageId}
+                  setCurrentStageId={setCurrentStageId}
                   selectedDomain={selectedDomain}
-                  onBack={() => setCurrentStageId(null)}
+                  setSelectedDomain={handleDomainSelect}
                 />
-              )
-            ) : (
-              <StageScreen
-                currentStageId={currentStageId}
-                setCurrentStageId={setCurrentStageId}
-                selectedDomain={selectedDomain}
-                setSelectedDomain={handleDomainSelect}
-              />
-            )}
+              )}
+            </div>
           </div>
         )}
       </AnimatePresence>

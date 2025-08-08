@@ -68,23 +68,23 @@ const DomainScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => 
     >
 
       {/* Second row: 3 columns */}
-      <div className="flex flex-row gap-6 flex-1">
-        <div className="flex-1 bg-gray-100 rounded p-4">
+      <div className="f">
+        <div className="">
           {/* Column 1 content */}
           {blurbTitle && <h2 className="text-xl font-semibold mb-2">{blurbTitle}</h2>}
           <p>{blurbText || 'No blurb available for this stage/domain.'}</p>
         </div>
-        <div className="flex-1 bg-gray-100 rounded p-4" onPointerDown={e => e.stopPropagation()}>
+        <div className="" onPointerDown={e => e.stopPropagation()}>
           {/* Column 2 content */}
           <GraphPanel selectedDomain={selectedDomain} stageId={stageId} />
         </div>
-        <div className="flex-1 bg-gray-100 rounded p-4">
+        <div className="">
           {/* Column 3 content */}
         </div>
       </div>
 
       {/* Back button at the bottom */}
-      <div className="flex justify-center mt-6">
+      <div className="">
         {onBack && (
         <button
           className="mt-6 px-3 py-1 rounded bg-gray-200 text-gray-700 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2"

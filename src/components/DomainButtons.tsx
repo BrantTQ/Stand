@@ -32,61 +32,54 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({ selectedDomain, onSelect,
     ? domains.filter(domain => initialDomains.includes(domain.id))
     : domains;
 
-  // Fallback if no domains match
   const finalDomainsToShow = domainsToShow.length > 0 ? domainsToShow : domains;
 
   return (
     <motion.div
-                      key="domain-buttons"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.5 }}
-                      transition={{ duration: 0.5 }}
-                    >
-        <div className="text-center p-8 text-white text-xl font-semibold">Please select a domain</div>
-    <motion.div
-      className="flex justify-center my-4"
-      style={{ gap: "20px" }}
-      variants={containerVariants}
-      initial="hidden"
-      animate="show"
-      exit="exit"
+      key="domain-buttons"
+      initial={{ opacity: 0, scale: 0.98 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.25 }}
     >
-      <AnimatePresence initial={false}>
-        {finalDomainsToShow.map(domain => (
-          <motion.button
-            key={domain.id}
-            variants={buttonVariants}
-            aria-label={`Select domain: ${domain.label}`}
-            className={`rounded-full font-semibold flex flex-col items-center justify-center gap-2 transition border-4 focus:outline-none focus:ring-2 focus:ring-offset-2`}
-            style={{
-              background: selectedDomain === domain.id ? domain.color : "#fff",
-              borderColor: domain.color,
-              color: selectedDomain === domain.id ? "#fff" : domain.color,
-              height: "100px",
-              width: "100px",
-              display: "flex",
-              textAlign: "center",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-            onClick={() => onSelect(domain.id)}
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.95 }}
-            animate={{
-              scale: selectedDomain === domain.id ? 1.1 : 1,
-              boxShadow: selectedDomain === domain.id ? `0 0 0 4px ${domain.color}44` : "none"
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            exit="exit"
-            layout
-          >
-            {/* <span aria-hidden="true" className="text-2xl">{domain.icon}</span> */}
-            <span className="text-center text-sm">{domain.label}</span>
-          </motion.button>
-        ))}
-      </AnimatePresence>
-    </motion.div>
+      {/* Removed inner title to avoid duplication with modal header */}
+      <motion.div
+        className="flex justify-center flex-wrap gap-4 sm:gap-5"
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        exit="exit"
+      >
+        <AnimatePresence initial={false}>
+          {finalDomainsToShow.map(domain => (
+            <motion.button
+              key={domain.id}
+              variants={buttonVariants}
+              aria-label={`Select domain: ${domain.label}`}
+              className="rounded-full font-semibold flex flex-col items-center justify-center text-center transition
+                         border-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+                         hover:shadow-lg active:scale-95 h-24 w-24 sm:h-28 sm:w-28"
+              style={{
+                background: selectedDomain === domain.id ? domain.color : "#fff",
+                borderColor: domain.color,
+                color: selectedDomain === domain.id ? "#fff" : domain.color
+              }}
+              onClick={() => onSelect(domain.id)}
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95 }}
+              animate={{
+                scale: selectedDomain === domain.id ? 1.08 : 1,
+                boxShadow: selectedDomain === domain.id ? `0 0 0 4px ${domain.color}44` : "none"
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              exit="exit"
+              layout
+            >
+              <span className="text-center text-xs sm:text-sm leading-tight px-2">{domain.label}</span>
+            </motion.button>
+          ))}
+        </AnimatePresence>
+      </motion.div>
     </motion.div>
   )
 };
