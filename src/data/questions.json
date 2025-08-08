@@ -1,0 +1,93 @@
+[
+    {
+      "id": "leisure_activities",
+      "Title": "Leisure Activities",
+      "description": "What leisure activities do you enjoy?",
+      "choices": [
+        "Reading",
+        "Traveling",
+        "Sports",
+        "Arts and Crafts",
+        "Gaming"
+      ],
+      "answer": "Gaming"
+    },
+    {
+      "id": "family_activities",
+      "Title": "Family Activities",
+      "description": "What activities do you enjoy with your family?",
+      "choices": [
+        "Game Night",
+        "Outdoor Adventures",
+        "Movie Marathon",
+        "Cooking Together",
+        "Traveling"
+      ],
+      "answer": "Game Night"
+    },
+    {
+      "id": "education_support",
+      "Title": "Education Support",
+      "description": "What support do you need for your education?",
+      "choices": [
+        "Tutoring",
+        "Online Resources",
+        "Study Groups",
+        "Mentorship",
+        "Financial Aid"
+      ],
+      "answer": "Online Resources"
+    },
+    {
+      "id": "health_support",
+      "Title": "Health Support",
+      "description": "What health support do you require?",
+      "choices": [
+        "Medical Care",
+        "Mental Health Services",
+        "Nutrition Advice",
+        "Fitness Programs",
+        "Wellness Workshops"
+      ],
+      "answer": "Fitness Programs"
+    },
+    {
+      "id": "work_support",
+      "Title": "Work Support",
+      "description": "What support do you need in your work life?",
+      "choices": [
+        "Career Counseling",
+        "Skill Development",
+        "Networking Opportunities",
+        "Work-Life Balance Tips",
+        "Job Search Assistance"
+      ],
+      "answer": "Skill Development"
+    },
+    {
+      "id": "wellness_resources",
+      "Title": "Wellness Resources",
+      "description": "What wellness resources do you find helpful?",
+      "choices": [
+        "Meditation Apps",
+        "Fitness Trackers",
+        "Healthy Recipes",
+        "Stress Management Workshops",
+        "Support Groups"
+      ],
+      "answer": "Meditation Apps"
+    },
+    {
+      "id": "learning_resources",
+      "Title": "Learning Resources",
+      "description": "What learning resources do you prefer?",
+      "choices": [
+        "Online Courses",
+        "Books",
+        "Podcasts",
+        "Webinars",
+        "Workshops"
+      ],
+      "answer": "Online Courses"
+    }
+]

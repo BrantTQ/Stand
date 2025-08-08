@@ -16,13 +16,11 @@ const StageScreen: React.FC<StageScreenProps> = ({
   setSelectedDomain,
 }) => {
   useEffect(() => {
+    // Clear selectedDomain when stage changes
     setSelectedDomain(null);
   }, [currentStageId, setSelectedDomain]);
 
-  const handleDomainSelect = (domainId: string) => {
-    setSelectedDomain(domainId);
-  };
-
+  // Remove local handleDomainSelect, use setSelectedDomain directly
   return (
     <>
       {/* 1st row: Title left, Logo right */}
@@ -33,7 +31,7 @@ const StageScreen: React.FC<StageScreenProps> = ({
           <DomainButtons
             selectedStageId={currentStageId}
             selectedDomain={selectedDomain}
-            onSelect={handleDomainSelect}
+            onSelect={setSelectedDomain} // Use parent handler
           />
         ) : (
           <div className="text-center p-8 text-white text-xl font-semibold">
