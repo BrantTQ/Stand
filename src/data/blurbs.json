@@ -2,37 +2,121 @@
   "early_demo": {
     "stage": "early",
     "domain": "family",
-    "title": "Demo blurb",
-    "text": "Synthetic paragraph for early childhood..."
+    "projects": [
+      {
+        "project": "overview",
+        "title": "Early Childhood Overview",
+        "introduction": "Synthetic introduction for early childhood focusing on family environment and early development.",
+        "conclusion": "Key takeaway: stable family support correlates with improved early outcomes.",
+        "image": "/energy_pooled.png"
+      },
+      {
+        "project": "case_study",
+        "title": "Family Support Case Study",
+        "introduction": "Short case study describing targeted support for families with young children.",
+        "conclusion": "Case indicates targeted guidance can raise developmental indicators.",
+        "image": "/energy_pooled.png"
+      }
+    ]
   },
   "primary_demo": {
     "stage": "primary",
     "domain": "education",
-    "title": "Demo blurb",
-    "text": "Synthetic paragraph for primary education..."
+    "projects": [
+      {
+        "project": "achievement_trends",
+        "title": "Primary Education Achievement Trends",
+        "introduction": "Synthetic introduction on literacy and numeracy trends in primary years.",
+        "conclusion": "Programs emphasizing foundational skills show measurable gains.",
+        "image": "/energy_pooled.png"
+      },
+      {
+        "project": "attendance_program",
+        "title": "Attendance Improvement Program",
+        "introduction": "Brief on initiatives to reduce absenteeism in primary education.",
+        "conclusion": "Consistent attendance links strongly to improved test scores.",
+        "image": "/energy_pooled.png"
+      }
+    ]
   },
   "secondary_demo": {
     "stage": "secondary",
     "domain": "education",
-    "title": "Demo blurb",
-    "text": "Synthetic paragraph for secondary education..."
+    "projects": [
+      {
+        "project": "pathways",
+        "title": "Secondary Pathways and Outcomes",
+        "introduction": "Overview of academic and vocational pathways during secondary school.",
+        "conclusion": "Clear guidance improves transitions to further education or work.",
+        "image": "/energy_pooled.png"
+      },
+      {
+        "project": "wellbeing",
+        "title": "Student Wellbeing Indicators",
+        "introduction": "Summary of wellbeing metrics and their association with performance.",
+        "conclusion": "Wellbeing support correlates with higher completion rates.",
+        "image": "/energy_pooled.png"
+      }
+    ]
   },
   "tertiary_demo": {
     "stage": "tertiary",
     "domain": "education",
-    "title": "Demo blurb",
-    "text": "Synthetic paragraph for tertiary education..."
+    "projects": [
+      {
+        "project": "access",
+        "title": "Access and Participation",
+        "introduction": "Synthetic overview of access, entry, and participation in tertiary studies.",
+        "conclusion": "Financial and mentoring supports increase participation for target groups.",
+        "image": "/energy_pooled.png"
+      },
+      {
+        "project": "completion",
+        "title": "Completion and Employment",
+        "introduction": "Brief on completion rates and early employment outcomes.",
+        "conclusion": "Internships and placements improve early career outcomes.",
+        "image": "/energy_pooled.png"
+      }
+    ]
   },
   "adult_demo": {
     "stage": "adult",
     "domain": "work",
-    "title": "Demo blurb",
-    "text": "Synthetic paragraph for adult life..."
+    "projects": [
+      {
+        "project": "skills",
+        "title": "Adult Skills and Training",
+        "introduction": "Overview of adult upskilling and training participation.",
+        "conclusion": "Continuous learning links to wage growth and resilience.",
+        "image": "/energy_pooled.png"
+      },
+      {
+        "project": "work_life",
+        "title": "Work–Life Balance",
+        "introduction": "Synopsis of factors affecting balance for working adults.",
+        "conclusion": "Flexible arrangements associate with improved wellbeing metrics.",
+        "image": "/energy_pooled.png"
+      }
+    ]
   },
   "senior_demo": {
     "stage": "senior",
     "domain": "health",
-    "title": "Demo blurb",
-    "text": "Synthetic paragraph for senior life..."
+    "projects": [
+      {
+        "project": "wellness_survey",
+        "title": "Senior Wellness Survey",
+        "introduction": "Summary of wellness indicators among seniors, including access and prevention.",
+        "conclusion": "Preventive care participation predicts better long-term outcomes.",
+        "image": "/energy_pooled.png"
+      },
+      {
+        "project": "mobility",
+        "title": "Mobility and Independence",
+        "introduction": "Review of mobility challenges and support needs in later life.",
+        "conclusion": "Targeted infrastructure and community support enhance independence.",
+        "image": "/energy_pooled.png"
+      }
+    ]
   }
 }

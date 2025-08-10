@@ -37,7 +37,8 @@ const GraphPanel = ({ selectedDomain, stageId }: GraphPanelProps) => {
       cyInstance.destroy();
     }
 
-    if (nodes.length === 0) return;
+    // Avoid rendering a lone node as a dangling circle
+    if (nodes.length < 2) return;
 
     const cy = cytoscape({
       container: cyRef.current,
@@ -50,7 +51,8 @@ const GraphPanel = ({ selectedDomain, stageId }: GraphPanelProps) => {
           selector: 'node',
           style: {
             'background-color': '#666',
-            'label': 'data(label)'
+            // Suppress labels on nodes
+            'label': ''
           }
         },
         {

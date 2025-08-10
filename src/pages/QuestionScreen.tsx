@@ -37,6 +37,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
 }) => {
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const timerRef = useRef<number | null>(null);
 
   // Domain + stage context
@@ -52,25 +53,42 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const question: Question | undefined =
     domainObj && (questionsData as Question[]).find((q: Question) => domainObj.questionId.includes(q.id));
 
+  // Limit to 4 choices but always include the correct answer
+  const displayedChoices: string[] = React.useMemo(() => {
+    if (!question) return [];
+    const source = Array.from(new Set(question.choices)); // de-dupe defensively
+    let subset = source.slice(0, 4);
+    if (!subset.includes(question.answer) && source.includes(question.answer)) {
+      // Replace last one to guarantee the correct answer is present
+      if (subset.length < 4) {
+        subset.push(question.answer);
+      } else {
+        subset[subset.length - 1] = question.answer;
+      }
+    }
+    // Optional: stable order; skip shuffling for now
+    return subset.slice(0, 4);
+  }, [question]);
+
   const accentStyle: React.CSSProperties | undefined = domainObj?.color
     ? { borderColor: domainObj.color, color: domainObj.color }
     : undefined;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedChoice || !question) return;
+  const handleChoiceClick = (choice: string) => {
+    if (!question || isProcessing) return;
+    setIsProcessing(true);
+    setSelectedChoice(choice);
 
-    if (selectedChoice === question.answer) {
-      setFeedback({ type: "success", message: "Correct! 🎉" });
-    } else {
-      setFeedback({ type: "error", message: `Incorrect. The correct answer is: ${question.answer}` });
-    }
+    const correct = choice === question.answer;
+    setFeedback({ type: correct ? "success" : "error", message: correct ? "Correct! 🎉" : `Incorrect. The correct answer is: ${question.answer}` });
 
     if (timerRef.current) window.clearTimeout(timerRef.current);
+    // Short delay to show feedback, then advance automatically
     timerRef.current = window.setTimeout(() => {
       setFeedback(null);
       onNext?.();
-    }, 1200);
+      setIsProcessing(false);
+    }, 800);
   };
 
   useEffect(() => {
@@ -112,17 +130,18 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="mt-4">
+          <div className="mt-4">
             <div className="flex flex-col gap-3">
-              {question.choices.map((choice, idx) => {
+              {displayedChoices.map((choice, idx) => {
                 const checked = selectedChoice === choice;
                 return (
                   <motion.label
-                    key={choice}
+                    key={`${choice}-${idx}`}
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
                     className="form-control cursor-pointer"
+                    onClick={() => handleChoiceClick(choice)}
                   >
                     <div
                       className={`flex items-center gap-4 px-4 py-3 rounded-xl border transition-colors
@@ -134,7 +153,8 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
                         name="choice"
                         className="radio radio-primary"
                         checked={checked}
-                        onChange={() => setSelectedChoice(choice)}
+                        onChange={() => handleChoiceClick(choice)}
+                        disabled={isProcessing}
                         aria-label={choice}
                       />
                       <span className="flex-1 text-base">{choice}</span>
@@ -144,15 +164,12 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
               })}
             </div>
 
-            <div className="card-actions justify-between mt-6">
-              <button type="button" className="btn btn-ghost" onClick={onBack}>
+            <div className="card-actions justify-start mt-6">
+              <button type="button" className="btn btn-ghost" onClick={onBack} disabled={isProcessing}>
                 ← Back
               </button>
-              <button type="submit" className="btn btn-primary" disabled={!selectedChoice}>
-                Next →
-              </button>
             </div>
-          </form>
+          </div>
 
           {/* Other domains in this stage */}
           {otherDomains.length > 0 && (
