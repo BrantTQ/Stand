@@ -3,36 +3,16 @@
     "id": "early",
     "title": "Early Childhood",
     "icon": "\ud83d\udc76",
-    "domains": [
-      "family",
-      "education"
-    ],
-    "blurbs": [
-      "early_demo"
-    ],
+    "domains": ["family", "education"],
+    "blurbs": ["early_demo"],
     "color": "#2a2986",
     "metrics": []
   },
   {
-    "id": "primary",
-    "title": "Primary Education",
-    "icon": "\ud83c\udf92",
-    "domains": [
-      "education",
-      "family"
-    ],
-    "blurbs": [],
-    "color": "#2a2986",
-    "metrics": []
-  },
-  {
-    "id": "secondary",
-    "title": "Secondary Education",
-    "icon": "\ud83d\udcda",
-    "domains": [
-      "education",
-      "family"
-    ],
+    "id": "childhood",
+    "title": "Childhood",
+    "icon": "\ud83e\udd2e",
+    "domains": ["education", "family"],
     "blurbs": [],
     "color": "#2a2986",
     "metrics": []
@@ -41,11 +21,7 @@
     "id": "tertiary",
     "title": "Tertiary Education",
     "icon": "\ud83c\udf93",
-    "domains": [
-      "education",
-      "work",
-      "family"
-    ],
+    "domains": ["education", "work", "family"],
     "blurbs": [],
     "color": "#2a2986",
     "metrics": []
@@ -54,11 +30,7 @@
     "id": "adult",
     "title": "Adult Life",
     "icon": "\ud83d\udcbc",
-    "domains": [
-      "family",
-      "work",
-      "health"
-    ],
+    "domains": ["family", "work", "health"],
     "blurbs": [],
     "color": "#2a2986",
     "metrics": []
@@ -67,11 +39,16 @@
     "id": "senior",
     "title": "Senior Life",
     "icon": "\ud83d\udc74",
-    "domains": [
-      "leisure",
-      "health",
-      "family"
-    ],
+    "domains": ["leisure", "health", "family"],
+    "blurbs": [],
+    "color": "#2a2986",
+    "metrics": []
+  },
+  {
+    "id": "ai_future",
+    "title": "AI and the Future",
+    "icon": "\ud83e\udd16",
+    "domains": ["technology", "education", "work"],
     "blurbs": [],
     "color": "#2a2986",
     "metrics": []
