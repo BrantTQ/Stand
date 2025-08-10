@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, use } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import DomainScreen from "./pages/DomainScreen";
 import AttractScreen from "./pages/AttractScreen";
 import StageScreen from "./pages/StageScreen";
@@ -18,12 +18,12 @@ function App() {
 
   // Reset idle timer on any interaction
   const resetIdleTimer = () => {
-    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-    idleTimerRef.current = window.setTimeout(() => {
+  if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+  idleTimerRef.current = window.setTimeout(() => {
       setAttractMode(true);
       setCurrentStageId(null);
       setSelectedDomain(null);
-    }, 1745000); // 45 seconds
+  }, 45000); // 45 seconds
   };
 
   useEffect(() => {

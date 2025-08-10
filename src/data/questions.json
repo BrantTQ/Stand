@@ -7,7 +7,6 @@
         "Reading",
         "Traveling",
         "Sports",
-        "Arts and Crafts",
         "Gaming"
       ],
       "answer": "Gaming"
@@ -20,8 +19,7 @@
         "Game Night",
         "Outdoor Adventures",
         "Movie Marathon",
-        "Cooking Together",
-        "Traveling"
+        "Cooking Together"
       ],
       "answer": "Game Night"
     },
@@ -33,8 +31,7 @@
         "Tutoring",
         "Online Resources",
         "Study Groups",
-        "Mentorship",
-        "Financial Aid"
+        "Mentorship"
       ],
       "answer": "Online Resources"
     },
@@ -46,8 +43,7 @@
         "Medical Care",
         "Mental Health Services",
         "Nutrition Advice",
-        "Fitness Programs",
-        "Wellness Workshops"
+        "Fitness Programs"
       ],
       "answer": "Fitness Programs"
     },
@@ -59,8 +55,7 @@
         "Career Counseling",
         "Skill Development",
         "Networking Opportunities",
-        "Work-Life Balance Tips",
-        "Job Search Assistance"
+        "Work-Life Balance Tips"
       ],
       "answer": "Skill Development"
     },
@@ -72,8 +67,7 @@
         "Meditation Apps",
         "Fitness Trackers",
         "Healthy Recipes",
-        "Stress Management Workshops",
-        "Support Groups"
+        "Stress Management Workshops"
       ],
       "answer": "Meditation Apps"
     },
@@ -85,8 +79,7 @@
         "Online Courses",
         "Books",
         "Podcasts",
-        "Webinars",
-        "Workshops"
+        "Webinars"
       ],
       "answer": "Online Courses"
     }
