@@ -43,7 +43,7 @@ const StageScreen: React.FC<StageScreenProps> = ({
         <div className="modal-box max-w-2xl p-0 bg-base-100 text-base-content shadow-2xl rounded-2xl border border-base-300/50">
           <div className="flex items-start justify-between border-b border-base-200 px-6 py-4 rounded-t-2xl">
             <div>
-              <h3 className="font-semibold text-xl leading-tight">Choose a domain</h3>
+              <h3 className="font-semibold text-xl leading-tight">Choose a dimension</h3>
               <p className="text-sm text-base-content/70">Pick an area you’d like to explore</p>
             </div>
             <button

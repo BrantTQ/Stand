@@ -10,13 +10,14 @@ interface HeaderProps {
             {/* 1st row: Title left, Logo right */}
             <div className="flex justify-between">
                 <div className="order-1">
-              <p className="text-2xl">
+              {/* <h1 className="text-2xl"> */}
+                <h1>
                 {pageTitle}
-              </p>
+              </h1>
               </div>
             
               <div className="order-2">
-              <img src="/liser_logo.png" alt="Logo" className="h-48 w-96 item-contain" />
+              <img src="/liser_logo.png" alt="Logo" className="h-30 item-contain" />
               </div>
               </div>
             </div>

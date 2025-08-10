@@ -42,7 +42,7 @@ function App() {
   if (selectedDomain && currentStageId) {
     // Find the stage object for the current stageId
     const stageObj = lifeStages.find(s => s.id === currentStageId);
-    pageTitle = stageObj ? stageObj.title : "Domain Details";
+    pageTitle = stageObj ? stageObj.title : "Dimension Details";
   } else {
     pageTitle = "Life Journey with Data";
   }

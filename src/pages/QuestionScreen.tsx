@@ -85,7 +85,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
         <div className="card w-full max-w-xl bg-base-100 shadow-xl">
           <div className="card-body">
             <div className="alert alert-info">
-              <span>No question available for this domain.</span>
+              <span>No question available for this dimension.</span>
             </div>
             <div className="card-actions justify-end">
               <button onClick={onBack} className="btn btn-ghost">← Back</button>
@@ -98,7 +98,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
   return (
     <div className="h-full w-full flex items-center justify-center bg-base-200">
-      <div className="card w-full max-w-3xl bg-base-100 shadow-2xl">
+      <div className="card w-full max-w-3xl bg-base-100 shadow-2xl" id="card">
         <div className="card-body">
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
@@ -107,7 +107,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
             </div>
             <div className="hidden sm:block">
               <span className="badge badge-outline badge-lg" style={accentStyle} title={domainObj?.label}>
-                {domainObj?.label ?? "Domain"}
+                {domainObj?.label ?? "Dimension"}
               </span>
             </div>
           </div>
@@ -121,7 +121,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
                     key={choice}
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.04 }}
+                    transition={{ delay: idx * 0.1 }}
                     className="form-control cursor-pointer"
                   >
                     <div
@@ -158,7 +158,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
           {otherDomains.length > 0 && (
             <div className="mt-6">
               <div className="mb-2 text-sm text-base-content/70">
-                Other domains in {stageObj?.title ?? "this stage"}
+                Other dimensions in {stageObj?.title ?? "this stage"}
               </div>
               <div className="flex flex-wrap gap-2">
                 {/* Current domain shown as disabled for context */}
