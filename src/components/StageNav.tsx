@@ -41,7 +41,17 @@ export const StageNav: React.FC<StageNavProps> = ({ setCurrentStage, currentStag
                      text-lg md:text-xl font-semibold shadow-sm hover:shadow-lg transition
                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-95"
         >
-          {stage.title}
+          <div className="flex flex-col justify-items-center items-center text-center">
+            <div>{stage.icon ? (<img
+            src={stage?.icon || ""}
+            alt=""
+            className="w-15 h-15 mr-3 rounded-full object-cover items-center pointer-events-none select-none"
+            aria-hidden="true"
+          />) : null}</div>
+          <div>{stage.title}</div>
+          </div>
+          
+          {/* {stage.title} */}
         </motion.button>
       ))}
     </motion.div>

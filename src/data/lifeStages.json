@@ -2,7 +2,7 @@
   {
     "id": "early",
     "title": "Early Childhood",
-    "icon": "\ud83d\udc76",
+    "icon": "/children.gif",
     "domains": ["family", "education"],
     "blurbs": ["early_demo"],
     "color": "#2a2986",
@@ -11,7 +11,7 @@
   {
     "id": "school",
     "title": "School Age",
-    "icon": "\ud83c\udf93",
+    "icon": "/education.gif",
     "domains": ["education", "work", "family"],
     "blurbs": [],
     "color": "#2a2986",
@@ -20,7 +20,7 @@
   {
     "id": "adult",
     "title": "Adult Life",
-    "icon": "\ud83d\udcbc",
+    "icon": "/couple.gif",
     "domains": ["family", "work", "health"],
     "blurbs": [],
     "color": "#2a2986",
@@ -29,7 +29,7 @@
   {
     "id": "senior",
     "title": "Senior Life",
-    "icon": "\ud83d\udc74",
+    "icon": "/senior.gif",
     "domains": ["leisure", "health", "family"],
     "blurbs": [],
     "color": "#2a2986",

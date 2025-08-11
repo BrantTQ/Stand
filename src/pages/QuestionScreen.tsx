@@ -189,8 +189,13 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
               </div>
               <div className="flex flex-wrap gap-2">
                 {/* Current domain shown as disabled for context */}
-                <button className="btn btn-sm btn-primary btn-outline" disabled>
-                  {domainObj?.icon ? <span className="mr-1">{domainObj.icon}</span> : null}
+                <button className="btn btn-md btn-primary btn-outline" disabled>
+                  {domainObj?.icon ? <img
+            src={domainObj?.icon || ""}
+            alt=""
+            className="w-8 h-8 mr-3 rounded-full object-cover items-center pointer-events-none select-none"
+            aria-hidden="true"
+          />  : null}
                   {domainObj?.label ?? selectedDomain}
                 </button>
 
@@ -204,7 +209,12 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
                     }}
                     title={d.label}
                   >
-                    {d.icon ? <span className="mr-1">{d.icon}</span> : null}
+                    {d.icon ? <img
+            src={d?.icon || ""}
+            alt=""
+            className="w-8 h-8 mr-3 rounded-full object-cover items-center pointer-events-none select-none"
+            aria-hidden="true"
+          /> : null}
                     {d.label}
                   </button>
                 ))}

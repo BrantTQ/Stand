@@ -58,7 +58,7 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({ selectedDomain, onSelect,
               aria-label={`Select domain: ${domain.label}`}
               className="rounded-full font-semibold flex flex-col items-center justify-center text-center transition
                          border-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
-                         hover:shadow-lg active:scale-95 h-24 w-24 sm:h-28 sm:w-28"
+                         hover:shadow-lg active:scale-95 h-28 w-28 sm:h-28 sm:w-28"
               style={{
                 background: selectedDomain === domain.id ? domain.color : "#fff",
                 borderColor: domain.color,
@@ -75,7 +75,16 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({ selectedDomain, onSelect,
               exit="exit"
               layout
             >
-              <span className="text-center text-xs sm:text-sm leading-tight px-2">{domain.label}</span>
+              <div className="flex flex-col justify-items-center items-center text-center">
+            <div>{domain.icon ? (<img
+            src={domain.icon || ""}
+            alt=""
+            className="w-8 h-8 mr-3 rounded-full object-cover items-center pointer-events-none select-none"
+            aria-hidden="true"
+          />) : null}</div>
+          <div className="text-center text-xs sm:text-sm leading-tight px-2">{domain.label}</div>
+          </div>
+              {/* <span className="text-center text-xs sm:text-sm leading-tight px-2">{domain.label}</span> */}
             </motion.button>
           ))}
         </AnimatePresence>
