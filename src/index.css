@@ -89,3 +89,12 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+
+/* Dark scheme variable overrides (optional) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* example custom vars if needed */
+    --stand-surface: #1e293b;
+    --stand-surface-alt: #334155;
+  }
+}

@@ -7,6 +7,7 @@ import QuestionScreen from "./pages/QuestionScreen";
 import lifeStages from "./data/lifeStages.json";
 import Header from "./components/Header";
 import domainsData from "./data/domains.json"; // keep if added earlier
+import Breadcrumbs from "./components/Breadcrumbs"; // NEW
 
 function App() {
   const [currentStageId, setCurrentStageId] = useState<string | null>(null);
@@ -23,7 +24,7 @@ function App() {
       setAttractMode(true);
       setCurrentStageId(null);
       setSelectedDomain(null);
-  }, 45000); // 45 seconds
+  }, 1745000); // 45 seconds
   };
 
   useEffect(() => {
@@ -70,59 +71,24 @@ function App() {
   };
 
   return (
-    <div className="items-center bg-gray-100 w-screen h-screen">
+    <div className="items-center w-screen h-screen bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
       <AnimatePresence>
         {attractMode ? (
           <AttractScreen onInteraction={handleInteraction} />
         ) : (
-          <div className="grid grid-rows-[auto_auto_auto_auto] gap-4 p-8 ">
+          <div className="grid grid-rows-[min-content_min-content_min-content_min-content] gap-4 p-8 bg-white/70 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg transition-colors h-full">
             {/* Row 1: Header */}
             <Header pageTitle={pageTitle} />
 
-            {/* Row 2: Breadcrumbs (DaisyUI), right-aligned */}
-            <div className="flex justify-start">
-              <div className="breadcrumbs text-sm">
-                <ul>
-                  <li>
-                    <button
-                      className={`link link-hover ${!currentStageId ? "font-semibold text-primary" : ""}`}
-                      onClick={() => {
-                        setCurrentStageId(null);
-                        setSelectedDomain(null);
-                        setShowQuestion(false);
-                      }}
-                    >
-                      Home
-                    </button>
-                  </li>
-
-                  {currentStageId && (
-                    <li>
-                      <button
-                        className={`link link-hover ${currentStageId && !selectedDomain ? "font-semibold text-primary" : ""}`}
-                        onClick={() => {
-                          setSelectedDomain(null);
-                          setShowQuestion(false);
-                        }}
-                      >
-                        {lifeStages.find(s => s.id === currentStageId)?.title || "Stage"}
-                      </button>
-                    </li>
-                  )}
-
-                  {selectedDomain && (
-                    <li>
-                      <button
-                        className={`link link-hover ${showQuestion ? "font-semibold text-primary" : ""}`}
-                        onClick={() => setShowQuestion(false)}
-                      >
-                        {domainLabel}
-                      </button>
-                    </li>
-                  )}
-                </ul>
-              </div>
-            </div>
+            {/* Row 2: Breadcrumbs */}
+            <Breadcrumbs
+              currentStageId={currentStageId}
+              setCurrentStageId={setCurrentStageId}
+              selectedDomain={selectedDomain}
+              setSelectedDomain={setSelectedDomain}
+              showQuestion={showQuestion}
+              setShowQuestion={setShowQuestion}
+            />
 
             {/* Row 3: Domain Buttons or Question */}
             <div>

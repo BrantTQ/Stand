@@ -9,7 +9,7 @@ interface HeaderProps {
         <div className="">
             {/* 1st row: Title left, Logo right */}
             <div className="flex justify-between">
-                <div className="order-1">
+                <div className="flex item-center justify-center order-1">
               {/* <h1 className="text-2xl"> */}
                 <h1>
                 {pageTitle}

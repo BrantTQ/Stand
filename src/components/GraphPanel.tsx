@@ -29,8 +29,8 @@ const GraphPanel = ({ selectedDomain, stageId }: GraphPanelProps) => {
     );
 
     // Debug: log filtered nodes/edges
-    console.log('GraphPanel nodes:', nodes);
-    console.log('GraphPanel edges:', edges);
+    // console.log('GraphPanel nodes:', nodes);
+    // console.log('GraphPanel edges:', edges);
 
     // Clean up previous instance
     if (cyInstance) {

@@ -15,7 +15,8 @@ type Project = {
 type Blurb = {
   stage: string;
   domain: string;
-  projects: Project[];
+  // Made projects optional because the JSON entries do not include it
+  projects?: Project[];
 };
 
 type Blurbs = Record<string, Blurb>;
@@ -77,18 +78,10 @@ const DomainScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => 
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -40 }}
       transition={{ duration: 0.4 }}
-      // drag="x"
-      // dragConstraints={{ left: 0, right: 0 }}
-      // onDragEnd={(event, info) => {
-      //   if (info.offset.x > 100 && onBack) {
-      //     onBack();
-      //   }
-      // }}
       tabIndex={0}
       role="region"
       aria-label={`Stage: ${stage.title}`}
       style={{height: '100%'}}
-      // className="fixed inset-0 bg-white z-40 p-6 flex flex-col"
     >
 
       {/* Header with project title and arrows */}
@@ -138,9 +131,9 @@ const DomainScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => 
       </div>
 
       {/* Graph under the main three columns */}
-      <div className="mt-6" onPointerDown={(e) => e.stopPropagation()}>
+      {/* <div className="mt-6" onPointerDown={(e) => e.stopPropagation()}>
         <GraphPanel selectedDomain={selectedDomain} stageId={stageId} />
-      </div>
+      </div> */}
 
       {/* Back button at the bottom */}
   <div className="">
