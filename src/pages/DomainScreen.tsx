@@ -1,8 +1,8 @@
 import lifeStages from '../data/lifeStages.json';
 import blurbsData from '../data/blurbs.json';
 import { motion } from 'framer-motion';
-import GraphPanel from '../components/GraphPanel';
 import { useEffect, useState } from 'react';
+import DomainButtons from '../components/DomainButtons'; // NEW
 
 type Project = {
   project: string;
@@ -15,7 +15,6 @@ type Project = {
 type Blurb = {
   stage: string;
   domain: string;
-  // Made projects optional because the JSON entries do not include it
   projects?: Project[];
 };
 
@@ -23,13 +22,14 @@ type Blurbs = Record<string, Blurb>;
 
 const blurbs: Blurbs = blurbsData as Blurbs;
 
-interface StageScreenProps {
+interface DomainScreenProps {
   stageId: string;
   selectedDomain: string | null;
-  onBack?: () => void; // Optional back handler
+  onBack?: () => void;
+  onSelectDomain?: (domainId: string) => void; // NEW
 }
 
-const DomainScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => {
+const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: DomainScreenProps) => {
   const stage = lifeStages.find((s) => s.id === stageId);
 
   const [projectIndex, setProjectIndex] = useState(0);
@@ -38,14 +38,12 @@ const DomainScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => 
     return <div>Stage not found</div>;
   }
 
-  // Collect blurbs matching this stage and (optionally) selected domain
   let matchingBlurbs: Blurb[] = Object.values(blurbs).filter((b) => {
     if (b.stage !== stageId) return false;
     if (selectedDomain) return b.domain === selectedDomain;
     return true;
   });
 
-  // Fallback: if none match current stage, try by domain only so something shows
   if (matchingBlurbs.length === 0 && selectedDomain) {
     matchingBlurbs = Object.values(blurbs).filter((b) => b.domain === selectedDomain);
   }
@@ -54,7 +52,6 @@ const DomainScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => 
   const projects = activeBlurb?.projects ?? [];
 
   useEffect(() => {
-    // Reset to first project when stage/domain changes
     setProjectIndex(0);
   }, [stageId, selectedDomain, activeBlurb]);
 
@@ -72,20 +69,23 @@ const DomainScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => 
   };
 
   return (
-    <motion.div
-      key={stageId + (selectedDomain || "")}
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -40 }}
-      transition={{ duration: 0.4 }}
-      tabIndex={0}
-      role="region"
-      aria-label={`Stage: ${stage.title}`}
-      style={{height: '100%'}}
+    <div
+      
+      style={{ height: '100%' }}
+      className="space-y-6"
     >
+      {/* Domain switcher */}
+      <div className="flex justify-center">
+        <DomainButtons
+          selectedDomain={selectedDomain}
+          // Fallback to no-op if onSelectDomain not provided
+          onSelect={(id) => onSelectDomain && onSelectDomain(id)}
+          selectedStageId={stageId}
+        />
+      </div>
 
       {/* Header with project title and arrows */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-2">
         <h2 className="text-xl font-semibold">
           {currentProject?.title || 'No content for this stage/domain'}
         </h2>
@@ -99,8 +99,16 @@ const DomainScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => 
       </div>
 
       {/* Three-column layout: introduction | image | conclusion */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Introduction */}
+      <motion.div
+        key={stageId + (selectedDomain || '')}
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -40 }}
+        transition={{ duration: 0.4 }}
+        tabIndex={0}
+        role="region"
+        aria-label={`Stage: ${stage.title}`}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
         <div className="p-4 rounded-xl border border-base-300 bg-base-100 text-left">
           <h3 className="font-medium mb-2">Introduction</h3>
           <p className="text-base-content/80 min-h-24">
@@ -108,7 +116,6 @@ const DomainScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => 
           </p>
         </div>
 
-        {/* Image */}
         <div className="p-4 rounded-xl border border-base-300 bg-base-100 flex items-center justify-center">
           {currentProject?.image ? (
             <img
@@ -121,34 +128,27 @@ const DomainScreen = ({ stageId, selectedDomain, onBack }: StageScreenProps) => 
           )}
         </div>
 
-        {/* Conclusion */}
         <div className="p-4 rounded-xl border border-base-300 bg-base-100 text-left">
           <h3 className="font-medium mb-2">Conclusion</h3>
           <p className="text-base-content/70 min-h-24">
             {currentProject?.conclusion || '—'}
           </p>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Graph under the main three columns */}
-      {/* <div className="mt-6" onPointerDown={(e) => e.stopPropagation()}>
-        <GraphPanel selectedDomain={selectedDomain} stageId={stageId} />
-      </div> */}
-
-      {/* Back button at the bottom */}
-  <div className="">
+      <div>
         {onBack && (
-        <button
-          className="mt-6 px-3 py-1 rounded bg-gray-200 text-gray-700 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2"
-          onClick={onBack}
-          aria-label="Go back"
-        >
-          ← Back
-        </button>
-      )}
+            <button
+            className="mt-4 px-5 py-2 rounded-2xl bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 flex items-center justify-center gap-2 mx-auto"
+            onClick={onBack}
+            aria-label="Go Home"
+            >
+            <img src="/home_button.svg" alt="Home" className="w-5 h-5" />
+            <span>Go Home</span>
+            </button>
+        )}
       </div>
-      
-    </motion.div>
+    </div>
   );
 };
 

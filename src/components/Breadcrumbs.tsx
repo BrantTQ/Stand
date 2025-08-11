@@ -31,7 +31,7 @@ export default function Breadcrumbs({
       aria-label="breadcrumb"
       className="flex justify-start items-start"
     >
-      <div className="breadcrumbs text-md">
+      <div className="breadcrumbs text-base">
         <ul>
           <li>
             <button

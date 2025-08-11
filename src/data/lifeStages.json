@@ -9,17 +9,8 @@
     "metrics": []
   },
   {
-    "id": "childhood",
-    "title": "Childhood",
-    "icon": "\ud83e\udd2e",
-    "domains": ["education", "family"],
-    "blurbs": [],
-    "color": "#2a2986",
-    "metrics": []
-  },
-  {
-    "id": "tertiary",
-    "title": "Tertiary Education",
+    "id": "school",
+    "title": "School Age",
     "icon": "\ud83c\udf93",
     "domains": ["education", "work", "family"],
     "blurbs": [],
@@ -40,15 +31,6 @@
     "title": "Senior Life",
     "icon": "\ud83d\udc74",
     "domains": ["leisure", "health", "family"],
-    "blurbs": [],
-    "color": "#2a2986",
-    "metrics": []
-  },
-  {
-    "id": "ai_future",
-    "title": "AI and the Future",
-    "icon": "\ud83e\udd16",
-    "domains": ["technology", "education", "work"],
     "blurbs": [],
     "color": "#2a2986",
     "metrics": []

@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import questionsData from "../data/questions.json";
 import domainsData from "../data/domains.json";
 import lifeStages from "../data/lifeStages.json";
+import { swapCard } from "../assets/animations/variants";
 
 interface QuestionScreenProps {
   currentStageId: string;                     // NEW
@@ -115,8 +116,17 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
   }
 
   return (
+    <AnimatePresence mode="wait">
     <div className="h-full w-full flex items-center justify-center bg-base-200">
-      <div className="card w-full max-w-3xl bg-base-100 shadow-2xl" id="card">
+      <motion.div
+          key="question"
+          variants={swapCard}
+          initial="hidden"
+          animate="enter"
+          exit="exit"
+          // className="h-full"
+          layout
+          className="card w-full max-w-3xl bg-base-100 shadow-2xl">
         <div className="card-body">
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
@@ -202,7 +212,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {/* DaisyUI toast alert */}
       {feedback && (
@@ -213,6 +223,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
         </div>
       )}
     </div>
+    </AnimatePresence>
   );
 };
 

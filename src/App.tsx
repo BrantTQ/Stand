@@ -108,6 +108,11 @@ function App() {
                   <DomainScreen
                     stageId={currentStageId}
                     selectedDomain={selectedDomain}
+                    onSelectDomain={(id) => {
+                      // Switch domain without re-entering question flow
+                      setSelectedDomain(id);
+                      setShowQuestion(false);
+                    }}
                     onBack={() => setCurrentStageId(null)}
                   />
                 )

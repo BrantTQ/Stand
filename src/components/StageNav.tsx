@@ -21,7 +21,7 @@ export const StageNav: React.FC<StageNavProps> = ({ setCurrentStage, currentStag
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.4 }}
-      className="mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-5xl"
+      className="mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 max-w-5xl"
     >
       {lifeStages.map(stage => (
         <motion.button
@@ -32,7 +32,7 @@ export const StageNav: React.FC<StageNavProps> = ({ setCurrentStage, currentStag
             color: currentStageId === stage.id ? "#fff" : stage.color,
           }}
           variants={stageEnter}
-          initial="initial"
+          initial="hidden"
           animate={currentStageId === stage.id ? "animate" : "initial"}
           exit="exit"
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
