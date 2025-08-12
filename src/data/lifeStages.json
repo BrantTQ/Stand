@@ -34,5 +34,14 @@
     "blurbs": [],
     "color": "#2a2986",
     "metrics": []
+  },
+  {
+    "id": "ai_future",
+    "title": "AI and the Future",
+    "icon": "\ud83e\udd16",
+    "domains": ["technology", "education", "work"],
+    "blurbs": [],
+    "color": "#2a2986",
+    "metrics": []
   }
 ]

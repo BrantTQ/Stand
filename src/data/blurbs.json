@@ -8,14 +8,16 @@
         "title": "Early Childhood Overview",
         "introduction": "Synthetic introduction for early childhood focusing on family environment and early development.",
         "conclusion": "Key takeaway: stable family support correlates with improved early outcomes.",
-        "image": "/energy_pooled.png"
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/early_childhood_overview.png"
       },
       {
         "project": "case_study",
         "title": "Family Support Case Study",
         "introduction": "Short case study describing targeted support for families with young children.",
         "conclusion": "Case indicates targeted guidance can raise developmental indicators.",
-        "image": "/energy_pooled.png"
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/family_support_case_study.png"
       }
     ]
   },
@@ -28,14 +30,16 @@
         "title": "Primary Education Achievement Trends",
         "introduction": "Synthetic introduction on literacy and numeracy trends in primary years.",
         "conclusion": "Programs emphasizing foundational skills show measurable gains.",
-        "image": "/energy_pooled.png"
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/primary_education_achievement_trends.png"
       },
       {
         "project": "attendance_program",
         "title": "Attendance Improvement Program",
         "introduction": "Brief on initiatives to reduce absenteeism in primary education.",
         "conclusion": "Consistent attendance links strongly to improved test scores.",
-        "image": "/energy_pooled.png"
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/attendance_improvement_program.png"
       }
     ]
   },
@@ -48,14 +52,16 @@
         "title": "Secondary Pathways and Outcomes",
         "introduction": "Overview of academic and vocational pathways during secondary school.",
         "conclusion": "Clear guidance improves transitions to further education or work.",
-        "image": "/energy_pooled.png"
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/secondary_pathways_and_outcomes.png"
       },
       {
         "project": "wellbeing",
         "title": "Student Wellbeing Indicators",
         "introduction": "Summary of wellbeing metrics and their association with performance.",
         "conclusion": "Wellbeing support correlates with higher completion rates.",
-        "image": "/energy_pooled.png"
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/student_wellbeing_indicators.png"
       }
     ]
   },
@@ -68,18 +74,20 @@
         "title": "Access and Participation",
         "introduction": "Synthetic overview of access, entry, and participation in tertiary studies.",
         "conclusion": "Financial and mentoring supports increase participation for target groups.",
-        "image": "/energy_pooled.png"
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/access_and_participation.png"
       },
       {
         "project": "completion",
         "title": "Completion and Employment",
         "introduction": "Brief on completion rates and early employment outcomes.",
         "conclusion": "Internships and placements improve early career outcomes.",
-        "image": "/energy_pooled.png"
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/completion_and_employment.png"
       }
     ]
   },
-  "adult_demo": {
+  "adult_work": {
     "stage": "adult",
     "domain": "work",
     "projects": [
@@ -88,14 +96,39 @@
         "title": "Adult Skills and Training",
         "introduction": "Overview of adult upskilling and training participation.",
         "conclusion": "Continuous learning links to wage growth and resilience.",
-        "image": "/energy_pooled.png"
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/adult_skills_and_training.png"
       },
       {
         "project": "work_life",
         "title": "Work–Life Balance",
         "introduction": "Synopsis of factors affecting balance for working adults.",
         "conclusion": "Flexible arrangements associate with improved wellbeing metrics.",
-        "image": "/energy_pooled.png"
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/work_life_balance.png"
+      }
+    ]
+  },
+  "adult_family": {
+    "stage": "adult",
+    "domain": "family",
+    "projects": [
+      {
+        "project": "policies",
+        "title": "Evaluation of family policies: focus on parental leave policy take-up and its determinants and outcomes",
+        "introduction": "The arrival of children affects the personal and professional lives of parents, as well as the division of paid and unpaid work within a couple. Research on post-birth employment shows that women with young children are less likely to participate in the labour market than men, women without children, or women whose children are older. All of this can have a negative impact on their careers and future professional trajectories, as well as on their wages and future pensions. Parental leave is one of the policies designed to reduce the negative consequences of parenthood and to promote gender equality in the division of tasks between women and men. It allows parents to devote part of their time to childcare while retaining the right to return to their previous job.\nThe success of a parental leave scheme depends on its use by the intended beneficiaries. The success and effectiveness of a parental leave policy depend on its uptake among the target population of eligible parents. If the take-up rate among parents falls below expectations, the policy objectives may not be achieved.\nStudies conducted by researchers at the Luxembourg Institute of Socio-Economic Research (LISER) have analysed the impact of the parental leave reform on take-up. These studies reveal that the reform led to a significant increase in the use of parental leave, particularly among fathers, thus marking an unprecedented development in this area.",
+        "conclusion": "Analyses have shown a significant increase in fathers’ uptake of parental leave following the 2016 parental leave reform. Evaluating parental leave take-up helps us understand how different segments of the eligible population respond to the policy and which groups of parents benefit most from it, thereby identifying social inequalities in the use of parental leave and highlighting “leave-poor” segments of the parent population.\nData on the adoption of policies such as parental leave, and on inequalities in take-up among different groups of eligible parents, are highly relevant for research on social inequalities. These data reveal which segments of the population are able to benefit from policies that facilitate the reconciliation of family responsibilities and paid work. Segments of the population that systematically and significantly make use of work–family reconciliation policies, such as women and employees in certain economic sector, are more likely to engage in childcare and to develop stronger relationships with their children compared to their counterparts in other sectors. When parental leave uptake is more evenly distributed among different groups of parents, the gap between family responsibilities and paid work, as well as the associated advantages and disadvantages, also tends to narrow. Thus, understanding inequalities in parental leave uptake also makes it possible to identify and better comprehend the sources of other social inequalities.",
+        "image": "project_images/adult_family_policies.png",
+        "image_source": "https://liser.lu",
+        "qrCode": "project_qr_codes/adult_family_policies.svg"
+      },
+      {
+        "project": "work_life",
+        "title": "Work–Life Balance",
+        "introduction": "Synopsis of factors affecting balance for working adults.",
+        "conclusion": "Flexible arrangements associate with improved wellbeing metrics.",
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/work_life_balance.png"
       }
     ]
   },
@@ -108,14 +141,16 @@
         "title": "Senior Wellness Survey",
         "introduction": "Summary of wellness indicators among seniors, including access and prevention.",
         "conclusion": "Preventive care participation predicts better long-term outcomes.",
-        "image": "/energy_pooled.png"
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/senior_wellness_survey.png"
       },
       {
         "project": "mobility",
         "title": "Mobility and Independence",
         "introduction": "Review of mobility challenges and support needs in later life.",
         "conclusion": "Targeted infrastructure and community support enhance independence.",
-        "image": "/energy_pooled.png"
+        "image": "/energy_pooled.png",
+        "qrCode": "/qr_codes/mobility_and_independence.png"
       }
     ]
   }
