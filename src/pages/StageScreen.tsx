@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import StageNav from "../components/StageNav";
 import DomainButtons from "../components/DomainButtons";
+import { AnimatePresence } from "framer-motion";
 
 interface StageScreenProps {
   currentStageId: string | null;
@@ -23,6 +24,7 @@ const StageScreen: React.FC<StageScreenProps> = ({
   const showDomainModal = Boolean(currentStageId) && !selectedDomain;
 
   return (
+    <AnimatePresence mode="wait">
     <div className="h-full flex flex-col">
       {/* Center area: prompt when no stage selected */}
       <div className="flex-1 flex items-center justify-center">
@@ -89,6 +91,7 @@ const StageScreen: React.FC<StageScreenProps> = ({
       {/* Stage navigation stays available */}
       <StageNav setCurrentStage={setCurrentStageId} currentStageId={currentStageId} />
     </div>
+    </AnimatePresence>
   );
 };
 

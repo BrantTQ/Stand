@@ -8,12 +8,14 @@ import lifeStages from "./data/lifeStages.json";
 import Header from "./components/Header";
 import domainsData from "./data/domains.json"; // keep if added earlier
 import Breadcrumbs from "./components/Breadcrumbs"; // NEW
+import TransitionScreen from "./pages/TransitionScreen"; // NEW
 
 function App() {
   const [currentStageId, setCurrentStageId] = useState<string | null>(null);
   const [attractMode, setAttractMode] = useState(true);
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
   const [showQuestion, setShowQuestion] = useState(false);
+  const [showTransition, setShowTransition] = useState(false); // NEW
 
   const idleTimerRef = useRef<number | null>(null);
 
@@ -24,7 +26,7 @@ function App() {
       setAttractMode(true);
       setCurrentStageId(null);
       setSelectedDomain(null);
-  }, 1745000); // 45 seconds
+  }, 45000); // 45 seconds
   };
 
   useEffect(() => {
@@ -55,6 +57,7 @@ function App() {
 
   const handleInteraction = () => {
     setAttractMode(false);
+    setShowTransition(true); // NEW: show transition video after attract
   };
 
   // When a domain is selected, show the question screen
@@ -75,6 +78,12 @@ function App() {
       <AnimatePresence>
         {attractMode ? (
           <AttractScreen onInteraction={handleInteraction} />
+        ) : showTransition ? (
+          <TransitionScreen
+            // Place your video at public/videos/transition.mp4 or change the src
+            src="/videos/transition.mp4"
+            onFinished={() => setShowTransition(false)}
+          />
         ) : (
           <div className="grid grid-rows-[min-content_min-content_min-content_min-content] gap-4 p-8 bg-white/70 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg transition-colors h-full">
             {/* Row 1: Header */}
@@ -95,12 +104,12 @@ function App() {
               {selectedDomain && currentStageId ? (
                 showQuestion ? (
                   <QuestionScreen
-                    currentStageId={currentStageId}                 // NEW
+                    currentStageId={currentStageId}
                     selectedDomain={selectedDomain}
-                    onSelectDomain={(id) => handleDomainSelect(id)} // NEW
+                    onSelectDomain={(id) => handleDomainSelect(id)}
                     onBack={() => {
                       setShowQuestion(false);
-                      setSelectedDomain(null); // Go to StageScreen
+                      setSelectedDomain(null);
                     }}
                     onNext={handleQuestionDone}
                   />
@@ -109,7 +118,6 @@ function App() {
                     stageId={currentStageId}
                     selectedDomain={selectedDomain}
                     onSelectDomain={(id) => {
-                      // Switch domain without re-entering question flow
                       setSelectedDomain(id);
                       setShowQuestion(false);
                     }}
