@@ -1,37 +1,52 @@
 [
-  { 
+  {
     "id": "leisure",
     "label": "Leisure",
     "color": "#e53e3e",
     "icon": "/leisure.gif",
-    "questionId": ["leisure_activities", "hobbies"]
+    "questionId": [
+      "leisure_activities",
+      "hobbies"
+    ]
   },
   {
     "id": "family",
     "label": "Family",
     "color": "#38a169",
     "icon": "/family.gif",
-    "questionId": ["family_support", "family_activities"]
+    "questionId": [
+      "family_support",
+      "family_activities"
+    ]
   },
   {
     "id": "education",
     "label": "Education",
     "color": "#3182ce",
     "icon": "/online-education.gif",
-    "questionId": ["education_support", "learning_resources"]
+    "questionId": [
+      "education_support",
+      "learning_resources"
+    ]
   },
   {
     "id": "health",
     "label": "Health",
     "color": "#d69e2e",
     "icon": "/health.gif",
-    "questionId": ["health_support", "wellness_resources"]
+    "questionId": [
+      "health_support",
+      "wellness_resources"
+    ]
   },
   {
     "id": "work",
     "label": "Work",
     "color": "#e53e3e",
     "icon": "/work.gif",
-    "questionId": ["work_support", "career_resources"]
+    "questionId": [
+      "work_support",
+      "career_resources"
+    ]
   }
 ]
