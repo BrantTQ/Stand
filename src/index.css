@@ -17,7 +17,13 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+:root {
+  --expandable-text-max-height: 23.5rem;          /* pixel-height collapse (if no line clamp) */
+  --expandable-fade-height: 6rem;                 /* vertical gradient overlay height */
+}
+:root {
+  --expandable-line-clamp: 8;
+}
 a {
   font-weight: 500;
   color: #646cff;
