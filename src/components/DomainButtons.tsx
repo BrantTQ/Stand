@@ -3,36 +3,61 @@ import { motion, AnimatePresence } from "framer-motion";
 import domains from "../data/domains.json";
 import lifeStages from "../data/lifeStages.json";
 import { buttonVariants } from "../assets/animations/variants";
+
 const containerVariants = {
   show: {
     transition: {
-      staggerChildren: 0.15
+      staggerChildren: 0.12
     }
   }
 };
-
-// import type { Variants } from "framer-motion";
-
-// const buttonVariants: Variants = {
-//   hidden: { opacity: 0, y: 40, scale: 0.8 },
-//   show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring" as const, stiffness: 300, damping: 24 } },
-//   exit: { opacity: 0, y: -40, scale: 0.8, transition: { duration: 0.2 } }
-// };
 
 interface DomainButtonsProps {
   selectedDomain: string | null;
   onSelect: (domainId: string) => void;
   selectedStageId: string | null;
+  /** Size of circular buttons */
+  size?: "sm" | "md";
+  /** Layout orientation (row keeps items on a single horizontal line until wrap if needed) */
+  orientation?: "row" | "wrap";
+  /** Optional className for outer wrapper */
+  className?: string;
 }
 
-const DomainButtons: React.FC<DomainButtonsProps> = ({ selectedDomain, onSelect, selectedStageId }) => {
-  const initialDomains = lifeStages.find(s => s.id === selectedStageId)?.domains || [];
+const sizeClassMap = {
+  md: "h-28 w-28 text-xs sm:text-sm",
+  sm: "h-20 w-20 text-[10px] sm:text-xs"
+};
+
+const iconSizeMap = {
+  md: "w-8 h-8",
+  sm: "w-6 h-6"
+};
+
+const DomainButtons: React.FC<DomainButtonsProps> = ({
+  selectedDomain,
+  onSelect,
+  selectedStageId,
+  size = "md",
+  orientation = "wrap",
+  className = ""
+}) => {
+  const stage = lifeStages.find(s => s.id === selectedStageId);
+  const allowed = stage?.domains || [];
 
   const domainsToShow = selectedStageId
-    ? domains.filter(domain => initialDomains.includes(domain.id))
+    ? domains.filter(d => allowed.includes(d.id))
     : domains;
 
   const finalDomainsToShow = domainsToShow.length > 0 ? domainsToShow : domains;
+
+  const sizeClasses = sizeClassMap[size];
+  const iconClasses = iconSizeMap[size];
+
+  const layoutClasses =
+    orientation === "row"
+      ? "flex flex-row justify-center flex-nowrap gap-3 md:gap-4 overflow-x-auto scrollbar-hide"
+      : "flex justify-center flex-wrap gap-4 sm:gap-5";
 
   return (
     <motion.div
@@ -41,56 +66,60 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({ selectedDomain, onSelect,
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.25 }}
+      className={className}
     >
-      {/* Removed inner title to avoid duplication with modal header */}
       <motion.div
-        className="flex justify-center flex-wrap gap-4 sm:gap-5"
+        className={layoutClasses + " py-1"}
         variants={containerVariants}
         initial="hidden"
         animate="show"
         exit="exit"
       >
         <AnimatePresence initial={false}>
-          {finalDomainsToShow.map(domain => (
-            <motion.button
-              key={domain.id}
-              variants={buttonVariants}
-              aria-label={`Select domain: ${domain.label}`}
-              className="rounded-full font-semibold flex flex-col items-center justify-center text-center transition
-                         border-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
-                         hover:shadow-lg active:scale-95 h-28 w-28 sm:h-28 sm:w-28"
-              style={{
-                background: selectedDomain === domain.id ? domain.color : "#fff",
-                borderColor: domain.color,
-                color: selectedDomain === domain.id ? "#fff" : domain.color
-              }}
-              onClick={() => onSelect(domain.id)}
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.95 }}
-              animate={{
-                scale: selectedDomain === domain.id ? 1.08 : 1,
-                boxShadow: selectedDomain === domain.id ? `0 0 0 4px ${domain.color}44` : "none"
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              exit="exit"
-              layout
-            >
-              <div className="flex flex-col justify-items-center items-center text-center">
-            <div>{domain.icon ? (<img
-            src={domain.icon || ""}
-            alt=""
-            className="w-8 h-8 mr-3 rounded-full object-cover items-center pointer-events-none select-none"
-            aria-hidden="true"
-          />) : null}</div>
-          <div className="text-center text-xs sm:text-sm leading-tight px-2">{domain.label}</div>
-          </div>
-              {/* <span className="text-center text-xs sm:text-sm leading-tight px-2">{domain.label}</span> */}
-            </motion.button>
-          ))}
+          {finalDomainsToShow.map(domain => {
+            const isActive = selectedDomain === domain.id;
+            return (
+              <motion.button
+                key={domain.id}
+                variants={buttonVariants}
+                aria-label={`Select domain: ${domain.label}`}
+                className={`rounded-full font-semibold flex flex-col items-center justify-center text-center transition
+                            border-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+                            hover:shadow-lg active:scale-95 ${sizeClasses}`}
+                style={{
+                  background: isActive ? domain.color : "#fff",
+                  borderColor: domain.color,
+                  color: isActive ? "#fff" : domain.color
+                }}
+                onClick={() => onSelect(domain.id)}
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.94 }}
+                animate={{
+                  scale: isActive ? 1.08 : 1,
+                  boxShadow: isActive ? `0 0 0 4px ${domain.color}44` : "none"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                exit="exit"
+                layout
+              >
+                <div className="flex flex-col items-center justify-center">
+                  {domain.icon ? (
+                    <img
+                      src={domain.icon || ""}
+                      alt=""
+                      className={`${iconClasses} mb-1 rounded-full object-cover pointer-events-none select-none`}
+                      aria-hidden="true"
+                    />
+                  ) : null}
+                  <span className="leading-tight px-1">{domain.label}</span>
+                </div>
+              </motion.button>
+            );
+          })}
         </AnimatePresence>
       </motion.div>
     </motion.div>
-  )
+  );
 };
 
 export default DomainButtons;

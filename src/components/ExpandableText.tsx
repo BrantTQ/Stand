@@ -38,7 +38,7 @@ const ExpandableText = ({
   heading,
   text,
   emptyPlaceholder = '—',
-  cardClassName = '',
+  cardClassName = 'h-full flex flex-col',
   paragraphClassName = '',
   modalTitle,
   readMoreLabel = 'Read more',
@@ -47,7 +47,7 @@ const ExpandableText = ({
   collapsedLines,
   disableExpand = false,
   idBase,
-  cardHeightClass = 'h-140'
+  cardHeightClass = 'h-full'
 }: ExpandableTextProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const paraRef = useRef<HTMLParagraphElement | null>(null);
@@ -167,17 +167,17 @@ const ExpandableText = ({
     <>
       <div
         ref={containerRef}
-        className={`relative p-4 rounded-xl card w-full max-w-3xl bg-base-100 shadow-2xl ${cardHeightClass} ${cardClassName}`}
+        className={`relative p-2 rounded-xl card w-full max-w-3xl bg-base-100 shadow-2xl ${cardHeightClass} ${cardClassName}`}
         id={`${baseId}-card`}
       >
-        <div className="card-body h-full flex flex-col">
-          <h3 className="card-title font-medium mb-2">{heading}</h3>
+        <div className="card-body p-2 h-full flex flex-col">
+          <h3 className="card-title font-medium mb-1">{heading}</h3>
           <div className="relative flex-1">
             <p
               ref={paraRef}
               id={`${baseId}-paragraph`}
-              className={`overflow-hidden pr-1 text-justify ${
-                isOverflowing && !disableExpand ? 'pb-8' : ''
+              className={`overflow-hidden pr-1 ${
+                isOverflowing && !disableExpand ? 'pb-2' : ''
               } ${paragraphClassName} ${
                 collapsedLines
                   ? 'line-clamp-[var(--expandable-line-clamp)]'
@@ -200,7 +200,7 @@ const ExpandableText = ({
             {isOverflowing && !disableExpand && (
               <>
                 <div
-                  className="pointer-events-none absolute mb-2 left-0 right-0 bg-gradient-to-t from-base-100 to-transparent"
+                  className="pointer-events-none absolute mb-1 left-0 right-0 bg-gradient-to-t from-base-100 to-transparent"
                   style={{
                     height: 'var(--expandable-fade-height)',
                     bottom: '2.25rem'
@@ -210,7 +210,7 @@ const ExpandableText = ({
                   <button
                     type="button"
                     onClick={openModal}
-                    className="btn btn-wide btn-outline"
+                    className="btn btn-xs btn-outline"
                     aria-haspopup="dialog"
                     aria-controls={`${baseId}-modal`}
                     aria-label={`Expand full ${heading.toLowerCase()}`}

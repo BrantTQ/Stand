@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
 import DomainScreen from "./pages/DomainScreen";
 import AttractScreen from "./pages/AttractScreen";
@@ -6,36 +6,50 @@ import StageScreen from "./pages/StageScreen";
 import QuestionScreen from "./pages/QuestionScreen";
 import lifeStages from "./data/lifeStages.json";
 import Header from "./components/Header";
-import domainsData from "./data/domains.json"; // keep if added earlier
-import Breadcrumbs from "./components/Breadcrumbs"; // NEW
-import TransitionScreen from "./pages/TransitionScreen"; // NEW
+import Breadcrumbs from "./components/Breadcrumbs";
+import TransitionScreen from "./pages/TransitionScreen";
 
 function App() {
   const [currentStageId, setCurrentStageId] = useState<string | null>(null);
   const [attractMode, setAttractMode] = useState(true);
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
   const [showQuestion, setShowQuestion] = useState(false);
-  const [showTransition, setShowTransition] = useState(false); // NEW
-
+  const [showTransition, setShowTransition] = useState(false);
   const idleTimerRef = useRef<number | null>(null);
 
-  // Reset idle timer on any interaction
+  // Real viewport height variable (for mobile browser UI changes)
+  const setViewportVar = useCallback(() => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--app-vh", `${vh}px`);
+  }, []);
+
+  useEffect(() => {
+    setViewportVar();
+    window.addEventListener("resize", setViewportVar);
+    window.addEventListener("orientationchange", setViewportVar);
+    return () => {
+      window.removeEventListener("resize", setViewportVar);
+      window.removeEventListener("orientationchange", setViewportVar);
+    };
+  }, [setViewportVar]);
+
+  // Idle reset
   const resetIdleTimer = () => {
-  if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-  idleTimerRef.current = window.setTimeout(() => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    idleTimerRef.current = window.setTimeout(() => {
       setAttractMode(true);
       setCurrentStageId(null);
       setSelectedDomain(null);
-  }, 45000); // 45 seconds
+    }, 45000);
   };
 
   useEffect(() => {
     if (!attractMode) {
       const events = ["mousedown", "touchstart", "keydown"];
-      events.forEach(event => window.addEventListener(event, resetIdleTimer));
+      events.forEach(e => window.addEventListener(e, resetIdleTimer));
       resetIdleTimer();
       return () => {
-        events.forEach(event => window.removeEventListener(event, resetIdleTimer));
+        events.forEach(e => window.removeEventListener(e, resetIdleTimer));
         if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
       };
     }
@@ -43,106 +57,87 @@ function App() {
 
   let pageTitle = "";
   if (selectedDomain && currentStageId) {
-    // Find the stage object for the current stageId
     const stageObj = lifeStages.find(s => s.id === currentStageId);
     pageTitle = stageObj ? stageObj.title : "Dimension Details";
   } else {
     pageTitle = "Life Journey with Data";
   }
 
-  const domainLabel =
-    selectedDomain
-      ? (domainsData as Array<{ id: string; label: string }>).find(d => d.id === selectedDomain)?.label ?? selectedDomain
-      : null;
-
   const handleInteraction = () => {
     setAttractMode(false);
-    setShowTransition(true); // NEW: show transition video after attract
+    setShowTransition(true);
   };
 
-  // When a domain is selected, show the question screen
   const handleDomainSelect = (domainId: string | null) => {
     setSelectedDomain(domainId);
-    if (domainId) {
-      setShowQuestion(true);
-    }
+    if (domainId) setShowQuestion(true);
   };
 
-  // When question is done, show domain screen
-  const handleQuestionDone = () => {
-    setShowQuestion(false);
-  };
+  const handleQuestionDone = () => setShowQuestion(false);
 
   return (
-    <div className="items-center w-screen h-screen bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
-      <AnimatePresence>
-        {attractMode ? (
-          <AttractScreen onInteraction={handleInteraction} />
-        ) : showTransition ? (
-          <TransitionScreen
-            // Place your video at public/videos/transition.mp4 or change the src
-            src="/videos/transition.mp4"
-            onFinished={() => setShowTransition(false)}
-          />
-        ) : (
-          <div className="grid grid-rows-[min-content_min-content_min-content_min-content] gap-4 p-8 bg-white/70 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg transition-colors h-full">
-            {/* Row 1: Header */}
-            <Header pageTitle={pageTitle} />
-
-            {/* Row 2: Breadcrumbs */}
-            <Breadcrumbs
-              currentStageId={currentStageId}
-              setCurrentStageId={setCurrentStageId}
-              selectedDomain={selectedDomain}
-              setSelectedDomain={setSelectedDomain}
-              showQuestion={showQuestion}
-              setShowQuestion={setShowQuestion}
+    <div className="viewport-frame">
+      <div className="app-stage">
+        <AnimatePresence mode="wait">
+          {attractMode ? (
+            <AttractScreen onInteraction={handleInteraction} />
+          ) : showTransition ? (
+            <TransitionScreen
+              src="/videos/transition.mp4"
+              onFinished={() => setShowTransition(false)}
             />
+          ) : (
+            <div className="app-grid">
+              <Header pageTitle={pageTitle} />
 
-            {/* Row 3: Domain Buttons or Question */}
-            <div>
-              {selectedDomain && currentStageId ? (
-                showQuestion ? (
-                  <QuestionScreen
-                    currentStageId={currentStageId}
-                    selectedDomain={selectedDomain}
-                    onSelectDomain={(id) => handleDomainSelect(id)}
-                    onBack={() => {
-                      setShowQuestion(false);
-                      setSelectedDomain(null);
-                    }}
-                    onNext={handleQuestionDone}
-                  />
+              <Breadcrumbs
+                currentStageId={currentStageId}
+                setCurrentStageId={setCurrentStageId}
+                selectedDomain={selectedDomain}
+                setSelectedDomain={setSelectedDomain}
+                showQuestion={showQuestion}
+                setShowQuestion={setShowQuestion}
+              />
+
+              <div className="main-panel">
+                {selectedDomain && currentStageId ? (
+                  showQuestion ? (
+                    <QuestionScreen
+                      currentStageId={currentStageId}
+                      selectedDomain={selectedDomain}
+                      onSelectDomain={id => handleDomainSelect(id)}
+                      onBack={() => {
+                        setShowQuestion(false);
+                        setSelectedDomain(null);
+                      }}
+                      onNext={handleQuestionDone}
+                    />
+                  ) : (
+                    <DomainScreen
+                      stageId={currentStageId}
+                      selectedDomain={selectedDomain}
+                      onSelectDomain={id => {
+                        setSelectedDomain(id);
+                        setShowQuestion(false);
+                      }}
+                      onBack={() => setCurrentStageId(null)}
+                    />
+                  )
                 ) : (
-                  <DomainScreen
-                    stageId={currentStageId}
+                  <StageScreen
+                    currentStageId={currentStageId}
+                    setCurrentStageId={setCurrentStageId}
                     selectedDomain={selectedDomain}
-                    onSelectDomain={(id) => {
-                      setSelectedDomain(id);
-                      setShowQuestion(false);
-                    }}
-                    onBack={() => setCurrentStageId(null)}
+                    setSelectedDomain={handleDomainSelect}
                   />
-                )
-              ) : (
-                <div></div>
-              )}
-            </div>
+                )}
+              </div>
 
-            {/* Row 4: StageScreen or other content */}
-            <div>
-              {(!selectedDomain || !currentStageId) && (
-                <StageScreen
-                  currentStageId={currentStageId}
-                  setCurrentStageId={setCurrentStageId}
-                  selectedDomain={selectedDomain}
-                  setSelectedDomain={handleDomainSelect}
-                />
-              )}
+              <div className="footer-spacer" />
             </div>
-          </div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

@@ -1,26 +1,20 @@
 import React from "react";
 
 interface HeaderProps {
-    pageTitle: string;
-    // Optional back handler
-  }
+  pageTitle: string;
+}
 
-  const Header: React.FC<HeaderProps> = ({ pageTitle }) => (
-        <div className="">
-            {/* 1st row: Title left, Logo right */}
-            <div className="flex justify-between">
-                <div className="flex item-center justify-center order-1">
-              {/* <h1 className="text-2xl"> */}
-                <h1>
-                {pageTitle}
-              </h1>
-              </div>
-            
-              <div className="order-2">
-              <img src="/liser_logo.png" alt="Logo" className="h-30 item-contain" />
-              </div>
-              </div>
-            </div>
-    )
+const Header: React.FC<HeaderProps> = ({ pageTitle }) => (
+  <header className="flex items-start justify-between pt-1 pb-2 px-1 min-h-[60px]">
+    <h1 className="text-xl font-semibold leading-snug text-left">
+      {pageTitle}
+    </h1>
+    <img
+      src="/liser_logo.png"
+      alt="LISER Logo"
+      className="h-14 w-auto object-contain"
+    />
+  </header>
+);
+
 export default Header;
-  

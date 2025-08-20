@@ -17,7 +17,6 @@ const StageScreen: React.FC<StageScreenProps> = ({
   setSelectedDomain,
 }) => {
   useEffect(() => {
-    // Clear selectedDomain when stage changes
     setSelectedDomain(null);
   }, [currentStageId, setSelectedDomain]);
 
@@ -25,72 +24,82 @@ const StageScreen: React.FC<StageScreenProps> = ({
 
   return (
     <AnimatePresence mode="wait">
-    <div className="h-full flex flex-col">
-      {/* Center area: prompt when no stage selected */}
-      <div className="flex-1 flex items-center justify-center">
+      <div className="h-full flex flex-col min-h-0">
+        {/* Prompt (no longer consumes all vertical space) */}
         {!currentStageId && (
-          <div className="text-base-content/70 text-lg sm:text-xl">
+          <div className="text-base-content/70 text-center text-sm md:text-base mb-3 md:mb-4">
             Select a life stage below to continue
           </div>
         )}
-      </div>
 
-      {/* DaisyUI Modal for Domain Buttons */}
-      <dialog
-        className="modal"
-        open={showDomainModal}
-        aria-modal="true"
-        aria-label="Select a domain"
-      >
-        <div className="modal-box max-w-2xl p-0 bg-base-100 text-base-content shadow-2xl rounded-2xl border border-base-300/50">
-          <div className="flex items-start justify-between border-b border-base-200 px-6 py-4 rounded-t-2xl">
-            <div>
-              <h3 className="font-semibold text-xl leading-tight">Choose a dimension</h3>
-              <p className="text-sm text-base-content/70">Pick an area you’d like to explore</p>
+        {/* Domain modal remains unchanged */}
+        <dialog
+          className="modal"
+          open={showDomainModal}
+          aria-modal="true"
+          aria-label="Select a domain"
+        >
+          <div className="modal-box max-w-2xl p-0 bg-base-100 text-base-content shadow-2xl rounded-2xl border border-base-300/50">
+            <div className="flex items-start justify-between border-b border-base-200 px-6 py-4 rounded-t-2xl">
+              <div>
+                <h3 className="font-semibold text-xl leading-tight">
+                  Choose a dimension
+                </h3>
+                <p className="text-sm text-base-content/70">
+                  Pick an area you’d like to explore
+                </p>
+              </div>
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm"
+                aria-label="Change stage"
+                onClick={() => setCurrentStageId(null)}
+              >
+                ✕
+              </button>
             </div>
-            <button
-              type="button"
-              className="btn btn-ghost btn-sm"
-              aria-label="Change stage"
-              onClick={() => setCurrentStageId(null)}
-            >
-              ✕
-            </button>
+
+            <div className="px-4 sm:px-6 py-4">
+              {currentStageId ? (
+                <DomainButtons
+                  selectedStageId={currentStageId}
+                  selectedDomain={selectedDomain}
+                  onSelect={(id) => setSelectedDomain(id)}
+                  size="sm"
+                  orientation="row"
+                />
+              ) : null}
+            </div>
+
+            <div className="modal-action border-t border-base-200 px-6 py-3 rounded-b-2xl">
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={() => setCurrentStageId(null)}
+              >
+                Change stage
+              </button>
+            </div>
           </div>
 
-          <div className="px-4 sm:px-6 py-4">
-            {currentStageId ? (
-              <DomainButtons
-                selectedStageId={currentStageId}
-                selectedDomain={selectedDomain}
-                onSelect={(id) => setSelectedDomain(id)}
-              />
-            ) : null}
-          </div>
+          <button
+            type="button"
+            className="modal-backdrop bg-transparent"
+            aria-label="Close"
+            onClick={() => setCurrentStageId(null)}
+          />
+        </dialog>
 
-          <div className="modal-action border-t border-base-200 px-6 py-3 rounded-b-2xl">
-            <button
-              type="button"
-              className="btn btn-outline"
-              onClick={() => setCurrentStageId(null)}
-            >
-              Change stage
-            </button>
-          </div>
+        {/* Stage navigation now takes remaining vertical space and fits */}
+        <div className="flex-1 min-h-0">
+          <StageNav
+            setCurrentStage={(id) => setCurrentStageId(id)}
+            currentStageId={currentStageId}
+            compact
+            /* forcedRows={3} // uncomment if you want to lock to 3 rows */
+          />
         </div>
-
-        {/* Click outside to close (also clears stage selection) */}
-        <button
-          type="button"
-          className="modal-backdrop bg-transparent"
-          aria-label="Close"
-          onClick={() => setCurrentStageId(null)}
-        />
-      </dialog>
-
-      {/* Stage navigation stays available */}
-      <StageNav setCurrentStage={setCurrentStageId} currentStageId={currentStageId} />
-    </div>
+      </div>
     </AnimatePresence>
   );
 };
