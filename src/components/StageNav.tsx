@@ -85,9 +85,9 @@ export const StageNav: React.FC<StageNavProps> = ({
             <motion.button
               key={stage.id}
               style={{
-                background: active ? stage.color : "#fff",
+                background: active ? "#fff" : stage.color,
                 borderColor: stage.color,
-                color: active ? "#fff" : stage.color
+                color: active ? stage.color : "#fff",
               }}
               variants={stageEnter}
               initial="initial"
@@ -96,7 +96,7 @@ export const StageNav: React.FC<StageNavProps> = ({
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               onClick={() => setCurrentStage(stage.id)}
               className={`${rounding} border-4 w-full ${baseButtonHeight} flex items-center justify-center text-center
-                          ${textSize} font-semibold shadow-sm hover:shadow-lg transition
+                          ${textSize} font-semibold shadow-lg transition
                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-95
                           ${isLastOdd ? " sm:col-span-2 sm:justify-self-center sm:w-[calc(50%-0.75rem)]" : ""}`}
             >
@@ -105,7 +105,7 @@ export const StageNav: React.FC<StageNavProps> = ({
                   <img
                     src={stage.icon || ""}
                     alt=""
-                    className={`${iconSize} mb-2 rounded-full object-contain pointer-events-none select-none`}
+                    className={`${iconSize} mb-2  object-contain pointer-events-none select-none`}
                     aria-hidden="true"
                   />
                 ) : null}

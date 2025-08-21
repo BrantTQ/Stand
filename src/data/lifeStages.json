@@ -2,7 +2,7 @@
   {
     "id": "early",
     "title": "Early Childhood",
-    "icon": "/children.gif",
+    "icon": "/childhood.png",
     "domains": [
       "family",
       "education"
@@ -16,7 +16,7 @@
   {
     "id": "school",
     "title": "School Age",
-    "icon": "/education.gif",
+    "icon": "/school.png",
     "domains": [
       "education",
       "work",
@@ -29,7 +29,7 @@
   {
     "id": "adult",
     "title": "Adult Life",
-    "icon": "/couple.gif",
+    "icon": "/adult.png",
     "domains": [
       "family",
       "work",
@@ -43,7 +43,7 @@
   {
     "id": "senior",
     "title": "Senior Life",
-    "icon": "/senior.gif",
+    "icon": "/senior.png",
     "domains": [
       "leisure",
       "health",
@@ -56,7 +56,7 @@
   {
     "id": "ai_future",
     "title": "AI and the Future",
-    "icon": "/ai.gif",
+    "icon": "/ai.png",
     "domains": [
       "technology",
       "education",

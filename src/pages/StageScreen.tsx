@@ -34,7 +34,7 @@ const StageScreen: React.FC<StageScreenProps> = ({
 
         {/* Domain modal remains unchanged */}
         <dialog
-          className="modal"
+          className="modal bg-black/40 backdrop-blur-sm"
           open={showDomainModal}
           aria-modal="true"
           aria-label="Select a domain"
@@ -74,7 +74,7 @@ const StageScreen: React.FC<StageScreenProps> = ({
             <div className="modal-action border-t border-base-200 px-6 py-3 rounded-b-2xl">
               <button
                 type="button"
-                className="btn btn-outline"
+                className="btn rounded-full btn-outline"
                 onClick={() => setCurrentStageId(null)}
               >
                 Change stage
@@ -99,6 +99,15 @@ const StageScreen: React.FC<StageScreenProps> = ({
             /* forcedRows={3} // uncomment if you want to lock to 3 rows */
           />
         </div>
+      </div>
+      <div className="grid justify-items-end">
+                <div className="item-contain">
+                 <img
+                    src="/information_systems.png"
+                    alt="Powered By LISER Information Systems"
+                    className="h-16 w-auto object-contain"
+                  />
+          </div>
       </div>
     </AnimatePresence>
   );

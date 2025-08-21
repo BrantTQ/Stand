@@ -210,7 +210,7 @@ const ExpandableText = ({
                   <button
                     type="button"
                     onClick={openModal}
-                    className="btn btn-xs btn-outline"
+                    className="btn rounded-full btn-xs btn-outline"
                     aria-haspopup="dialog"
                     aria-controls={`${baseId}-modal`}
                     aria-label={`Expand full ${heading.toLowerCase()}`}
@@ -281,7 +281,7 @@ const ExpandableText = ({
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="btn btn-primary btn-sm"
+                  className="btn rounded-full btn-primary btn-sm"
                 >
                   {closeLabel}
                 </button>

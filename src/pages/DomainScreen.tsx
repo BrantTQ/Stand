@@ -240,7 +240,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
                 {currentProject?.image && (
                   <button
                     type="button"
-                    className="btn btn-xs btn-outline"
+                    className="btn rounded-full btn-xs btn-outline"
                     onClick={() => setShowImageModal(true)}
                     aria-label="Zoom image"
                   >Zoom</button>
@@ -353,16 +353,16 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
                 </p>
               </div>
               <div className="px-5 py-3 border-t border-base-300 flex justify-end gap-2">
-                <button
+                {/* <button
                   type="button"
                   className="btn btn-sm btn-outline"
                   onClick={() => window.open(currentProject?.image, '_blank', 'noopener')}
                 >
                   Open original
-                </button>
+                </button> */}
                 <button
                   type="button"
-                  className="btn btn-sm btn-primary"
+                  className="btn rounded-full btn-sm btn-primary"
                   onClick={() => setShowImageModal(false)}
                 >
                   Close
