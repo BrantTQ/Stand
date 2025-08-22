@@ -5,44 +5,53 @@ life_stages = [
   {
     "id": "early",
     "title": "Early Childhood",
-    "icon": "/children.gif",
-    "domains": ["family", "education"],
-    "blurbs": ["early_demo"],
-    "color": "#2a2986",
-    "metrics": []
-  },
-  {
-    "id": "school",
-    "title": "School Age",
-    "icon": "/education.gif",
-    "domains": ["education", "work", "family"],
-    "blurbs": [],
-    "color": "#2a2986",
+    "icon": "/childhood.png",
+    "domains": [
+      "family",
+      "education"
+    ],
+    "blurbs": [
+      "early_demo"
+    ],
+    "color": "#00adee",
     "metrics": []
   },
   {
     "id": "adult",
     "title": "Adult Life",
-    "icon": "/couple.gif",
-    "domains": ["family", "work", "health"],
+    "icon": "/adult.png",
+    "domains": [
+      "family",
+      "work",
+      "health",
+      "education"
+    ],
     "blurbs": [],
-    "color": "#2a2986",
+    "color": "#7ad600",
     "metrics": []
   },
   {
     "id": "senior",
     "title": "Senior Life",
-    "icon": "/senior.gif",
-    "domains": ["leisure", "health", "family"],
+    "icon": "/senior.png",
+    "domains": [
+      "leisure",
+      "health",
+      "family"
+    ],
     "blurbs": [],
-    "color": "#2a2986",
+    "color": "#e91aab",
     "metrics": []
   },
   {
     "id": "ai_future",
     "title": "AI and the Future",
-    "icon": "/ai.gif",
-    "domains": ["technology", "education", "work"],
+    "icon": "/ai.png",
+    "domains": [
+      "technology",
+      "education",
+      "work"
+    ],
     "blurbs": [],
     "color": "#2a2986",
     "metrics": []
@@ -50,34 +59,35 @@ life_stages = [
 ]
 
 blurbs = {
-  "childhood": {
+  "early": {
     "stage": "early",
     "domains": {
-      "family": {
+      "wellbeing": {
         "projects": [
           {
-            "title": "Early Childhood Overview",
-            "introduction": "Synthetic introduction for early childhood focusing on family environment and early development.",
-            "conclusion": "Key takeaway: stable family support correlates with improved early outcomes.",
+            "title": "Child wellbeing in Luxembourg",
+            "introduction": "Understanding how children perceive their daily lives and their economic and social environment is essential to assessing their well-being. Traditional indicators often rely on objective measures, such as household income, material deprivation, and school performance, but these are not enough to capture children’s lived experience. A comprehensive understanding of child well-being is crucial for designing and implementing policies that effectively address their needs and promote equitable development.",
+            "conclusion": "In 2023, child well-being in Luxembourg is 8.1 on average, but this figure varies with age (younger children tend to be more satisfied with their lives than older children), gender (boys are generally more satisfied than girls), and family status (children from single-parent families are less satisfied).",
             "image": {
-                      "src": "/energy_pooled.png",
+                      "src": "public/project_images/child_wellbeing.png",
                       "cite": "https://liser.lu"
                       },  
             "qrCode": "/qr_codes/early_childhood_overview.png",
-            "author": "John Doe"
+            "author": ["Audrey Bousselin"]
           },
           {
-            "title": "Family Support Case Study",
-            "introduction": "Short case study describing targeted support for families with young children.",
-            "conclusion": "Case indicates targeted guidance can raise developmental indicators.",
+            "title": "Parental perceptions of child wellbeing",
+            "introduction": "<strong>Parents</strong> spend time, money, and emotional resources to support their children, but they <strong>may not have all the information</strong> needed to make the best choices. This project looks at whether <strong>parents’ views of their children’s wellbeing</strong> match what children themselves say, across areas like emotions and friendships. We then measure how much of any gap comes from differences in opinions versus parents lacking accurate or complete information.",
+            "conclusion": "Parents in Luxembourg <strong>systematically underestimate the socio-emotional difficulties</strong> reported by their children across a variety of dimensions. About half of this difference seems to happen because parents don’t have the full picture of what their children are going through. Using an experimental design, we find that <strong>giving parents better information can help close this gap</strong> and guide them to support their children in more effective ways.",
             "image": {
-                "src": "/energy_pooled.png",
+                "src": "public/project_images/parents_perception.png",
                 "cite": "https://liser.lu"
             },
             "qrCode": "/qr_codes/family_support_case_study.png",
-            "author": "Jane Smith"
+            "author": ["Giorgia Menta", "Audrey Bousselin"]
         }
-      ]
+      ],
+      "questions":["all_is_well","satisfied_with_their_lives","child_can_feel_poor"]
       },
       "education": {
           "projects": [
@@ -400,7 +410,38 @@ graph = {
     ]
 }
 
-questions = [
+questions= {
+    "all_is_well":{
+        "question": "On average, how much do children aged 8 to 16 in Luxembourg agree with the statement “All is well in my life”, on a scale from 0 to 10?",
+        "choices": [
+            "8.1",
+            "6.5",
+            "9.8",
+            "4.5"
+        ],
+        "answer": "8.1"
+    },
+    "satisfied_with_their_lives":{
+        "question": "On average, girls are more satisfied with their lives than boys.",
+        "choices": [
+            "Boys and girls report similar level of well-being.",
+            "Yes, girls report higher level of well-being.",
+            "No, girls report lower level of well-being."
+        ],
+        "answer": "No, girls report lower level of well-being."
+    },
+    "child_can_feel_poor":{
+        "question": "Parents are often the people who know their children best. In Luxembourg, do you think parents on average overstate, understate or are able to correctly estimate their children’s wellbeing?",
+        "choices": [
+            "Parents understate their children's wellbeing (as compared to what children self-report)",
+            "Parents overstate their children's wellbeing (as compared to what children self-report)",
+            "Parents and children report similar levels of child wellbeing",
+            "I’m not sure, but I’d like to find out"
+        ],
+        "answer": "Parents understate their children's wellbeing (as compared to what children self-report)"
+    }
+}
+questionss = [
     {
       "id": "leisure_activities",
       "Title": "Leisure Activities",
@@ -493,35 +534,42 @@ domains = [
     "label": "Leisure",
     "color": "#e53e3e",
     "icon": "/leisure.gif",
-    "questionId": ["leisure_activities", "hobbies"]
   },
   {
     "id": "family",
     "label": "Family",
     "color": "#38a169",
     "icon": "/family.gif",
-    "questionId": ["family_support", "family_activities"]
   },
   {
     "id": "education",
     "label": "Education",
     "color": "#3182ce",
     "icon": "/online-education.gif",
-    "questionId": ["education_support", "learning_resources"]
   },
   {
     "id": "health",
     "label": "Health",
     "color": "#d69e2e",
     "icon": "/health.gif",
-    "questionId": ["health_support", "wellness_resources"]
   },
   {
     "id": "work",
     "label": "Work",
     "color": "#e53e3e",
     "icon": "/work.gif",
-    "questionId": ["work_support", "career_resources"]
+  },
+  {
+      "id": "wellbeing",
+      "label": "Wellbeing",
+      "color": "#d69e2e",
+      "icon": "/wellbeing.gif",
+  },
+  {
+      "id": "poverty",
+      "label": "Poverty",
+      "color": "#e53e3e",
+      "icon": "/poverty.gif",
   }
 ]
 
