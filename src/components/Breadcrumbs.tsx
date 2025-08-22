@@ -29,7 +29,7 @@ export default function Breadcrumbs({
   return (
     <nav
       aria-label="breadcrumb"
-      className="flex justify-start items-start"
+      className="pl-4 flex justify-start items-start"
     >
       <div className="breadcrumbs text-base">
         <ul>

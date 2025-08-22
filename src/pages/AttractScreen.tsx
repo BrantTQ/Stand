@@ -18,9 +18,9 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
               >
     <div
       onClick={onInteraction}
-      className="flex items-center justify-center h-screen w-screen bg-gradient-to-br from-blue-500 to-purple-600 cursor-pointer"
+      className="relative flex items-center justify-center h-screen w-screen cursor-pointer"
     >
-      <div className="text-center text-white">
+      <div className="text-center text-base">
         <div className="mb-6">
           <Lottie
             lottieRef={lottieRef}
@@ -36,6 +36,13 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
         <div className="mt-8 animate-bounce">
           <p className="text-lg">👆 Tap to continue</p>
         </div>
+      </div>
+      <div className="absolute bottom-6 right-6">
+                 <img
+                    src="/information_systems.png"
+                    alt="Powered By LISER Information Systems"
+                    className="h-24 w-full object-contain"
+                  />
       </div>
     </div>
     </motion.div>

@@ -26,21 +26,21 @@ const StageScreen: React.FC<StageScreenProps> = ({
     <AnimatePresence mode="wait">
       <div className="h-full flex flex-col min-h-0">
         {/* Prompt (no longer consumes all vertical space) */}
-        {!currentStageId && (
+        { 
           <div className="text-base-content/70 text-center text-sm md:text-base mb-3 md:mb-4">
             Select a life stage below to continue
           </div>
-        )}
+        }
 
         {/* Domain modal remains unchanged */}
         <dialog
-          className="modal bg-black/40 backdrop-blur-sm"
+          className="modal bg-black/40 backdrop-blur-xs"
           open={showDomainModal}
           aria-modal="true"
           aria-label="Select a domain"
         >
           <div className="modal-box max-w-2xl p-0 bg-base-100 text-base-content shadow-2xl rounded-2xl border border-base-300/50">
-            <div className="flex items-start justify-between border-b border-base-200 px-6 py-4 rounded-t-2xl">
+            <div className="flex items-start justify-between border-b-2 border-base-200 px-6 py-2 rounded-t-2xl">
               <div>
                 <h3 className="font-semibold text-xl leading-tight">
                   Choose a dimension
@@ -74,7 +74,7 @@ const StageScreen: React.FC<StageScreenProps> = ({
             <div className="modal-action border-t border-base-200 px-6 py-3 rounded-b-2xl">
               <button
                 type="button"
-                className="btn rounded-full btn-outline"
+                className="btn rounded-full border border-transparent bg-gray-200 text-gray-700"
                 onClick={() => setCurrentStageId(null)}
               >
                 Change stage
@@ -100,15 +100,27 @@ const StageScreen: React.FC<StageScreenProps> = ({
           />
         </div>
       </div>
-      <div className="grid justify-items-end">
-                <div className="item-contain">
-                 <img
+      {/* <div className="flex flex-col mt-4 justify-center sm:flex-row gap-3">
+        <div className="py-2.5 px-3 inline-flex justify-center items-center gap-x-2 rounded-lg ">
+                <img
                     src="/information_systems.png"
                     alt="Powered By LISER Information Systems"
-                    className="h-16 w-auto object-contain"
+                    className="h-18 w-auto object-contain"
                   />
           </div>
+
+      <div className="border-t sm:border-t-0 sm:border-s border-gray-200 dark:border-neutral-700"></div>
+
+      <div className="py-2.5 px-3 inline-flex justify-center items-center gap-x-2 rounded-lg">
+              <img
+                src="/information_systems.png"
+                alt="Powered By LISER Information Systems"
+                className="h-18 w-auto object-contain"
+              />
       </div>
+
+</div> */}
+      
     </AnimatePresence>
   );
 };

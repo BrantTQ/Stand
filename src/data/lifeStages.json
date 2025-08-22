@@ -10,20 +10,7 @@
     "blurbs": [
       "early_demo"
     ],
-    "color": "#2a2986",
-    "metrics": []
-  },
-  {
-    "id": "school",
-    "title": "School Age",
-    "icon": "/school.png",
-    "domains": [
-      "education",
-      "work",
-      "family"
-    ],
-    "blurbs": [],
-    "color": "#2a2986",
+    "color": "#00adee",
     "metrics": []
   },
   {
@@ -37,7 +24,7 @@
       "education"
     ],
     "blurbs": [],
-    "color": "#2a2986",
+    "color": "#7ad600",
     "metrics": []
   },
   {
@@ -50,7 +37,7 @@
       "family"
     ],
     "blurbs": [],
-    "color": "#2a2986",
+    "color": "#e91aab",
     "metrics": []
   },
   {

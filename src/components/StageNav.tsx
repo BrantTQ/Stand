@@ -64,8 +64,8 @@ export const StageNav: React.FC<StageNavProps> = ({
     return `h-[${Math.round(clamped)}px]`;
   }, [rowHeight, compact]);
 
-  const textSize = compact ? "text-base md:text-lg" : "text-lg md:text-xl";
-  const iconSize = compact ? "w-14 h-14 md:w-16 md:h-16" : "w-16 h-16 md:w-20 md:h-20";
+  const textSize = compact ? "text-base md:text-2xl" : "text-lg md:text-xl";
+  const iconSize = compact ? "w-14 h-14 md:w-26 md:h-26" : "w-16 h-16 md:w-20 md:h-20";
   const rounding = compact ? "rounded-xl" : "rounded-2xl";
 
   return (
@@ -76,22 +76,22 @@ export const StageNav: React.FC<StageNavProps> = ({
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.99 }}
         transition={{ duration: 0.35 }}
-        className={`h-full mx-auto grid grid-cols-1 sm:grid-cols-2 ${gapClass} max-w-5xl`}
+        className={`h-full mx-auto grid grid-cols-1 sm:grid-cols-2 ${gapClass} max-w-3xl pb-4`}
       >
         {lifeStages.map((stage, idx) => {
           const isLastOdd = total % 2 === 1 && idx === total - 1;
-          const active = currentStageId === stage.id;
+          // const active = currentStageId === stage.id;
           return (
             <motion.button
               key={stage.id}
               style={{
-                background: active ? "#fff" : stage.color,
+                background: stage.color,
                 borderColor: stage.color,
-                color: active ? stage.color : "#fff",
+                color: "#fff",
               }}
               variants={stageEnter}
               initial="initial"
-              animate={active ? "animate" : "initial"}
+              // animate={active ? "animate" : "initial"}
               exit="exit"
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               onClick={() => setCurrentStage(stage.id)}

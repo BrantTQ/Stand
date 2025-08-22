@@ -40,7 +40,7 @@ function App() {
       setAttractMode(true);
       setCurrentStageId(null);
       setSelectedDomain(null);
-    }, 45000);
+    }, 1745000);
   };
 
   useEffect(() => {
@@ -87,7 +87,7 @@ function App() {
               onFinished={() => setShowTransition(false)}
             />
           ) : (
-            <div className="app-grid">
+            <div className="relative app-grid">
               <Header pageTitle={pageTitle} />
 
               <Breadcrumbs
@@ -133,7 +133,15 @@ function App() {
                 )}
               </div>
 
-              <div className="footer-spacer" />
+              <div >
+              <div className="text-gray-500 text-left ">
+                <hr className="border-1 border-blue-900"/>
+                <p className="text-sm text-gray-600 dark:text-neutral-500">
+                  © 2025 LISER Information Systems.
+                </p>
+              </div>
+            </div>
+
             </div>
           )}
         </AnimatePresence>
