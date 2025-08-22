@@ -17,7 +17,7 @@ interface DomainButtonsProps {
   onSelect: (domainId: string) => void;
   selectedStageId: string | null;
   /** Size of circular buttons */
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "xs";
   /** Layout orientation (row keeps items on a single horizontal line until wrap if needed) */
   orientation?: "row" | "wrap";
   /** Optional className for outer wrapper */
@@ -26,12 +26,14 @@ interface DomainButtonsProps {
 
 const sizeClassMap = {
   md: "h-28 w-28 text-xs sm:text-sm",
-  sm: "h-20 w-20 text-[10px] sm:text-xs"
+  sm: "h-20 w-20 text-[10px] sm:text-xs",
+  xs: "h-14 w-14 text-[8px] sm:text-[9px]"
 };
 
 const iconSizeMap = {
   md: "w-8 h-8",
-  sm: "w-6 h-6"
+  sm: "w-6 h-6",
+  xs: "w-4 h-4"
 };
 
 const DomainButtons: React.FC<DomainButtonsProps> = ({

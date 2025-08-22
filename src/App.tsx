@@ -133,9 +133,9 @@ function App() {
                 )}
               </div>
 
-              <div >
-              <div className="text-gray-500 text-left ">
-                <hr className="border-1 border-blue-900"/>
+              <div>
+                <hr className="max-w-full h-[3px] border-0 rounded-full bg-gradient-to-l from-red-900 to-sky-50 via-blue-400"/>
+              <div className=" flex flex-row-reverse text-gray-500 text-left ">
                 <p className="text-sm text-gray-600 dark:text-neutral-500">
                   © 2025 LISER Information Systems.
                 </p>

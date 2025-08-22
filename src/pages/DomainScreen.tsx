@@ -148,7 +148,20 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
           grid-rows-[auto_auto_1fr_auto]
         "
       >
-        {/* Row 1: Header (spans all columns) */}
+        
+        {/* Row 1: Horizontal Domain Buttons (spans all columns) */}
+        <div className="col-span-1 lg:col-span-3">
+          <DomainButtons
+            selectedDomain={selectedDomain}
+            onSelect={id => onSelectDomain && onSelectDomain(id)}
+            selectedStageId={stageId}
+            size="xs"
+            orientation="row"
+            className="justify-start"
+          />
+        </div>
+
+        {/* Row 2: Header (spans all columns) */}
         <div className="col-span-1 lg:col-span-3">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-1">
             <h2 className="text-lg md:text-xl font-semibold text-center lg:text-left px-2 lg:px-0">
@@ -169,18 +182,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
             )}
           </div>
         </div>
-
-        {/* Row 2: Horizontal Domain Buttons (spans all columns) */}
-        <div className="col-span-1 lg:col-span-3">
-          <DomainButtons
-            selectedDomain={selectedDomain}
-            onSelect={id => onSelectDomain && onSelectDomain(id)}
-            selectedStageId={stageId}
-            size="sm"
-            orientation="row"
-            className="justify-start"
-          />
-        </div>
+        
 
         {/* Row 3: Content cards (3 columns on lg) */}
         <motion.div
