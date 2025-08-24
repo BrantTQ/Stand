@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import questionsData from "../data/questions.json";
 import domainsData from "../data/domains.json";
 import lifeStages from "../data/lifeStages.json";
+import blurbsData from "../data/blurbs.json";
 import { swapCard } from "../assets/animations/variants";
 
 interface QuestionScreenProps {
@@ -13,10 +14,16 @@ interface QuestionScreenProps {
   onNext?: () => void;
 }
 
+type QuestionFromMap = {
+  question: string;
+  choices: string[];
+  answer: string;
+};
+
 type Question = {
   id: string;
   Title: string;
-  description: string;
+  description?: string;
   choices: string[];
   answer: string;
 };
@@ -26,7 +33,7 @@ type Domain = {
   label: string;
   color?: string;
   icon?: string;
-  questionId: string[];
+  // domains.json does not contain question IDs - those live in blurbs.json per stage
 };
 
 const QuestionScreen: React.FC<QuestionScreenProps> = ({
@@ -50,9 +57,54 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const stageDomains = (domainsData as Domain[]).filter(d => stageDomainIds.includes(d.id));
   const otherDomains = stageDomains.filter(d => d.id !== selectedDomain);
 
-  // Find first matching question for this domain
-  const question: Question | undefined =
-    domainObj && (questionsData as Question[]).find((q: Question) => domainObj.questionId.includes(q.id));
+  // questionsData is a map: { id: { question, choices, answer }, ... }
+  const questionsMap = questionsData as Record<string, QuestionFromMap>;
+
+  // Read question ids for the current stage + domain from blurbs.json
+  const domainQuestionIds: string[] = React.useMemo(() => {
+    try {
+      const stage = (blurbsData as Record<string, any>)[currentStageId];
+      const domain = stage?.domains?.[selectedDomain];
+      const q = domain?.questions;
+      if (Array.isArray(q) && q.length > 0) return q;
+    } catch {
+      // fall through to empty
+    }
+    return [];
+  }, [currentStageId, selectedDomain]);
+
+  // Randomly select one question id if there are multiple for the domain
+  const selectedQuestionId = React.useMemo(() => {
+    if (!domainQuestionIds || domainQuestionIds.length === 0) return undefined;
+    if (domainQuestionIds.length === 1) return domainQuestionIds[0];
+    const idx = Math.floor(Math.random() * domainQuestionIds.length);
+    return domainQuestionIds[idx];
+  }, [selectedDomain, currentStageId, domainQuestionIds]);
+
+  // Build the Question object used by the component
+  const question: Question | undefined = React.useMemo(() => {
+    if (!selectedQuestionId) return undefined;
+    const q = questionsMap[selectedQuestionId];
+    if (!q) return undefined;
+    return {
+      id: selectedQuestionId,
+      Title: q.question,
+      description: undefined,
+      choices: q.choices,
+      answer: q.answer,
+    };
+  }, [selectedQuestionId, questionsMap]);
+
+  // Reset selected choice/feedback when the question changes
+  useEffect(() => {
+    setSelectedChoice(null);
+    setFeedback(null);
+    setIsProcessing(false);
+    if (timerRef.current) {
+      window.clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  }, [question?.id]);
 
   // Limit to 4 choices but always include the correct answer
   const displayedChoices: string[] = React.useMemo(() => {
@@ -119,12 +171,11 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
     <AnimatePresence mode="wait">
     <div className="h-full w-full flex items-center justify-center bg-base-200">
       <motion.div
-          key="question"
+          key={question.id}
           variants={swapCard}
           initial="hidden"
           animate="enter"
           exit="exit"
-          // className="h-full"
           layout
           className="card w-full max-w-3xl bg-base-100 shadow-2xl">
         <div className="card-body">
@@ -182,45 +233,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
           </div>
 
           {/* Other domains in this stage */}
-          {otherDomains.length > 0 && (
-            <div className="mt-6">
-              <div className="mb-2 text-sm text-base-content/70">
-                Other dimensions in {stageObj?.title ?? "this stage"}
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {/* Current domain shown as disabled for context */}
-                <button className="btn btn-md btn-primary btn-outline" disabled>
-                  {domainObj?.icon ? <img
-            src={domainObj?.icon || ""}
-            alt=""
-            className="w-8 h-8 mr-3 rounded-full object-cover items-center pointer-events-none select-none"
-            aria-hidden="true"
-          />  : null}
-                  {domainObj?.label ?? selectedDomain}
-                </button>
-
-                {otherDomains.map((d) => (
-                  <button
-                    key={d.id}
-                    className="btn btn-sm btn-outline"
-                    onClick={() => {
-                      setSelectedChoice(null);
-                      onSelectDomain(d.id);
-                    }}
-                    title={d.label}
-                  >
-                    {d.icon ? <img
-            src={d?.icon || ""}
-            alt=""
-            className="w-8 h-8 mr-3 rounded-full object-cover items-center pointer-events-none select-none"
-            aria-hidden="true"
-          /> : null}
-                    {d.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          
         </div>
       </motion.div>
 

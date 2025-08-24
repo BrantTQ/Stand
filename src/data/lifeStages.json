@@ -5,13 +5,10 @@
     "icon": "/childhood.png",
     "domains": [
       "family",
-      "education"
+      "education",
+      "wellbeing"
     ],
-    "blurbs": [
-      "early_demo"
-    ],
-    "color": "#00adee",
-    "metrics": []
+    "color": "#00adee"
   },
   {
     "id": "adult",
@@ -23,9 +20,7 @@
       "health",
       "education"
     ],
-    "blurbs": [],
-    "color": "#7ad600",
-    "metrics": []
+    "color": "#7ad600"
   },
   {
     "id": "senior",
@@ -36,9 +31,7 @@
       "health",
       "family"
     ],
-    "blurbs": [],
-    "color": "#e91aab",
-    "metrics": []
+    "color": "#e91aab"
   },
   {
     "id": "ai_future",
@@ -49,8 +42,6 @@
       "education",
       "work"
     ],
-    "blurbs": [],
-    "color": "#2a2986",
-    "metrics": []
+    "color": "#2a2986"
   }
 ]

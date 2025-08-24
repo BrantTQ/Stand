@@ -3,50 +3,42 @@
     "id": "leisure",
     "label": "Leisure",
     "color": "#e53e3e",
-    "icon": "/leisure.gif",
-    "questionId": [
-      "leisure_activities",
-      "hobbies"
-    ]
+    "icon": "/leisure.gif"
   },
   {
     "id": "family",
     "label": "Family",
     "color": "#38a169",
-    "icon": "/family.gif",
-    "questionId": [
-      "family_support",
-      "family_activities"
-    ]
+    "icon": "/family.gif"
   },
   {
     "id": "education",
     "label": "Education",
     "color": "#3182ce",
-    "icon": "/online-education.gif",
-    "questionId": [
-      "education_support",
-      "learning_resources"
-    ]
+    "icon": "/online-education.gif"
   },
   {
     "id": "health",
     "label": "Health",
     "color": "#d69e2e",
-    "icon": "/health.gif",
-    "questionId": [
-      "health_support",
-      "wellness_resources"
-    ]
+    "icon": "/health.gif"
   },
   {
     "id": "work",
     "label": "Work",
     "color": "#e53e3e",
-    "icon": "/work.gif",
-    "questionId": [
-      "work_support",
-      "career_resources"
-    ]
+    "icon": "/work.gif"
+  },
+  {
+    "id": "wellbeing",
+    "label": "Wellbeing",
+    "color": "#3182ce",
+    "icon": "/online-education.gif"
+  },
+   {
+    "id": "poverty",
+    "label": "Poverty",
+    "color": "#3182ce",
+    "icon": "/online-education.gif"
   }
 ]

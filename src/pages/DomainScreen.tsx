@@ -5,31 +5,42 @@ import { useEffect, useMemo, useState, useRef } from 'react';
 import DomainButtons from '../components/DomainButtons';
 import ExpandableText from '../components/ExpandableText';
 
-// Raw project shape from blurbs.json
+// Raw project shape from blurbs.json (updated to reflect new shapes)
 type RawProject = {
-  title: string;
-  introduction: string;
-  conclusion: string;
-  image?: { src?: string; cite?: string };
+  title?: string;
+  introduction?: string;
+  conclusion?: string;
+  // some entries use an object { src, cite }, others may use a plain string
+  image?: { src?: string; cite?: string } | string;
   qrCode?: string;
-  author?: string;
+  // author can be a string or an array of strings
+  author?: string | string[];
 };
 
-type RawDomainEntry = { projects?: RawProject[] };
+type RawDomainEntry = {
+  projects?: RawProject[];
+  // new: domain entries can include questions array
+  questions?: string[];
+};
+
 type RawStageEntry = {
   stage: string;
+  // some stage objects use `domains`, others use `domain`
   domains?: Record<string, RawDomainEntry>;
   domain?: Record<string, RawDomainEntry>;
 };
+
 type RawBlurbsFile = Record<string, RawStageEntry>;
 
+// Normalized shapes used by the component
 type Project = {
-  title: string;
-  introduction: string;
-  conclusion: string;
+  title?: string;
+  introduction?: string;
+  conclusion?: string;
   image?: string;
   image_source?: string;
-  qrCode?: string;
+  // normalize qrCode to an array (0..2 entries)
+  qrCode?: string[];
   author?: string;
 };
 
@@ -37,6 +48,8 @@ type Blurb = {
   stage: string;
   domain: string;
   projects?: Project[];
+  // carry over domain-level question ids when present
+  questions?: string[];
 };
 
 function normalizeBlurbs(raw: RawBlurbsFile): Blurb[] {
@@ -44,18 +57,40 @@ function normalizeBlurbs(raw: RawBlurbsFile): Blurb[] {
   Object.values(raw).forEach(stageEntry => {
     if (!stageEntry) return;
     const stageId = stageEntry.stage;
+    // support both `domains` and singular `domain`
     const domainsObj = stageEntry.domains || stageEntry.domain || {};
     Object.entries(domainsObj).forEach(([domainKey, domainValue]) => {
-      const projects: Project[] = (domainValue.projects || []).map(p => ({
-        title: p.title,
-        introduction: p.introduction,
-        conclusion: p.conclusion,
-        image: p.image?.src,
-        image_source: p.image?.cite,
-        qrCode: p.qrCode,
-        author: p.author
-      }));
-      result.push({ stage: stageId, domain: domainKey, projects });
+      const projects: Project[] = (domainValue.projects || []).map(p => {
+        // image can be a string or { src, cite }
+        const imageSrc = typeof p.image === 'string' ? p.image : p.image?.src;
+        const imageSource = typeof p.image === 'object' ? p.image?.cite : undefined;
+        // author might be array; normalize to a comma-separated string
+        const authorNormalized = Array.isArray(p.author) ? p.author.join(', ') : p.author;
+        // normalize qrCode: support string or array, but keep at most two entries
+        let qr: string[] | undefined;
+        if (Array.isArray(p.qrCode)) {
+          qr = p.qrCode.filter(Boolean).slice(0, 2);
+        } else if (typeof p.qrCode === 'string' && p.qrCode.trim() !== '') {
+          qr = [p.qrCode];
+        } else {
+          qr = undefined;
+        }
+        return {
+          title: p.title,
+          introduction: p.introduction,
+          conclusion: p.conclusion,
+          image: imageSrc,
+          image_source: imageSource,
+          qrCode: qr,
+          author: authorNormalized,
+        };
+      });
+      result.push({
+        stage: stageId,
+        domain: domainKey,
+        projects,
+        questions: Array.isArray(domainValue.questions) ? domainValue.questions.slice() : undefined,
+      });
     });
   });
   return result;
@@ -74,7 +109,7 @@ const uniformParagraphClasses =
 const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: DomainScreenProps) => {
   const stage = lifeStages.find(s => s.id === stageId);
   const normalizedBlurbs: Blurb[] = useMemo(
-    () => normalizeBlurbs(blurbsData as RawBlurbsFile),
+    () => normalizeBlurbs(blurbsData as unknown as RawBlurbsFile),
     []
   );
 
@@ -293,14 +328,15 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
             </div>
           ) : <div />}
           
-            <div className="justify-self-end">
-            {currentProject?.qrCode && (
+            <div className="justify-self-end flex items-center gap-2">
+            {currentProject?.qrCode?.map((code, i) => (
               <img
-                src={currentProject.qrCode}
-                alt="Project QR code"
+                key={i}
+                src={code}
+                alt={`Project QR code ${i + 1}`}
                 className="w-16 h-16 md:w-20 md:h-20 object-contain"
               />
-            )}
+            ))}
           </div>
         </div>
       </div>

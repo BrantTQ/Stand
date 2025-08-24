@@ -1,86 +1,31 @@
-[
-  {
-    "id": "leisure_activities",
-    "Title": "Leisure Activities",
-    "description": "What leisure activities do you enjoy?",
-    "choices": [
-      "Reading",
-      "Traveling",
-      "Sports",
-      "Gaming"
-    ],
-    "answer": "Gaming"
-  },
-  {
-    "id": "family_activities",
-    "Title": "Family Activities",
-    "description": "What activities do you enjoy with your family?",
-    "choices": [
-      "Game Night",
-      "Outdoor Adventures",
-      "Movie Marathon",
-      "Cooking Together"
-    ],
-    "answer": "Game Night"
-  },
-  {
-    "id": "education_support",
-    "Title": "Education Support",
-    "description": "What support do you need for your education?",
-    "choices": [
-      "Tutoring",
-      "Online Resources",
-      "Study Groups",
-      "Mentorship"
-    ],
-    "answer": "Online Resources"
-  },
-  {
-    "id": "health_support",
-    "Title": "Health Support",
-    "description": "What health support do you require?",
-    "choices": [
-      "Medical Care",
-      "Mental Health Services",
-      "Nutrition Advice",
-      "Fitness Programs"
-    ],
-    "answer": "Fitness Programs"
-  },
-  {
-    "id": "work_support",
-    "Title": "Work Support",
-    "description": "What support do you need in your work life?",
-    "choices": [
-      "Career Counseling",
-      "Skill Development",
-      "Networking Opportunities",
-      "Work-Life Balance Tips"
-    ],
-    "answer": "Skill Development"
-  },
-  {
-    "id": "wellness_resources",
-    "Title": "Wellness Resources",
-    "description": "What wellness resources do you find helpful?",
-    "choices": [
-      "Meditation Apps",
-      "Fitness Trackers",
-      "Healthy Recipes",
-      "Stress Management Workshops"
-    ],
-    "answer": "Meditation Apps"
-  },
-  {
-    "id": "learning_resources",
-    "Title": "Learning Resources",
-    "description": "What learning resources do you prefer?",
-    "choices": [
-      "Online Courses",
-      "Books",
-      "Podcasts",
-      "Webinars"
-    ],
-    "answer": "Online Courses"
-  }
-]
+{
+    "all_is_well":{
+        "question": "On average, how much do children aged 8 to 16 in Luxembourg agree with the statement “All is well in my life”, on a scale from 0 to 10?",
+        "choices": [
+            "8.1",
+            "6.5",
+            "9.8",
+            "4.5"
+        ],
+        "answer": "8.1"
+    },
+    "satisfied_with_their_lives":{
+        "question": "On average, girls are more satisfied with their lives than boys.",
+        "choices": [
+            "Boys and girls report similar level of well-being.",
+            "Yes, girls report higher level of well-being.",
+            "No, girls report lower level of well-being."
+        ],
+        "answer": "No, girls report lower level of well-being."
+    },
+    "child_can_feel_poor":{
+        "question": "Parents are often the people who know their children best. In Luxembourg, do you think parents on average overstate, understate or are able to correctly estimate their children’s wellbeing?",
+        "choices": [
+            "Parents understate their children's wellbeing (as compared to what children self-report)",
+            "Parents overstate their children's wellbeing (as compared to what children self-report)",
+            "Parents and children report similar levels of child wellbeing",
+            "I’m not sure, but I’d like to find out"
+        ],
+        "answer": "Parents understate their children's wellbeing (as compared to what children self-report)"
+    }
+}
