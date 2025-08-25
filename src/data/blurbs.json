@@ -13,12 +13,12 @@
                       "cite": "https://liser.lu"
                       },  
             "qrCode": ["/project_qr_codes/adult_family_policies.svg", "/project_qr_codes/adult_family_policies.svg"],
-            "author": ["Audrey Bousselin"]
+            "author": ["Eugenio Peluso, Philippe Van Kerm, Aigul Alieva, Thiago Brant, Mariagrazia Cavallo"]
           },
           {
             "title": "Parental perceptions of child wellbeing",
-            "introduction": "<strong>Parents</strong> spend time, money, and emotional resources to support their children, but they <strong>may not have all the information</strong> needed to make the best choices. This project looks at whether <strong>parents’ views of their children’s wellbeing</strong> match what children themselves say, across areas like emotions and friendships. We then measure how much of any gap comes from differences in opinions versus parents lacking accurate or complete information.",
-            "conclusion": "Parents in Luxembourg <strong>systematically underestimate the socio-emotional difficulties</strong> reported by their children across a variety of dimensions. About half of this difference seems to happen because parents don’t have the full picture of what their children are going through. Using an experimental design, we find that <strong>giving parents better information can help close this gap</strong> and guide them to support their children in more effective ways.",
+            "introduction": "Parents spend time, money, and emotional resources to support their children, but they may not have all the information needed to make the best choices. This project looks at whether parents’ views of their children’s wellbeing match what children themselves say, across areas like emotions and friendships. We then measure how much of any gap comes from differences in opinions versus parents lacking accurate or complete information.",
+            "conclusion": "Parents in Luxembourg systematically underestimate the socio-emotional difficulties reported by their children across a variety of dimensions. About half of this difference seems to happen because parents don’t have the full picture of what their children are going through. Using an experimental design, we find that giving parents better information can help close this gap and guide them to support their children in more effective ways.",
             "image": {
                 "src": "/project_images/parents_perception.png",
                 "cite": "https://liser.lu"
@@ -27,92 +27,25 @@
             "author": ["Giorgia Menta", "Audrey Bousselin"]
         }
       ],
-      "questions":["all_is_well","satisfied_with_their_lives","child_can_feel_poor"]
+      "questions":["ch_wel_ggd_1","ch_wel_ggd_2","ch_wel_ppc_1"]
       },
       "education": {
           "projects": [
               {
                 "title": "Early Childhood Education",
-                "introduction": "Overview of early childhood education programs and their impact.",
-                "conclusion": "Investing in early education yields long-term benefits.",
+                "introduction": "Between 2009 and 2023, inequalities in Luxembourg’s secondary schools increased across all four dimensions. The share of students not speaking Luxembourgish or German at home rose from 35% to over 54%, those from precarious work households from 10% to over 13%, while poverty grew slightly from 8% to 9%. Children from single-parent families more than doubled, from 3% to over 7%. However, more concerning are the disparities at school level: in 2023, poverty ranged from 2% to nearly 20%, work precarity from under 4% to almost 20%, and linguistic diversity from fewer than 5% to over 80%. Inequalities are thus not only rising but also highly unevenly distributed across schools – a trend requiring close attention.",
+                "conclusion": "The concentration of disadvantage in certain schools is a critical concern, as it risks reinforcing unequal opportunities and undermining cohesion. Some schools face combined pressures of poverty, work precarity, linguistic diversity, and family fragility, making them particularly vulnerable. Addressing this requires research and policy cooperation: joint efforts are needed to better understand the drivers and consequences of unequal distribution, and to identify the most effective solutions. Targeted school-level measures—for instance, language support, additional teaching resources, and social services—are essential, while broader contextual factors such as housing patterns, labour market conditions, taxation, and social policy should not be ignored. Preventing excessive concentrations of disadvantage is key to ensuring equitable opportunities across Luxembourg’s schools.",
                 "image": {
-                    "src": "/energy_pooled.png",
+                    "src": "/project_images/inequalities.gif",
                     "cite": "https://liser.lu"
                 },
-                "qrCode": ["/qr_codes/early_childhood_education.png"],
-                "author": "John Doe"
-              },
-              {
-                "title": "Child Development Metrics",
-                "introduction": "Summary of key metrics used to assess child development in early years.",
-                "conclusion": "Regular assessments help track progress and identify needs.",
-                "image": {
-                    "src": "/energy_pooled.png",
-                    "cite": "https://liser.lu"
-                },
-                "qrCode": ["/qr_codes/child_development_metrics.png"],
-                "author": "Jane Smith"
-              }
-          ]
+                "qrCode": ["/project_qr_codes/adult_family_policies.svg", "/project_qr_codes/adult_family_policies.svg"],
+                "author": "Eugenio Peluso, Philippe Van Kerm, Aigul Alieva, Thiago Brant, Mariagrazia Cavallo"
+              }     
+          ],
+           "questions":["ch_edu_esse_1","ch_edu_esse_2"]
       }
   }},
-  "school": {
-    "stage": "school",
-    "domains": {
-      "family": {
-        "projects": [
-          {
-            "title": "Early Childhood Overview",
-            "introduction": "Synthetic introduction for early childhood focusing on family environment and early development.",
-            "conclusion": "Key takeaway: stable family support correlates with improved early outcomes.",
-            "image": {
-                      "src": "/energy_pooled.png",
-                      "cite": "https://liser.lu"
-                      },  
-            "qrCode": ["/qr_codes/early_childhood_overview.png"],
-            "author": "John Doe"
-          },
-          {
-            "title": "Family Support Case Study",
-            "introduction": "Short case study describing targeted support for families with young children.",
-            "conclusion": "Case indicates targeted guidance can raise developmental indicators.",
-            "image": {
-                "src": "/energy_pooled.png",
-                "cite": "https://liser.lu"
-            },
-            "qrCode": ["/qr_codes/family_support_case_study.png"],
-            "author": "Jane Smith"
-          }
-        ]
-      },
-      "education": {
-          "projects": [
-              {
-                "title": "Early Childhood Education",
-                "introduction": "Overview of early childhood education programs and their impact.",
-                "conclusion": "Investing in early education yields long-term benefits.",
-                "image": {
-                    "src": "/energy_pooled.png",
-                    "cite": "https://liser.lu"
-                },
-                "qrCode": ["/qr_codes/early_childhood_education.png"],
-                "author": "John Doe"
-              },
-              {
-                "title": "Child Development Metrics",
-                "introduction": "Summary of key metrics used to assess child development in early years.",
-                "conclusion": "Regular assessments help track progress and identify needs.",
-                "image": {
-                    "src": "/energy_pooled.png",
-                    "cite": "https://liser.lu"
-                },
-                "qrCode": ["/qr_codes/child_development_metrics.png"],
-                "author": "Jane Smith"
-              }
-          ]
-      }
-    }
-  },
   "adult": {
     "stage": "adult",
     "domains": {
