@@ -4,18 +4,35 @@ import DomainScreen from "./pages/DomainScreen";
 import AttractScreen from "./pages/AttractScreen";
 import StageScreen from "./pages/StageScreen";
 import QuestionScreen from "./pages/QuestionScreen";
+import TakeQuiz from "./pages/TakeQuiz";
 import lifeStages from "./data/lifeStages.json";
 import Header from "./components/Header";
 import Breadcrumbs from "./components/Breadcrumbs";
 import TransitionScreen from "./pages/TransitionScreen";
+import blurbsData from "./data/blurbs.json";
 
 function App() {
   const [currentStageId, setCurrentStageId] = useState<string | null>(null);
   const [attractMode, setAttractMode] = useState(true);
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
   const [showQuestion, setShowQuestion] = useState(false);
+  const [showTakeQuiz, setShowTakeQuiz] = useState(false);
   const [showTransition, setShowTransition] = useState(false);
   const idleTimerRef = useRef<number | null>(null);
+
+  // NEW: track which domains have been answered in this stage
+  const [answeredDomainsThisStage, setAnsweredDomainsThisStage] = useState<Set<string>>(new Set());
+
+  // Reset answered set whenever the stage changes (including going back to stage select)
+  useEffect(() => {
+    setAnsweredDomainsThisStage(new Set());
+    // Also reset quiz/question panes if we’re back on stage select
+    if (currentStageId === null) {
+      setSelectedDomain(null);
+      setShowQuestion(false);
+      setShowTakeQuiz(false);
+    }
+  }, [currentStageId]);
 
   // Real viewport height variable (for mobile browser UI changes)
   const setViewportVar = useCallback(() => {
@@ -68,9 +85,20 @@ function App() {
     setShowTransition(true);
   };
 
-  const handleDomainSelect = (domainId: string | null) => {
+  // UPDATED: control quiz flow; skip if already answered this stage or if no questions
+  const handleDomainSelect = (domainId: string | null, options?: { skipQuiz?: boolean }) => {
     setSelectedDomain(domainId);
-    if (domainId) setShowQuestion(true);
+    if (domainId && currentStageId) {
+      const stageEntry = (blurbsData as Record<string, any>)[currentStageId];
+      const domainsObj = stageEntry?.domains || stageEntry?.domain || {};
+      const q = domainsObj?.[domainId]?.questions;
+      const hasQuestions = Array.isArray(q) && q.length > 0;
+      const alreadyAnswered = answeredDomainsThisStage.has(domainId);
+
+      const shouldPromptQuiz = hasQuestions && !alreadyAnswered && !options?.skipQuiz;
+      setShowTakeQuiz(shouldPromptQuiz);
+      setShowQuestion(false);
+    }
   };
 
   const handleQuestionDone = () => setShowQuestion(false);
@@ -101,24 +129,57 @@ function App() {
 
               <div className="main-panel">
                 {selectedDomain && currentStageId ? (
-                  showQuestion ? (
+                  showTakeQuiz ? (
+                    <TakeQuiz
+                      currentStageId={currentStageId}
+                      selectedDomain={selectedDomain}
+                      onStart={() => {
+                        setShowTakeQuiz(false);
+                        setShowQuestion(true);
+                      }}
+                      onSkip={() => {
+                        setShowTakeQuiz(false);
+                        setShowQuestion(false);
+                      }}
+                      onBack={() => {
+                        setShowTakeQuiz(false);
+                        setSelectedDomain(null);
+                      }}
+                    />
+                  ) : showQuestion ? (
                     <QuestionScreen
                       currentStageId={currentStageId}
                       selectedDomain={selectedDomain}
-                      onSelectDomain={id => handleDomainSelect(id)}
+                      onSelectDomain={(id) => handleDomainSelect(id)}
                       onBack={() => {
                         setShowQuestion(false);
                         setSelectedDomain(null);
                       }}
-                      onNext={handleQuestionDone}
+                      onNext={() => {
+                        // Mark this domain as answered for the current stage and close question
+                        setAnsweredDomainsThisStage(prev => {
+                          const next = new Set(prev);
+                          next.add(selectedDomain);
+                          return next;
+                        });
+                        setShowQuestion(false);
+                      }}
                     />
                   ) : (
                     <DomainScreen
                       stageId={currentStageId}
                       selectedDomain={selectedDomain}
                       onSelectDomain={id => {
+                        // When changing domains inside DomainScreen, check questions and "already answered"
+                        const stageEntry = (blurbsData as Record<string, any>)[currentStageId];
+                        const domainsObj = stageEntry?.domains || stageEntry?.domain || {};
+                        const q = domainsObj?.[id]?.questions;
+                        const hasQuestions = Array.isArray(q) && q.length > 0;
+                        const alreadyAnswered = answeredDomainsThisStage.has(id);
+
                         setSelectedDomain(id);
                         setShowQuestion(false);
+                        setShowTakeQuiz(hasQuestions && !alreadyAnswered);
                       }}
                       onBack={() => setCurrentStageId(null)}
                     />
@@ -134,13 +195,13 @@ function App() {
               </div>
 
               <div>
-                <hr className="max-w-full h-[3px] border-0 rounded-full bg-gradient-to-l from-red-900 to-sky-50 via-blue-400"/>
-              <div className=" flex flex-row-reverse text-gray-500 text-left ">
-                <p className="text-sm text-gray-600 dark:text-neutral-500">
-                  © 2025 LISER Information Systems.
-                </p>
+                <hr className="max-w-full h-[3px] border-0 rounded-full bg-gradient-to-l from-red-900 to-sky-50 via-blue-400" />
+                <div className=" flex flex-row-reverse text-gray-500 text-left ">
+                  <p className="text-sm text-gray-600 dark:text-neutral-500">
+                    © 2025 LISER Information Systems.
+                  </p>
+                </div>
               </div>
-            </div>
 
             </div>
           )}

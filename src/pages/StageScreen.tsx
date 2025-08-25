@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import StageNav from "../components/StageNav";
 import DomainButtons from "../components/DomainButtons";
 import { AnimatePresence } from "framer-motion";
+import blurbsData from "../data/blurbs.json"; // NEW: read questions info
 
 interface StageScreenProps {
   currentStageId: string | null;
   setCurrentStageId: (id: string | null) => void;
   selectedDomain: string | null;
-  setSelectedDomain: (domainId: string | null) => void;
+  // UPDATED: allow passing options to control whether to skip quiz flow
+  setSelectedDomain: (domainId: string | null, options?: { skipQuiz?: boolean }) => void;
 }
 
 const StageScreen: React.FC<StageScreenProps> = ({
@@ -17,16 +19,32 @@ const StageScreen: React.FC<StageScreenProps> = ({
   setSelectedDomain,
 }) => {
   useEffect(() => {
+    // Clear any previously selected domain when stage changes
     setSelectedDomain(null);
   }, [currentStageId, setSelectedDomain]);
 
   const showDomainModal = Boolean(currentStageId) && !selectedDomain;
 
+  // Decide if a picked domain has questions in the current stage
+  const handleSelectDomain = (domainId: string) => {
+    if (!currentStageId) {
+      setSelectedDomain(domainId);
+      return;
+    }
+    const stageEntry = (blurbsData as Record<string, any>)[currentStageId];
+    const domainsObj = stageEntry?.domains || stageEntry?.domain || {};
+    const q = domainsObj?.[domainId]?.questions;
+    const hasQuestions = Array.isArray(q) && q.length > 0;
+
+    // If no questions, ask App to skip TakeQuiz/QuestionScreen and go straight to DomainScreen
+    setSelectedDomain(domainId, { skipQuiz: !hasQuestions });
+  };
+
   return (
     <AnimatePresence mode="wait">
       <div className="h-full flex flex-col min-h-0">
         {/* Prompt (no longer consumes all vertical space) */}
-        { 
+        {
           <div className="text-base-content/70 text-center text-sm md:text-base mb-3 md:mb-4">
             Select a life stage below to continue
           </div>
@@ -64,7 +82,7 @@ const StageScreen: React.FC<StageScreenProps> = ({
                 <DomainButtons
                   selectedStageId={currentStageId}
                   selectedDomain={selectedDomain}
-                  onSelect={(id) => setSelectedDomain(id)}
+                  onSelect={handleSelectDomain} // UPDATED: use our handler
                   size="sm"
                   orientation="row"
                 />
@@ -100,27 +118,6 @@ const StageScreen: React.FC<StageScreenProps> = ({
           />
         </div>
       </div>
-      {/* <div className="flex flex-col mt-4 justify-center sm:flex-row gap-3">
-        <div className="py-2.5 px-3 inline-flex justify-center items-center gap-x-2 rounded-lg ">
-                <img
-                    src="/information_systems.png"
-                    alt="Powered By LISER Information Systems"
-                    className="h-18 w-auto object-contain"
-                  />
-          </div>
-
-      <div className="border-t sm:border-t-0 sm:border-s border-gray-200 dark:border-neutral-700"></div>
-
-      <div className="py-2.5 px-3 inline-flex justify-center items-center gap-x-2 rounded-lg">
-              <img
-                src="/information_systems.png"
-                alt="Powered By LISER Information Systems"
-                className="h-18 w-auto object-contain"
-              />
-      </div>
-
-</div> */}
-      
     </AnimatePresence>
   );
 };

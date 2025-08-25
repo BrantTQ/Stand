@@ -199,27 +199,51 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
         {/* Row 2: Header (spans all columns) */}
         <div className="col-span-1 lg:col-span-3">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-1">
-            <h2 className="text-lg md:text-xl font-semibold text-center lg:text-left px-2 lg:px-0">
+            <h2 className="text-lg md:text-xl font-semibold text-center lg:text-left px-4 lg:px-0">
               {currentProject?.title || 'No content for this stage/domain'}
             </h2>
-            {hasProjects && projects.length > 1 && (
-              <div className="flex items-center gap-2 justify-center mt-2 lg:mt-0">
-                <button className="btn btn-xs md:btn-sm" onClick={goPrev} aria-label="Previous project">
-                  ←
-                </button>
-                <span className="text-xs md:text-sm text-base-content/70">
-                  {projectIndex + 1} / {projects.length}
-                </span>
-                <button className="btn btn-xs md:btn-sm" onClick={goNext} aria-label="Next project">
-                  →
-                </button>
+            {onBack ? (
+            <div className="col-span-1 grid grid-cols-3 mb-1">
+              <div className="justify-self-start"/>
+              <div className="flex justify-center items-center gap-2">
+              <button
+                className="btn btn-sm px-3 py-1.5 rounded-xl bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium focus:outline-none focus:ring-2 flex items-center gap-2"
+                onClick={onBack}
+                aria-label="Go Home"
+              >
+                <img src="/home_button.svg" alt="Home" className="w-4 h-4" />
+                <span>Restart</span>
+              </button>
               </div>
-            )}
+              <div />
+            </div>
+          ) : <div />}
           </div>
         </div>
         
 
         {/* Row 3: Content cards (3 columns on lg) */}
+        <motion.div
+          className="col-span-1 lg:col-span-3 grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 min-h-0"
+          drag={hasProjects && projects.length > 1 ? 'x' : false}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.12}
+          dragMomentum={false}
+          onDragEnd={(e, info) => {
+            const offsetX = info.offset.x;
+            const velocityX = info.velocity.x;
+            const swipePower = Math.abs(offsetX) * 0.35 + Math.abs(velocityX);
+            if (swipePower > 120) {
+              if (offsetX < 0) {
+          goNext();
+              } else {
+          goPrev();
+              }
+            }
+          }}
+          aria-label="Swipe left or right to change project"
+          style={{ touchAction: 'pan-y' }}
+        >
         <motion.div
           key={'intro-' + projectIndex + stageId + selectedDomain}
           initial={{ opacity: 0, y: 10 }}
@@ -232,8 +256,8 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
             text={currentProject?.introduction}
             modalTitle={
               currentProject?.title
-                ? `${currentProject.title} – Introduction`
-                : 'Introduction'
+          ? `${currentProject.title} – Introduction`
+          : 'Introduction'
             }
             paragraphClassName={uniformParagraphClasses}
             cardClassName="h-full flex flex-col"
@@ -251,37 +275,37 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
           <div className="card p-1 md:p-2 w-full h-full bg-base-100 shadow-2xl rounded-xl flex flex-col">
             <div className="card-body p-1 md:p-2 flex-1 flex flex-col items-center justify-center min-h-0">
               <figure className="w-full flex flex-col items-center gap-2 flex-1 justify-center">
-                {currentProject?.image ? (
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => setShowImageModal(true)}
-                    onKeyDown={e => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault(); setShowImageModal(true);
-                      }
-                    }}
-                    className="cursor-zoom-in outline-none focus:ring-2 focus:ring-primary rounded-md"
-                    aria-label="Open image in larger view"
-                  >
-                    <img
-                      src={currentProject.image}
-                      alt={currentProject.title}
-                      className="object-contain max-h-48 md:max-h-56 mx-auto transition-transform duration-200 hover:scale-[1.03]"
-                    />
-                  </div>
-                ) : <div className="text-base-content/50">No image</div>}
-                <p className="card-description font-small text-center text-[11px] md:text-xs">
-                  Source: {currentProject?.image_source || '—'}
-                </p>
-                {currentProject?.image && (
-                  <button
-                    type="button"
-                    className="btn rounded-full btn-xs btn-outline"
-                    onClick={() => setShowImageModal(true)}
-                    aria-label="Zoom image"
-                  >Zoom</button>
-                )}
+          {currentProject?.image ? (
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => setShowImageModal(true)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault(); setShowImageModal(true);
+                }
+              }}
+              className="cursor-zoom-in outline-none focus:ring-2 focus:ring-primary rounded-md"
+              aria-label="Open image in larger view"
+            >
+              <img
+                src={currentProject.image}
+                alt={currentProject.title}
+                className="object-contain max-h-48 md:max-h-56 mx-auto transition-transform duration-200 hover:scale-[1.03]"
+              />
+            </div>
+          ) : <div className="text-base-content/50">No image</div>}
+          <p className="card-description font-small text-center text-[11px] md:text-xs">
+            Source: {currentProject?.image_source || '—'}
+          </p>
+          {currentProject?.image && (
+            <button
+              type="button"
+              className="btn rounded-full btn-xs btn-outline"
+              onClick={() => setShowImageModal(true)}
+              aria-label="Zoom image"
+            >View</button>
+          )}
               </figure>
             </div>
           </div>
@@ -299,42 +323,69 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
             text={currentProject?.conclusion}
             modalTitle={
               currentProject?.title
-                ? `${currentProject.title} – Conclusion`
-                : 'Conclusion'
+          ? `${currentProject.title} – Conclusion`
+          : 'Conclusion'
             }
             paragraphClassName={uniformParagraphClasses}
             cardClassName="h-full flex flex-col"
             cardHeightClass="h-full"
           />
         </motion.div>
+        </motion.div>
 
-        {/* Row 4: Footer controls (Restart + QR) */}
-        <div className="col-span-1 lg:col-span-3 grid grid-cols-3 items-end mt-1">
-          <div className="justify-start" />
-          {onBack ? (
-            <div className="col-span-1 grid grid-cols-3 mb-4">
-              <div className="justify-self-start"/>
-              <div className="flex justify-center items-center gap-2">
-              <button
-                className="btn btn-sm px-3 py-1.5 rounded-xl bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium focus:outline-none focus:ring-2 flex items-center gap-2"
-                onClick={onBack}
-                aria-label="Go Home"
-              >
-                <img src="/home_button.svg" alt="Home" className="w-4 h-4" />
-                <span>Restart</span>
-              </button>
-              </div>
-              <div />
+        {/* Row 4: Footer controls */}
+        <div className="col-span-1 lg:col-span-3 grid grid-cols-3 items-end">
+            <div className="justify-self-start py-2 pl-2">
+            {(() => {
+              const author = currentProject?.author?.trim();
+              if (!author) return null;
+              const parts = author.split(/\s*(?:,|&|\band\b)\s*/i).filter(Boolean);
+              const label = parts.length > 1 ? 'Authors' : 'Author';
+              return (
+              <p className="text-left text-xs md:text-sm text-base-content/70">
+                <strong>{label}: </strong>
+                <p className="text-left">{author}</p>
+              </p>
+              );
+            })()}
             </div>
-          ) : <div />}
-          
-            <div className="justify-self-end flex items-center gap-2">
+            <div className="flex items-center gap-2 justify-center mb-4 py-2 lg:mt-0">
+            {hasProjects && projects.length > 1 ? (
+              <>
+              <button className="btn btn-xs md:btn-sm" onClick={goPrev} aria-label="Previous project">
+                ←
+              </button>
+              <span className="text-xs md:text-sm text-base-content/70">
+                {projectIndex + 1} / {projects.length}
+              </span>
+              <button className="btn btn-xs md:btn-sm" onClick={goNext} aria-label="Next project">
+                →
+              </button>
+              </>
+            ) : (
+              <>
+              <button className="btn btn-xs md:btn-sm invisible" aria-hidden>
+                ←
+              </button>
+              <span className="text-xs md:text-sm text-base-content/70 invisible">0 / 0</span>
+              <button className="btn btn-xs md:btn-sm invisible" aria-hidden>
+                →
+              </button>
+              </>
+            )}
+            </div>
+          <div className="justify-self-end flex items-center gap-2">
+            {currentProject?.qrCode && (
+              <span className="text-xs md:text-sm text-base-content/70">
+                Scan QR Code for more info:
+              </span>
+            )}
             {currentProject?.qrCode?.map((code, i) => (
               <img
-                key={i}
-                src={code}
-                alt={`Project QR code ${i + 1}`}
-                className="w-16 h-16 md:w-20 md:h-20 object-contain"
+          key={i}
+          src={code}
+          alt={`Project QR code ${i + 1}`}
+          className="w-16 h-16 md:w-20 md:h-20 object-contain"
               />
             ))}
           </div>

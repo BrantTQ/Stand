@@ -2,14 +2,14 @@ import React, { useRef, useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import questionsData from "../data/questions.json";
 import domainsData from "../data/domains.json";
-import lifeStages from "../data/lifeStages.json";
+// import lifeStages from "../data/lifeStages.json";
 import blurbsData from "../data/blurbs.json";
 import { swapCard } from "../assets/animations/variants";
 
 interface QuestionScreenProps {
-  currentStageId: string;                     // NEW
+  currentStageId: string;
   selectedDomain: string;
-  onSelectDomain: (domainId: string) => void; // NEW
+  onSelectDomain: (domainId: string) => void; 
   onBack: () => void;
   onNext?: () => void;
 }
@@ -39,7 +39,7 @@ type Domain = {
 const QuestionScreen: React.FC<QuestionScreenProps> = ({
   currentStageId,
   selectedDomain,
-  onSelectDomain,
+  // onSelectDomain,
   onBack,
   onNext,
 }) => {
@@ -47,17 +47,11 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const timerRef = useRef<number | null>(null);
+  const autoNavRef = useRef(false); // added: prevent double navigation when no questions
 
   // Domain + stage context
   const domainObj: Domain | undefined = (domainsData as Domain[]).find(d => d.id === selectedDomain);
-  const stageObj = (lifeStages as Array<{ id: string; title: string; domains?: string[] }>).find(
-    s => s.id === currentStageId
-  );
-  const stageDomainIds = stageObj?.domains ?? [];
-  const stageDomains = (domainsData as Domain[]).filter(d => stageDomainIds.includes(d.id));
-  const otherDomains = stageDomains.filter(d => d.id !== selectedDomain);
-
-  // questionsData is a map: { id: { question, choices, answer }, ... }
+  
   const questionsMap = questionsData as Record<string, QuestionFromMap>;
 
   // Read question ids for the current stage + domain from blurbs.json
@@ -106,6 +100,18 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
     }
   }, [question?.id]);
 
+  // added: Auto-navigate to DomainScreen if there are no questions for this domain,
+  // or the selected question id is invalid for some reason.
+  useEffect(() => {
+    if (autoNavRef.current) return;
+    const noQuestions = !domainQuestionIds || domainQuestionIds.length === 0;
+    const invalidSelection = selectedQuestionId && !questionsMap[selectedQuestionId];
+    if (noQuestions || invalidSelection) {
+      autoNavRef.current = true;
+      onNext?.();
+    }
+  }, [domainQuestionIds, selectedQuestionId, questionsMap, onNext]);
+
   // Limit to 4 choices but always include the correct answer
   const displayedChoices: string[] = React.useMemo(() => {
     if (!question) return [];
@@ -151,20 +157,8 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
   }, []);
 
   if (!question) {
-    return (
-      <div className="h-full w-full flex items-center justify-center bg-base-200">
-        <div className="card w-full max-w-xl bg-base-100 shadow-xl">
-          <div className="card-body">
-            <div className="alert alert-info">
-              <span>No question available for this dimension.</span>
-            </div>
-            <div className="card-actions justify-end">
-              <button onClick={onBack} className="btn btn-ghost">← Back</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    // changed: silently go straight to DomainScreen (handled by effect above)
+    return null;
   }
 
   return (
@@ -179,9 +173,9 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
           layout
           className="card w-full max-w-3xl bg-base-100 shadow-2xl">
         <div className="card-body">
-          <div className="flex items-start justify-between gap-4">
-            <div className="space-y-1">
-              <h2 className="card-title text-2xl">{question.Title}</h2>
+          <div className="flex items-start justify-between gap-5">
+            <div className="pl-2 space-y-1">
+              <h2 className="card-title text-left text-2xl">{question.Title}</h2>
               <p className="text-base-content/70">{question.description}</p>
             </div>
             <div className="hidden sm:block">
@@ -225,15 +219,19 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
               })}
             </div>
 
-            <div className="card-actions justify-start mt-6">
-              <button type="button" className="btn btn-ghost" onClick={onBack} disabled={isProcessing}>
+            {/* changed: add Skip button that proceeds to DomainScreen */}
+            <div className="card-actions border-t border-base-200 pt-3 mt-4 flex flex-col sm:flex-row gap-3">
+                <button type="button" className="btn btn-ghost" onClick={onBack} disabled={isProcessing}>
                 ← Back
+              </button>
+              <div className="flex-1" />
+              <button type="button" className="btn rounded-full border border-transparent bg-gray-200 text-gray-700" 
+              onClick={() => onNext?.()}
+                disabled={isProcessing}>
+                Skip
               </button>
             </div>
           </div>
-
-          {/* Other domains in this stage */}
-          
         </div>
       </motion.div>
 

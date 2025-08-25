@@ -10,7 +10,7 @@
   --design-height: 800px;
 
   /* Adaptive collapsed text sizes tuned for 800px landscape height */
-  --expandable-text-max-height: 16.5rem;
+  --expandable-text-max-height: 15.5rem;
   --expandable-fade-height: 3.5rem;
   --expandable-line-clamp: 10;
 
