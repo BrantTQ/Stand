@@ -101,12 +101,13 @@ interface DomainScreenProps {
   selectedDomain: string | null;
   onBack?: () => void;
   onSelectDomain?: (domainId: string) => void;
+  onExitToAttract?: () => void; // NEW: exit to attract screen
 }
 
 const uniformParagraphClasses =
-  'text-sm md:text-sm text-base-content text-justify mt-1 md:mt-1 leading-relaxed';
+  'text-lg text-slate-700 font-medium text-justify mt-1 md:mt-1 leading-relaxed px-3 md:px-3';
 
-const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: DomainScreenProps) => {
+const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitToAttract }: DomainScreenProps) => {
   const stage = lifeStages.find(s => s.id === stageId);
   const normalizedBlurbs: Blurb[] = useMemo(
     () => normalizeBlurbs(blurbsData as unknown as RawBlurbsFile),
@@ -115,6 +116,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
 
   const [projectIndex, setProjectIndex] = useState(0);
   const [showImageModal, setShowImageModal] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const imageCloseBtnRef = useRef<HTMLButtonElement | null>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
 
@@ -177,7 +179,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
       {/* New grid: header (row1), domain buttons (row2), cards (row3), footer (row4) */}
       <div
         className="
-          grid gap-3 md:gap-4 flex-1 min-h-0
+          grid gap-3 flex-1 min-h-0
           grid-cols-1
           lg:grid-cols-3
           grid-rows-[auto_auto_1fr_auto]
@@ -198,24 +200,38 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
 
         {/* Row 2: Header (spans all columns) */}
         <div className="col-span-1 lg:col-span-3">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-1">
-            <h2 className="text-lg md:text-xl font-semibold text-center lg:text-left px-4 lg:px-0">
+          <div className="flex flex-col px-3 lg:flex-row lg:items-center lg:justify-between mb-1">
+            <h2 className="text-xl text-slate-800 md:text-2xl font-semibold text-center lg:text-left px-4 lg:px-0">
               {currentProject?.title || 'No content for this stage/domain'}
             </h2>
             {onBack ? (
             <div className="col-span-1 grid grid-cols-3 mb-1">
               <div className="justify-self-start"/>
-              <div className="flex justify-center items-center gap-2">
-              <button
-                className="btn btn-sm px-3 py-1.5 rounded-xl bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium focus:outline-none focus:ring-2 flex items-center gap-2"
-                onClick={onBack}
-                aria-label="Go Home"
-              >
-                <img src="/home_button.svg" alt="Home" className="w-4 h-4" />
-                <span>Restart</span>
-              </button>
-              </div>
-              <div />
+              <div/>
+               
+              
+              <div className="flex justify-end items-center gap-2">
+                {/* Restart: immediate return to stage selection (no confirm) */}
+                <button
+                  className="btn btn-sm px-3 py-1.5 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium focus:outline-none focus:ring-2 flex items-center gap-2"
+                  onClick={onBack}
+                  aria-label="Go to stage selection"
+                >
+                  <img src="/home_button.svg" alt="Home" className="w-4 h-4" />
+                  <span>Restart</span>
+                </button>
+
+                {/* Exit: ask for confirmation before going to attract screen */}
+                <button
+                  className="btn btn-sm px-3 py-1.5 rounded-full btn-error text-white text-sm font-medium focus:outline-none focus:ring-2 flex items-center gap-2"
+                  onClick={() => setShowExitConfirm(true)}
+                  aria-label="Exit to attract screen"
+                  disabled={!onExitToAttract}
+                >
+                  ✕
+                  <span>Exit</span>
+                </button>
+                </div>
             </div>
           ) : <div />}
           </div>
@@ -227,8 +243,12 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
           className="col-span-1 lg:col-span-3 grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 min-h-0"
           drag={hasProjects && projects.length > 1 ? 'x' : false}
           dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.12}
+          dragElastic={0.18}
           dragMomentum={false}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: 'spring', stiffness: 220, damping: 28, mass: 0.9 }}
+          whileDrag={{ scale: 0.995, cursor: 'grabbing' }}
           onDragEnd={(e, info) => {
             const offsetX = info.offset.x;
             const velocityX = info.velocity.x;
@@ -242,7 +262,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
             }
           }}
           aria-label="Swipe left or right to change project"
-          style={{ touchAction: 'pan-y' }}
+          style={{ touchAction: 'pan-y', willChange: 'transform' }}
         >
         <motion.div
           key={'intro-' + projectIndex + stageId + selectedDomain}
@@ -272,7 +292,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
           transition={{ duration: 0.3, delay: 0.05 }}
           className="flex flex-col min-h-0"
         >
-          <div className="card p-1 md:p-2 w-full h-full bg-base-100 shadow-2xl rounded-xl flex flex-col">
+          <div className="card border-1 border-base-300 p-1 md:p-2 w-full h-full bg-base-100 shadow-xl rounded-xl flex flex-col">
             <div className="card-body p-1 md:p-2 flex-1 flex flex-col items-center justify-center min-h-0">
               <figure className="w-full flex flex-col items-center gap-2 flex-1 justify-center">
           {currentProject?.image ? (
@@ -301,7 +321,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
           {currentProject?.image && (
             <button
               type="button"
-              className="btn rounded-full btn-xs btn-outline"
+              className="btn rounded-full btn-sm bg-gray-200 hover:bg-gray-300 text-gray-700 focus:ring-2 text-sm font-medium"
               onClick={() => setShowImageModal(true)}
               aria-label="Zoom image"
             >View</button>
@@ -349,27 +369,27 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
               );
             })()}
             </div>
-            <div className="flex items-center gap-2 justify-center mb-4 py-2 lg:mt-0">
+            <div className="flex items-center gap-0 justify-center mb-4 py-2 lg:mt-0">
             {hasProjects && projects.length > 1 ? (
               <>
-              <button className="btn btn-xs md:btn-sm" onClick={goPrev} aria-label="Previous project">
-                ←
+              <button className="btn bg-transparent border-0 btn-xs md:btn-sm p-1" onClick={goPrev} aria-label="Previous project">
+                <img src="/back.png" alt="Previous" className="w-12 h-12" />
               </button>
               <span className="text-xs md:text-sm text-base-content/70">
                 {projectIndex + 1} / {projects.length}
               </span>
-              <button className="btn btn-xs md:btn-sm" onClick={goNext} aria-label="Next project">
-                →
+              <button className="btn bg-transparent border-0 btn-xs md:btn-sm p-1" onClick={goNext} aria-label="Next project">
+               <img src="/next.png" alt="Next" className="w-12 h-12" />
               </button>
               </>
             ) : (
               <>
               <button className="btn btn-xs md:btn-sm invisible" aria-hidden>
-                ←
+                <img src="/back.png" alt="Previous" className="w-3 h-3" />
               </button>
               <span className="text-xs md:text-sm text-base-content/70 invisible">0 / 0</span>
               <button className="btn btn-xs md:btn-sm invisible" aria-hidden>
-                →
+                <img src="/next.png" alt="Next" className="w-3 h-3" />
               </button>
               </>
             )}
@@ -391,6 +411,63 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
           </div>
         </div>
       </div>
+
+      {/* NEW: Exit confirmation modal (replaces previous restart modal) */}
+      <AnimatePresence>
+        {showExitConfirm && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="exit-confirm-title"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={() => setShowExitConfirm(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+            <motion.div
+              className="relative bg-base-100 rounded-xl shadow-2xl max-w-md w-full overflow-hidden"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1, transition: { type: 'spring', stiffness: 220, damping: 24 } }}
+              exit={{ scale: 0.95, opacity: 0, transition: { duration: 0.18 } }}
+            >
+              <div className="px-5 pt-4 pb-3 border-b border-base-300">
+                <h3 id="exit-confirm-title" className="font-semibold text-lg">
+                  Exit to attract screen?
+                </h3>
+                <p className="mt-1 text-sm text-base-content/70">
+                  You’ll leave the current view and return to the attract screen.
+                </p>
+              </div>
+              <div className="px-5 py-3 flex justify-end gap-2">
+                <button
+                  type="button"
+                  className="btn btn-sm"
+                  onClick={() => setShowExitConfirm(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-error text-white"
+                  onClick={() => {
+                    setShowExitConfirm(false);
+                    onExitToAttract?.();
+                  }}
+                >
+                  Yes, exit
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Image Zoom Modal (unchanged) */}
       <AnimatePresence>
@@ -451,7 +528,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain }: Domai
                 </button> */}
                 <button
                   type="button"
-                  className="btn rounded-full btn-sm btn-primary"
+                  className="btn btn-sm rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium"
                   onClick={() => setShowImageModal(false)}
                 >
                   Close
