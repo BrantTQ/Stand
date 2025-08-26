@@ -101,7 +101,6 @@ function App() {
     }
   };
 
-  const handleQuestionDone = () => setShowQuestion(false);
 
   return (
     <div className="viewport-frame">
@@ -170,18 +169,27 @@ function App() {
                       stageId={currentStageId}
                       selectedDomain={selectedDomain}
                       onSelectDomain={id => {
-                        // When changing domains inside DomainScreen, check questions and "already answered"
                         const stageEntry = (blurbsData as Record<string, any>)[currentStageId];
                         const domainsObj = stageEntry?.domains || stageEntry?.domain || {};
                         const q = domainsObj?.[id]?.questions;
                         const hasQuestions = Array.isArray(q) && q.length > 0;
-                        const alreadyAnswered = answeredDomainsThisStage.has(id);
+                        const alreadyAnswered = answeredDomainsThisStage?.has
+                          ? answeredDomainsThisStage.has(id)
+                          : false;
 
                         setSelectedDomain(id);
                         setShowQuestion(false);
                         setShowTakeQuiz(hasQuestions && !alreadyAnswered);
                       }}
                       onBack={() => setCurrentStageId(null)}
+                      onExitToAttract={() => {
+                        // Exit to attract screen and reset session UI
+                        setShowTakeQuiz(false);
+                        setShowQuestion(false);
+                        setSelectedDomain(null);
+                        setCurrentStageId(null);
+                        setAttractMode(true);
+                      }}
                     />
                   )
                 ) : (
@@ -195,7 +203,7 @@ function App() {
               </div>
 
               <div>
-                <hr className="max-w-full h-[3px] border-0 rounded-full bg-gradient-to-l from-red-900 to-sky-50 via-blue-400" />
+                <hr className="max-w-full h-[2px] border-0 rounded-full bg-gradient-to-l from-blue-950 to-blue-50 via-blue-400" />
                 <div className=" flex flex-row-reverse text-gray-500 text-left ">
                   <p className="text-sm text-gray-600 dark:text-neutral-500">
                     © 2025 LISER Information Systems.
