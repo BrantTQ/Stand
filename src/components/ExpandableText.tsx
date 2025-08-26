@@ -167,50 +167,44 @@ const ExpandableText = ({
     <>
       <div
         ref={containerRef}
-        className={`relative p-2 rounded-xl card w-full max-w-3xl bg-base-100 shadow-2xl ${cardHeightClass} ${cardClassName}`}
+        className={`border-1 border-base-300 relative p-2 rounded-xl card w-full max-w-3xl bg-base-100 shadow-xl ${cardHeightClass} ${cardClassName}`}
         id={`${baseId}-card`}
       >
         <div className="card-body p-2 h-full flex flex-col">
-          <h3 className="card-title font-medium mb-1">{heading}</h3>
+          <h3 className="card-title p-1 text-slate-800 text-xl border-b-1 border-base-300">{heading}</h3>
           <div className="relative flex-1">
             <p
               ref={paraRef}
               id={`${baseId}-paragraph`}
-              className={`overflow-hidden pr-1 ${
-                isOverflowing && !disableExpand ? 'pb-2' : ''
-              } ${paragraphClassName} ${
-                collapsedLines
-                  ? 'line-clamp-[var(--expandable-line-clamp)]'
-                  : ''
-              }`}
-              style={{
-                ...(collapsedLines
-                  ? {
-                      display: '-webkit-box',
-                      WebkitBoxOrient: 'vertical',
-                      WebkitLineClamp: String(collapsedLines)
-                    }
-                  : {
-                      maxHeight: `var(${maxHeightVarName})`
-                    })
-              }}
+              className={`line-clamp-9 overflow-hidden pr-1  ${paragraphClassName}` }
+              // style={{
+              //   ...(collapsedLines
+              //     ? {
+              //         display: '-webkit-box',
+              //         WebkitBoxOrient: 'vertical',
+              //         WebkitLineClamp: String(collapsedLines)
+              //       }
+              //     : {
+              //         maxHeight: `var(${maxHeightVarName})`
+              //       })
+              // }}
             >
               {content}
             </p>
             {isOverflowing && !disableExpand && (
               <>
-                <div
+                {/* <div
                   className="pointer-events-none absolute mb-1 left-0 right-0 bg-gradient-to-t from-base-100 to-transparent"
                   style={{
                     height: 'var(--expandable-fade-height)',
-                    bottom: '2.25rem'
+                    bottom: '0.5rem'
                   }}
-                />
+                /> */}
                 <div className="absolute right-0 bottom-0">
                   <button
                     type="button"
                     onClick={openModal}
-                    className="btn rounded-full btn-xs btn-outline"
+                    className="btn rounded-full btn-sm bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium"
                     aria-haspopup="dialog"
                     aria-controls={`${baseId}-modal`}
                     aria-label={`Expand full ${heading.toLowerCase()}`}
@@ -273,7 +267,7 @@ const ExpandableText = ({
                 </button>
               </div>
               <div className="px-6 py-4 overflow-y-auto">
-                <div className="prose max-w-none whitespace-pre-line text-justify">
+                <div className="prose max-w-none whitespace-pre-line text-xl text-justify">
                   {content}
                 </div>
               </div>
@@ -281,7 +275,7 @@ const ExpandableText = ({
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="btn rounded-full btn-primary btn-sm"
+                  className="btn btn-sm rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium"
                 >
                   {closeLabel}
                 </button>
