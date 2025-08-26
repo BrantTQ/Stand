@@ -83,7 +83,7 @@ const StageScreen: React.FC<StageScreenProps> = ({
                   selectedStageId={currentStageId}
                   selectedDomain={selectedDomain}
                   onSelect={handleSelectDomain} // UPDATED: use our handler
-                  size="sm"
+                  size="md"
                   orientation="row"
                 />
               ) : null}
