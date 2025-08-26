@@ -1,4 +1,4 @@
-import React from "react";
+import React, { act } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import domains from "../data/domains.json";
 import lifeStages from "../data/lifeStages.json";
@@ -25,15 +25,15 @@ interface DomainButtonsProps {
 }
 
 const sizeClassMap = {
-  md: "h-28 w-28 text-xs sm:text-sm",
-  sm: "h-20 w-20 text-[10px] sm:text-xs",
-  xs: "h-14 w-14 text-[8px] sm:text-[9px]"
+  md: "h-28 w-28 text-xs sm:text-sm rounded-full border-3",
+  sm: "h-20 w-20 text-[10px] sm:text-sm rounded-full",
+  xs: "h-8 w-24 text-[12px] rounded-2xl border-2 text-gray-700"
 };
 
 const iconSizeMap = {
-  md: "w-8 h-8",
+  md: "w-10 h-10 ",
   sm: "w-6 h-6",
-  xs: "w-4 h-4"
+  xs: "w-4 h-4 invisible"
 };
 
 const DomainButtons: React.FC<DomainButtonsProps> = ({
@@ -46,6 +46,9 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({
 }) => {
   const stage = lifeStages.find(s => s.id === selectedStageId);
   const allowed = stage?.domains || [];
+  const stageColor = stage?.color || "#2a2a86";
+
+  // Filter domains to only those allowed in the current stage, if any
 
   const domainsToShow = selectedStageId
     ? domains.filter(d => allowed.includes(d.id))
@@ -58,7 +61,7 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({
 
   const layoutClasses =
     orientation === "row"
-      ? "flex flex-row justify-center flex-nowrap gap-3 md:gap-4 overflow-x-auto scrollbar-hide"
+      ? "flex flex-row justify-center flex-nowrap gap-4 md:gap-6 overflow-x-auto scrollbar-hide"
       : "flex justify-center flex-wrap gap-4 sm:gap-5";
 
   return (
@@ -85,31 +88,31 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({
                 key={domain.id}
                 variants={buttonVariants}
                 aria-label={`Select domain: ${domain.label}`}
-                className={`rounded-full font-semibold flex flex-col items-center justify-center text-center transition
-                            border-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
-                            hover:shadow-lg active:scale-95 ${sizeClasses}`}
+                className={`font-semibold flex flex-col items-center justify-center text-center transition
+                            focus-visible:outline-none focus-visible:ring-offset-2
+                            shadow-sm  ${sizeClasses}`}
                 style={{
-                  background: isActive ? domain.color : "#fff",
-                  borderColor: domain.color,
-                  color: isActive ? "#fff" : domain.color
+                  background: isActive ? stageColor : "#fff",
+                  borderColor: stageColor,
+                  color: isActive ? "#fff" : "#364153"
                 }}
                 onClick={() => onSelect(domain.id)}
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.94 }}
-                animate={{
-                  scale: isActive ? 1.08 : 1,
-                  boxShadow: isActive ? `0 0 0 4px ${domain.color}44` : "none"
-                }}
+                // whileHover={{ scale: 1.08 }}
+                // whileTap={{ scale: 0.94 }}
+                // animate={{
+                //   scale: isActive ? 1 : 1,
+                //   boxShadow: isActive ? `0 0 0 4px ${domain.color}44` : "none"
+                // }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 exit="exit"
                 layout
               >
                 <div className="flex flex-col items-center justify-center">
-                  {domain.icon ? (
+                  {domain.icon && size !== "xs" ? (
                     <img
                       src={domain.icon || ""}
                       alt=""
-                      className={`${iconClasses} mb-1 rounded-full object-cover pointer-events-none select-none`}
+                      className={`${iconClasses} mb-1 object-cover pointer-events-none select-none`}
                       aria-hidden="true"
                     />
                   ) : null}
