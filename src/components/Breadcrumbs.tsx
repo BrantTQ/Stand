@@ -35,7 +35,7 @@ export default function Breadcrumbs({
         <ul>
           <li>
             <button
-              className={`link link-hover ${!currentStageId ? "font-semibold text-primary" : ""}`}
+              className={`link link-hover ${!currentStageId ? "font-semibold" : ""}`}
               onClick={() => {
                 setCurrentStageId(null);
                 setSelectedDomain(null);
@@ -50,7 +50,7 @@ export default function Breadcrumbs({
             <li>
               <button
                 className={`link link-hover ${
-                  currentStageId && !selectedDomain ? "font-semibold text-primary" : ""
+                  currentStageId && !selectedDomain ? "font-semibold" : ""
                 }`}
                 onClick={() => {
                   setSelectedDomain(null);
@@ -65,7 +65,7 @@ export default function Breadcrumbs({
           {domainLabel && (
             <li>
               <button
-                className={`link link-hover ${showQuestion ? "font-semibold text-primary" : ""}`}
+                className={`link link-hover ${showQuestion || (selectedDomain && currentStageId) ? "font-semibold" : ""}`}
                 onClick={() => setShowQuestion(false)}
               >
                 {domainLabel}
