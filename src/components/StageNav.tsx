@@ -21,7 +21,6 @@ interface StageNavProps {
 
 export const StageNav: React.FC<StageNavProps> = ({
   setCurrentStage,
-  currentStageId,
   compact = true,
   forcedRows,
   rowGapPx = 32 // matches gap-8 (2rem=32px) on md; we’ll reduce in compact mode anyway

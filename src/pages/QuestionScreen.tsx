@@ -40,7 +40,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
   currentStageId,
   selectedDomain,
   // onSelectDomain,
-  onBack,
+  // onBack,
   onNext,
 }) => {
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
@@ -147,7 +147,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
       setFeedback(null);
       onNext?.();
       setIsProcessing(false);
-    }, 800);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -221,9 +221,9 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
             {/* changed: add Skip button that proceeds to DomainScreen */}
             <div className="card-actions border-t border-base-200 pt-3 mt-4 flex flex-col sm:flex-row gap-3">
-                <button type="button" className="btn btn-ghost" onClick={onBack} disabled={isProcessing}>
+                {/* <button type="button" className="btn btn-ghost" onClick={onBack} disabled={isProcessing}>
                 ← Back
-              </button>
+              </button> */}
               <div className="flex-1" />
               <button type="button" className="btn rounded-full border border-transparent bg-gray-200 text-gray-700" 
               onClick={() => onNext?.()}
@@ -237,8 +237,13 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
       {/* DaisyUI toast alert */}
       {feedback && (
-        <div className="toast toast-top toast-center z-50">
-          <div className={`alert ${feedback.type === "success" ? "alert-success" : "alert-error"}`}>
+        <div
+          role="alert"
+          className="toast fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50"
+        >
+          <div
+            className={`alert ${feedback.type === "success" ? "alert-success" : "alert-error"}`}
+          >
             <span>{feedback.message}</span>
           </div>
         </div>
