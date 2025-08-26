@@ -48,33 +48,27 @@ const TakeQuiz: React.FC<TakeQuizProps> = ({
           animate="enter"
           exit="exit"
           layout
-          className="card w-full max-w-3xl bg-base-100 shadow-2xl"
+          className="card w-1/2 max-w-3xl bg-base-100 shadow-2xl"
         >
           <div className="card-body">
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-1">
-                <h2 className="card-title text-2xl">Take a short quiz?</h2>
-                <p className="text-base-content/70 text-left">
-                  You selected <span className="font-semibold">{domain?.label ?? "this dimension"}</span>
-                  {stage ? (
-                    <> in the <span className="font-semibold">{stage.title}</span> stage.</>
-                  ) : (
-                    "."
-                  )}
-                  {" "}Answer one quick question to test your knowledge, or skip to explore insights.
+                <h2 className="card-title text-3xl">Take a short quiz?</h2>
+                <p className="text-base-content/70 text-xl text-left">
+                  Answer one quick question to test your knowledge, or skip to explore insights.
                 </p>
               </div>
-              <div className="hidden sm:block">
+              {/* <div className="hidden sm:block">
                 <span className="badge badge-outline badge-lg" style={accentStyle} title={domain?.label}>
                   {domain?.label ?? "Dimension"}
                 </span>
-              </div>
+              </div> */}
             </div>
 
             <div className="border-t border-base-200 pt-3 mt-4 flex flex-col sm:flex-row gap-3">
-                <button type="button" className="btn btn-ghost" onClick={onBack}>
+                {/* <button type="button" className="btn btn-ghost" onClick={onBack}>
                 ← Back
-              </button>
+              </button> */}
               <div className="flex-1" />
               <button type="button" className="btn rounded-full btn-primary" onClick={onStart}>
                 Start now
