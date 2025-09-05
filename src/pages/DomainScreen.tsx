@@ -105,7 +105,7 @@ interface DomainScreenProps {
 }
 
 const uniformParagraphClasses =
-  'text-lg text-slate-700 font-medium text-justify mt-1 md:mt-1 leading-relaxed px-3 md:px-3';
+  'text-[15px] text-slate-600 text-justify mt-1 md:mt-1 leading-relaxed px-3 md:px-3';
 
 const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitToAttract }: DomainScreenProps) => {
   const stage = lifeStages.find(s => s.id === stageId);
@@ -269,7 +269,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="flex flex-col min-h-0"
+          className="flex flex-col min-h-0 mb-1"
         >
           <ExpandableText
             heading="Introduction"
@@ -280,7 +280,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
           : 'Introduction'
             }
             paragraphClassName={uniformParagraphClasses}
-            cardClassName="h-full flex flex-col"
+            cardClassName="flex flex-col"
             cardHeightClass="h-full"
           />
         </motion.div>
@@ -290,7 +290,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05 }}
-          className="flex flex-col min-h-0"
+          className="flex flex-col min-h-0 mb-1"
         >
           <div className="card border-1 border-base-300 p-1 md:p-2 w-full h-full bg-base-100 shadow-xl rounded-xl flex flex-col">
             <div className="card-body p-1 md:p-2 flex-1 flex flex-col items-center justify-center min-h-0">
@@ -336,7 +336,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className="flex flex-col min-h-0"
+          className="flex flex-col min-h-0 mb-1"
         >
           <ExpandableText
             heading="Conclusion"

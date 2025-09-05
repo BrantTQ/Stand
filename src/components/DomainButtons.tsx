@@ -92,8 +92,8 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({
                             focus-visible:outline-none focus-visible:ring-offset-2
                             shadow-sm  ${sizeClasses}`}
                 style={{
-                  background: isActive ? stageColor : "#fff",
-                  borderColor: stageColor,
+                  background: isActive ? "#2a2986" : "#fff",
+                  borderColor: "#2a2986",
                   color: isActive ? "#fff" : "#364153"
                 }}
                 onClick={() => onSelect(domain.id)}

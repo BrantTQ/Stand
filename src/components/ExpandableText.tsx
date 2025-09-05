@@ -38,7 +38,7 @@ const ExpandableText = ({
   heading,
   text,
   emptyPlaceholder = '—',
-  cardClassName = 'h-full flex flex-col',
+  cardClassName = 'flex flex-col',
   paragraphClassName = '',
   modalTitle,
   readMoreLabel = 'Read more',
@@ -50,7 +50,7 @@ const ExpandableText = ({
   cardHeightClass = 'h-full'
 }: ExpandableTextProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const paraRef = useRef<HTMLParagraphElement | null>(null);
+  const paraRef = useRef<HTMLDivElement | null>(null);
   const modalRef = useRef<HTMLDivElement | null>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
 
@@ -167,39 +167,21 @@ const ExpandableText = ({
     <>
       <div
         ref={containerRef}
-        className={`border-1 border-base-300 relative p-2 rounded-xl card w-full max-w-3xl bg-base-100 shadow-xl ${cardHeightClass} ${cardClassName}`}
+        className={`border-1 border-base-300 relative p-1 rounded-xl card w-full max-w-3xl bg-base-100 shadow-xl ${cardHeightClass} ${cardClassName}`}
         id={`${baseId}-card`}
       >
-        <div className="card-body p-2 h-full flex flex-col">
-          <h3 className="card-title p-1 text-slate-800 text-xl border-b-1 border-base-300">{heading}</h3>
+        <div className="card-body px-4 py-1 h-full flex flex-col">
+          <h3 className="card-title px-1 py-3 text-slate-800 text-xl border-b-1 border-base-300">{heading}</h3>
           <div className="relative flex-1">
-            <p
+            {/* Collapsed content: render HTML and keep line clamp */}
+            <div
               ref={paraRef}
               id={`${baseId}-paragraph`}
-              className={`line-clamp-9 overflow-hidden pr-1  ${paragraphClassName}` }
-              // style={{
-              //   ...(collapsedLines
-              //     ? {
-              //         display: '-webkit-box',
-              //         WebkitBoxOrient: 'vertical',
-              //         WebkitLineClamp: String(collapsedLines)
-              //       }
-              //     : {
-              //         maxHeight: `var(${maxHeightVarName})`
-              //       })
-              // }}
-            >
-              {content}
-            </p>
+              className={`line-clamp-10 overflow-hidden pr-1 ${paragraphClassName} prose prose-sm max-w-none text-justify`}
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
             {isOverflowing && !disableExpand && (
               <>
-                {/* <div
-                  className="pointer-events-none absolute mb-1 left-0 right-0 bg-gradient-to-t from-base-100 to-transparent"
-                  style={{
-                    height: 'var(--expandable-fade-height)',
-                    bottom: '0.5rem'
-                  }}
-                /> */}
                 <div className="absolute right-0 bottom-0">
                   <button
                     type="button"
@@ -230,9 +212,9 @@ const ExpandableText = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* Backdrop */}
+            {/* Backdrop: blur same as image modal */}
             <motion.div
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               onClick={closeModal}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -241,7 +223,7 @@ const ExpandableText = ({
             {/* Modal box */}
             <motion.div
               ref={modalRef}
-              className="relative bg-base-100 rounded-xl shadow-2xl max-w-3xl w-full max-h-[85vh] flex flex-col outline-none"
+              className="relative bg-base-100 rounded-xl shadow-2xl max-w-5xl w-full max-h-[50vh] flex flex-col outline-none"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{
                 scale: 1,
@@ -250,12 +232,12 @@ const ExpandableText = ({
               }}
               exit={{ scale: 0.9, opacity: 0, transition: { duration: 0.18 } }}
             >
-              <div className="px-6 pt-5 pb-3 border-b border-base-300 flex items-start justify-between gap-4">
+              <div className="px-6 py-2 border-b border-base-300 flex items-start justify-between gap-4">
                 <h3
                   id={`${baseId}-modal-title`}
-                  className="font-semibold text-lg leading-snug"
+                  className="font-semibold text-xl leading-snug"
                 >
-                  {modalTitle || heading}
+                  { heading}
                 </h3>
                 <button
                   type="button"
@@ -267,11 +249,13 @@ const ExpandableText = ({
                 </button>
               </div>
               <div className="px-6 py-4 overflow-y-auto">
-                <div className="prose max-w-none whitespace-pre-line text-xl text-justify">
-                  {content}
-                </div>
+                {/* Modal content: render HTML (no whitespace-pre-line so HTML controls layout) */}
+                <div
+                  className="prose max-w-none text-xl text-justify"
+                  dangerouslySetInnerHTML={{ __html: content }}
+                />
               </div>
-              <div className="px-6 py-4 border-t border-base-300 flex justify-end">
+              <div className="px-6 py-2 border-t border-base-300 flex justify-end">
                 <button
                   type="button"
                   onClick={closeModal}
