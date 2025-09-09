@@ -1,27 +1,21 @@
 [
   {
-    "id": "leisure",
-    "label": "Leisure",
-    "color": "#e53e3e",
-    "icon": "/leisure.gif"
-  },
-  {
     "id": "family",
     "label": "Family",
     "color": "#38a169",
-    "icon": "/family.gif"
+    "icon": "/family.png"
   },
   {
     "id": "education",
     "label": "Education",
     "color": "#3182ce",
-    "icon": "/online-education.gif"
+    "icon": "/education.png"
   },
   {
     "id": "health",
     "label": "Health",
     "color": "#d69e2e",
-    "icon": "/health.gif"
+    "icon": "/health.png"
   },
   {
     "id": "work",
@@ -33,12 +27,24 @@
     "id": "wellbeing",
     "label": "Wellbeing",
     "color": "#3182ce",
-    "icon": "/online-education.gif"
+    "icon": "/wellbeing.png"
   },
-   {
+  {
     "id": "poverty",
     "label": "Poverty",
     "color": "#3182ce",
-    "icon": "/online-education.gif"
+    "icon": "/poverty.png"
+  },
+  {
+    "id": "inequality",
+    "label": "Inequality",
+    "color": "#38a169",
+    "icon": "/inequality.png"
+  },
+  {
+    "id": "technology",
+    "label": "Technology",
+    "color": "#805ad5",
+    "icon": "/technology.png"
   }
 ]

@@ -201,7 +201,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
         {/* Row 2: Header (spans all columns) */}
         <div className="col-span-1 lg:col-span-3">
           <div className="flex flex-col px-3 lg:flex-row lg:items-center lg:justify-between mb-1">
-            <h2 className="text-xl text-slate-800 md:text-2xl font-semibold text-center lg:text-left px-4 lg:px-0">
+            <h2 className="text-lg text-slate-800 md:text-xl font-semibold text-center lg:text-left px-4 lg:px-0">
               {currentProject?.title || 'No content for this stage/domain'}
             </h2>
             {onBack ? (
@@ -290,9 +290,48 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05 }}
-          className="flex flex-col min-h-0 mb-1"
+          className="flex flex-col min-h-auto mb-1"
         >
-          <div className="card border-1 border-base-300 p-1 md:p-2 w-full h-full bg-base-100 shadow-xl rounded-xl flex flex-col">
+          <div className="card grid grid-cols-1 gap-1 border-1 border-base-300 w-full h-full bg-base-100 shadow-xl rounded-xl">
+          {currentProject?.image ? (
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => setShowImageModal(true)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault(); setShowImageModal(true);
+                }
+              }}
+              className="cursor-zoom-in outline-none rounded-xl w-full border-base-300"
+              aria-label="Open image in larger view"
+            >
+              <img
+                src={currentProject.image}
+                alt={currentProject.title}
+                className="object-cover max-h-48 md:max-h-56 w-full min-h-56 border-base-300 transition-transform rounded-xl duration-200 hover:scale-[1.01]"
+              />
+            </div>
+          ) : <div className="text-base-content/50">No image</div>}
+          <div className="card-description p-2">
+          <p className=" font-small text-center text-xs">
+            {currentProject?.image_source ? <span>Source: {currentProject.image_source}</span> : ''}
+          </p>
+          </div>
+          <div/>
+          <div className="card-actions items-center justify-center">
+          {currentProject?.image && (
+            <button
+              type="button"
+              className="btn rounded-full btn-sm w-1/2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium"
+              onClick={() => setShowImageModal(true)}
+              aria-label="Zoom image"
+            >View</button>
+          )}
+          </div>
+  </div>
+
+          {/* <div className="card border-1 border-base-300 p-1 md:p-2 w-full h-full bg-base-100 shadow-xl rounded-xl flex flex-col">
             <div className="card-body p-1 md:p-2 flex-1 flex flex-col items-center justify-center min-h-0">
               <figure className="w-full flex flex-col items-center gap-2 flex-1 justify-center">
           {currentProject?.image ? (
@@ -328,7 +367,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
           )}
               </figure>
             </div>
-          </div>
+          </div> */}
         </motion.div>
 
         <motion.div
@@ -362,10 +401,10 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
               const parts = author.split(/\s*(?:,|&|\band\b)\s*/i).filter(Boolean);
               const label = parts.length > 1 ? 'Authors' : 'Author';
               return (
-              <p className="text-left text-xs md:text-sm text-base-content/70">
+              <div className="text-left text-xs md:text-sm text-base-content/70">
                 <strong>{label}: </strong>
                 <p className="text-left">{author}</p>
-              </p>
+              </div>
               );
             })()}
             </div>
@@ -508,13 +547,13 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
                   ✕
                 </button>
               </div>
-              <div className="flex-1 overflow-auto p-4">
+              <div className="flex-1 overflow-auto p-2">
                 <img
                   src={currentProject?.image}
                   alt={currentProject?.title}
                   className="mx-auto max-h-[70vh] object-contain"
                 />
-                <p className="mt-4 text-center text-sm text-base-content/70">
+                <p className="mt-2 text-center text-sm text-base-content/70">
                   Source: {currentProject?.image_source || '—'}
                 </p>
               </div>

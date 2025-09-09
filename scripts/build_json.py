@@ -11,7 +11,7 @@ life_stages = [
       "education",
       "poverty"
     ],
-    "color": "#00adee"
+    "color": "#4FC3F7"
   },
   {
     "id": "adult",
@@ -21,16 +21,17 @@ life_stages = [
       "family",
       "inequality"
     ],
-    "color": "#7ad600"
+    "color": "#2A9D8F"
   },
   {
     "id": "senior",
     "title": "Senior Life",
     "icon": "/senior.png",
     "domains": [
-      "health"
+      "health",
+      "wellbeing"
     ],
-    "color": "#e91aab"
+    "color": "#D4A373"
   },
   {
     "id": "ai_future",
@@ -39,7 +40,7 @@ life_stages = [
     "domains": [
       "technology",
     ],
-    "color": "#2a2986"
+    "color": "#264653"
   }
 ]
 
@@ -55,7 +56,7 @@ blurbs = {
             "conclusion": "In 2023, child well-being in Luxembourg is 8.1 on average, but this figure varies with age (younger children tend to be more satisfied with their lives than older children), gender (boys are generally more satisfied than girls), and family status (children from single-parent families are less satisfied). \nThese figures are comparable to neighboring countries (Belgium, France, and Germany).",
             "image": {
                       "src": "/project_images/child_wellbeing.png",
-                      "cite": "https://liser.lu"
+                      "cite": ""
                       },  
             "qrCode": ["/project_qr_codes/ch_well_ggde_qr_1.svg"],
             "author": ["Audrey Bousselin", "Denisa Sologon", "Eugenio Peluso"]
@@ -66,7 +67,7 @@ blurbs = {
             "conclusion": "Parents in Luxembourg systematically underestimate the socio-emotional difficulties reported by their children across a variety of dimensions. About half of this difference seems to happen because parents don’t have the full picture of what their children are going through. Using an experimental design, we find that giving parents better information can help close this gap and guide them to support their children in more effective ways.",
             "image": {
                 "src": "/project_images/ch_well_ppc.png",
-                "cite": "https://liser.lu"
+                "cite": ""
             },
             "qrCode": ["/project_qr_codes/ch_well_ppc_qr_1.svg"],
             "author": ["Giorgia Menta", "Audrey Bousselin"]
@@ -82,7 +83,7 @@ blurbs = {
                 "conclusion": "The concentration of disadvantage in certain schools is a critical concern, as it risks reinforcing unequal opportunities and undermining cohesion. Some schools face combined pressures of poverty, work precarity, linguistic diversity, and family fragility, making them particularly vulnerable. Addressing this requires research and policy cooperation: joint efforts are needed to better understand the drivers and consequences of unequal distribution, and to identify the most effective solutions. Targeted school-level measures—for instance, language support, additional teaching resources, and social services—are essential, while broader contextual factors such as housing patterns, labour market conditions, taxation, and social policy should not be ignored. Preventing excessive concentrations of disadvantage is key to ensuring equitable opportunities across Luxembourg’s schools.",
                 "image": {
                     "src": "/project_images/inequalities.gif",
-                    "cite": "https://liser.lu"
+                    "cite": ""
                 },
                 "qrCode": ["project_qr_codes/ch_edu_esse_qr_1.svg", "project_qr_codes/ch_edu_esse_qr_2.svg"],
                 "author": ["Eugenio Peluso", "Philippe Van Kerm", "Aigul Alieva", "Thiago Brant", "Mariagrazia Cavallo"]
@@ -98,7 +99,7 @@ blurbs = {
                   "conclusion": "Many children worry about money more than their family’s income would suggest. Poverty and financial concerns are linked, but perceptions are shaped by deprivation, parental stress, and peer comparisons. One in three children feel poor without actually being poor, while one in ten are poor but don’t feel that way. Girls, and those reporting a lack of family leisure activities, are most at risk—highlighting the need to address both material resources and perceptions.",
                   "image": {
                       "src": "project_images/poverty_perceptions.png",
-                      "cite": "https://liser.lu"
+                      "cite": ""
                   },
                   "qrCode": ["project_qr_codes/ch_pov_cpp_qr_1.svg"],
                   "author": ["Audrey Bousselin"]
@@ -109,7 +110,7 @@ blurbs = {
                   "conclusion": "In Luxembourg, in 2024, a quarter of children under 18—around 33,000—were “at risk of poverty or social exclusion”. Luxembourg ranks 20th in the EU league table. In 2021, the government committed to reducing this number by 2030. \nThe vast majority of those children are income-poor in Luxembourg. Only a small minority are affected by severe material and social deprivation or live in a (quasi-)jobless household, without also being income-poor. The income poverty threshold varies with household composition. It is around 3,300€/month for a lone parent with one child and 5,300€ for a household with two adults and two children.",
                   "image":{
                       "src": "project_images/child_poverty_eu_child_guarantee.png",
-                      "cite": "https://liser.lu"
+                      "cite": ""
                   },
                   "qrCode": ["project_qr_codes/ch_pov_ecg_qr_1.svg"],
                   "author": ["Anne-Catherine Guio", "Eric Marlier"]
@@ -131,7 +132,7 @@ blurbs = {
             "conclusion": "Key takeaway / policy relevance: \nAnalyses have shown an increase in the uptake of parental leave following the 2016 parental leave reform, particularly among fathers. However, despite this development, inequalities in leave take-up remain. Women and employees in certain economic sectors and larger companies are still more likely to benefit from the policy, and hence to be engaged in childcare and to develop stronger relationships with their children, compared to their male counterparts and parents in other sectors. Evaluating parental leave take-up helps us understand how different groups of the eligible parents respond to the policy and which groups of parents benefit most from it. It uncovers “leave-poor” groups within the parent population, and help policymakers target and design further policy interventions.",
             "image": {
                       "src": "project_images/ad_fam_efp.png",
-                      "cite": "https://liser.lu"
+                      "cite": ""
                       },  
             "qrCode": ["project_qr_codes/ad_fam_efp_qr-1.svg", "project_qr_codes/ad_fam_efp_qr-2.svg"],
             "author": ["Marie Valentova", "Anne-Sophie Genevois", "Kristell Leduc"]
@@ -147,7 +148,7 @@ blurbs = {
                 "conclusion": "Women in Luxembourg are disproportionately affected by housing costs and inflation, yet they also lead in adopting eco-responsible behaviours. Targeted, gender-sensitive policies can reduce the barriers they face and harness their role as drivers of sustainable change, strengthening both equality and resilience in times of transition.",
                 "image": {
                     "src": "project_images/ad_ine_gicc.png",
-                    "cite": "https://liser.lu"
+                    "cite": ""
                 },
                 "qrCode": ["project_qr_codes/ad_ine_gicc_qr_1.svg", "project_qr_codes/ad_ine_gicc_qr_2.svg"],
                 "author": ["Eugenio Peluso", "Giorgia Menta", "Nizamul Islam", "Kristell Leduc", "Nathalie Lorentz", "Denisa M. Sologon", "Philippe Van Kerm", "Bertrand Verheyden"]
@@ -158,7 +159,7 @@ blurbs = {
                 "conclusion": "Our results show a clear divide in public opinion on taxation. There is relatively strong support for new wealth and inheritance taxes, but little support for increases in VAT or income taxes. For example, 58% of respondents agree or strongly agree with a one-time tax on net worth, compared with only 24% who support even a small rise in VAT. We also find that support for any tax declines as the expected revenue increases. Overall, our findings suggest that a one-time wealth tax could generate substantial revenue while still enjoying broad public backing.",
                 "image": {
                     "src": "project_images/ad_ine_iti.png",
-                    "cite": "https://liser.lu"
+                    "cite": ""
                 },
                 "qrCode": ["project_qr_codes/ad_ine_iti_qr_1.svg"],
                 "author": ["Javier Olivera", "Philippe Van Kerm"]
@@ -179,7 +180,7 @@ blurbs = {
             "conclusion": "The prevalence of dementia is expected to grow from 3.8% in 2025 to 5.3% in 2070. \nThe prevalence of Alzheimer, the most common type of dementia, is expected to grow from 2.8% in 2025 to 4.1% in 2070.\nPublic expenditure on healthcare for individuals affected by dementia in 2070 is projected to be three times its value in 2025.\nPublic expenditure on long-term care for these patients in 2070 is projected to be almost eight times its value in 2025.\nFrom a public health policy perspective, our results could contribute to ex-ante evaluation of preventive strategies to reduce the incidence of dementia. From an economic perspective, our results could contribute to identifying the priorities to limit the impact of an ageing population on public finances.",
             "image": {
                       "src": "/energy_pooled.png",
-                      "cite": "https://liser.lu"
+                      "cite": ""
                       },  
             "qrCode": ["project_qr_codes/sn_hea_papf_qr_1.svg"],
             "author": ["Maria Noel Pi Alperin"]
@@ -190,13 +191,40 @@ blurbs = {
             "conclusion": "<p>Since its creation in 2004:</p><ul class=\"list-disc list-inside\"><li>SHARE has set new standards in research and scientific data collection</li><li>SHARE has provided policymakers with reliable and comparable data on which they can base their decisions to address socio-economic and public health challenges using scientific evidence and thus contribute to improving the living conditions of European citizens.</li></ul> <br/> <p>More than 20 years of existence:</p><ul class=\"list-disc list-inside\"><li>28 country teams, 160.000 participants, more than 600.000 interviews collected</li><li>Luxembourg joined the SHARE project in 2013</li><li>Six waves of data already collected</li><li>More than 3000 participants</li><li>More than 80 scientific publications using the Luxembourgish data of SHARE</li></ul>",
             "image": {
                 "src": "/energy_pooled.png",
-                "cite": "https://liser.lu"
+                "cite": ""
             },
             "qrCode": ["project_qr_codes/sn_hea_shar_qr_1.svg", "project_qr_codes/sn_hea_shar_qr_2.svg"],
             "author": ["Maria Noel Pi Alperin", "Gaetan de Lanchy", "Jordane Segura"]
           }
         ],
         "questions":["sn_hea_shar_1","sn_hea_shar_2","sn_hea_papf_1","sn_hea_papf_2"]
+      },
+      "wellbeing": {
+        "projects": [
+            {
+                "title":"Studying Active Ageing",
+                "introduction":"Defined by the World Health Organization, <strong>Active Ageing</strong> allows people to realize their potential for physical, social, and mental wellbeing throughout the life course and to participate in society according to their needs, desires and capacities, while providing them with adequate protection, security and care when they require assistance.\nThe <strong>Active Ageing Index (AAI)</strong> measures ongoing participation in social, economic, cultural, spiritual, and civic activities, as well as wellbeing, autonomy, and independence.",
+                "conclusion": "Luxembourg ranks very well in active ageing with respect to other European countries. However, Luxembourg’s Gini index for the AAI is relatively high, suggesting scope for policies that foster more equitable well-being among older adults.",
+                "image":{
+                    "src": "/project_images/sn_wel_saa.bmp",
+                    "cite": ""
+                },
+                "qrCode": ["project_qr_codes/sn_wel_saa_qr_1.svg"],
+                "author": ["Javier Olivera"]
+            },
+            {
+                "title":"Portability of pension plans",
+                "introduction":"In April 2024, LISER conducted a discrete choice experiment to explore how willing people are to join a portable voluntary pension plan that can move with them across the EU. The study was inspired by the <strong>Pan-European Personal Pension Product (PEPP)</strong>, an EU initiative designed to make supplementary pensions more flexible and transferable between member states. Participants compared alternative pension plans, some with portability and others without, while also facing varying potential losses in pension balance due to management fees. The research reveals how portability and costs influence people’s decisions to save for retirement across borders.",
+                "conclusion": "The study shows that, on average, people are willing to give up 3.6% of their pension savings to have a plan that is portable across EU countries. For example, someone might prefer a portable pension with a 1% annual fee over a non-portable one with a 0.65% fee (assuming a 20-year plan and 5% return). Portability matters most to people who are likely to move for work—such as non-homeowners, those planning to work abroad, those with past work experience abroad, and people under 40. Offering flexible, portable pensions can help individuals build personal retirement savings while reducing pressure on public pensions. This is particularly relevant for Luxembourg, where many workers have international careers.",
+                "image":{
+                    "src": "/project_images/sn_wel_ppp.png",
+                    "cite": ""
+                },
+                "qrCode": ["project_qr_codes/sn_wel_ppp_qr_1.svg", "project_qr_codes/sn_wel_ppp_qr_2.svg"],
+                "author": ["Javier Olivera", "Uyen Nguyen-Thi", "Ludivine Martin"]
+            }
+        ],
+        "questions":["sn_wel_ppp_1","sn_wel_ppp_2"]
       }
     }
   },
@@ -408,7 +436,28 @@ questions= {
             "France"
         ],
         "answer": "Cyprus"
+    },
+    "sn_wel_ppp_1":{
+        "question": "On average, what additional share of their pension savings did participants in our study say they would give up for a portable pension plan?",
+        "choices": [
+            "1.2%",
+            "3.6%",
+            "5.2%",
+            "2.4%"
+        ],
+        "answer": "3.6%"
+    },
+    "sn_wel_ppp_2":{
+        "question": "In our study, which group was more willing to pay extra for a portable pension plan?",
+        "choices": [
+            "People over 40",
+            "Cross-border workers living in Belgium",
+            "People who are not homeowners",
+            "Women"
+        ],
+        "answer": "People over 40"
     }
+    
 
 }
 

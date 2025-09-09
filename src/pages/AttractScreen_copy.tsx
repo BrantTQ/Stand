@@ -1,6 +1,5 @@
-import { useRef, useEffect, useState, useCallback } from "react";
-import { Canvas } from "@react-three/fiber";
-import { Stars } from "@react-three/drei";
+import React, { useRef, useEffect, useState, useCallback } from "react";
+
 import {
   useMotionTemplate,
   useMotionValue,
@@ -13,14 +12,14 @@ interface AttractScreenProps {
 }
 
 const COLORS_TOP = ["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"];
+
 const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const color = useMotionValue(COLORS_TOP[0]);
-
   // NEW: screensaver state + idle timer
   const [showScreensaver, setShowScreensaver] = useState(false);
   const idleTimerRef = useRef<number | null>(null);
-
+  
   const clearIdle = useCallback(() => {
     if (idleTimerRef.current) {
       clearTimeout(idleTimerRef.current);
@@ -34,7 +33,7 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
     if (!showScreensaver) {
       idleTimerRef.current = window.setTimeout(() => {
         setShowScreensaver(true);
-      }, 10000); // 10 seconds
+      }, 5000); // 1 minute
     }
   }, [clearIdle, showScreensaver]);
 
@@ -70,6 +69,7 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
         startIdleTimer();
       }
     };
+
     const events = ["mousemove", "mousedown", "touchstart", "keydown"];
     events.forEach((e) => window.addEventListener(e, onActivity, { passive: true }));
     // Start or restart timer on mount/update
@@ -92,6 +92,7 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
       }
     }
   }, [showScreensaver]);
+
   useEffect(() => {
   animate(color, COLORS_TOP, {
     ease: "easeInOut",
@@ -102,13 +103,14 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
   }, []);
 
   const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
+
+
   return (
-    <motion.div
-      key="attract"
-      exit={{ opacity: 0, scale: 1.5 }}
-      transition={{ duration: 0.5 }}
-      style={{ backgroundImage }}
-      className="absolute top-0 left-0 h-full w-full bg-cover bg-center"
+    <motion.section
+      style={{
+        backgroundImage,
+      }}
+      className="relative grid min-h-screen min-w-screen place-content-center overflow-hidden bg-gray-950 px-4 py-24 text-gray-200"
     >
       <div
         onClick={handleAnyInteraction}
@@ -127,8 +129,8 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
             // Do not set autoPlay directly; we trigger play() in effect for reliability
             aria-label="Life stages screensaver"
           />
-          <div className="absolute w-full   bottom-0 right-0">
-             <div className=" text-center bg-radial from-teal-500 to-50% mt-3 py-5 text-white p-2 ">
+          <div className="absolute w-full h bg-gradient-to-r via-slate-400 to-90%  bottom-0 right-0">
+             <div className=" text-center mt-3 py-5 text-white bg-gradient-to-t from-blue-950 to-5% bg-opacity-10 p-2 ">
 
 
               <p className="text-2xl font-extrabold">
@@ -142,22 +144,22 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
           // Original attract content
           <>
             <div className="w-full text-center text-white p-6 ">
-              <h1 className="text-7xl font-medium leading-tight bg-gradient-to-br from-white to-gray-400 mb-4 bg-clip-text font-mono ">LIVING CONDITIONS</h1>
+              <h1 className="text-7xl font-bold mb-4 bg-clip-text font-mono ">LIVING CONDITIONS</h1>
               <div className="flex justify-center m-6">
-                <img src="/life_stages.png" alt="Living Conditions" className="h-40 w-40 items-center-safe justify-center" />
+                <img src="/life_stages.png" alt="Living Conditions" className="h-30 w-30 items-center-safe justify-center" />
               </div>
-              <h1 className="text-4xl font-extrabold font-mono">Life-Course Data Explorer</h1>
+              <h1 className="text-5xl font-extrabold font-mono">Life-Course Data Explorer</h1>
             </div>
             <div className="text-center mt-10 py-5 text-white p-2 ">
               <p className="animate-bounce text-xl font-medium">
-                Touch anywhere to continue
+                Touch anywhere to explore Luxembourg&apos;s life-course data
               </p>
             </div>           
             <div className="absolute bottom-2 right-6">
               <img
                 src="/information_systems.png"
                 alt="Powered By LISER Information Systems"
-                className="h-36 w-36 object-contain"
+                className="h-24 w-36 object-contain"
               />
             </div>
             <img
@@ -165,16 +167,11 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
             alt="LISER Logo"
             className=" absolute h-26 w-[230px] left-0 top-5"
             />
-            <div className="absolute inset-0 z-0">
-        <Canvas>
-          <Stars radius={70} count={7000} factor={4} fade speed={2} />
-        </Canvas>
-      </div>
           </>
         )}
       </div>
-      
-    </motion.div>
+    </motion.section>
+    
   );
 };
 

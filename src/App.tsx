@@ -137,6 +137,11 @@ function App() {
                         setShowQuestion(true);
                       }}
                       onSkip={() => {
+                        setAnsweredDomainsThisStage(prev => {
+                          const next = new Set(prev);
+                          next.add(selectedDomain);
+                          return next;
+                        });
                         setShowTakeQuiz(false);
                         setShowQuestion(false);
                       }}
@@ -144,6 +149,7 @@ function App() {
                         setShowTakeQuiz(false);
                         setSelectedDomain(null);
                       }}
+                     
                     />
                   ) : showQuestion ? (
                     <QuestionScreen

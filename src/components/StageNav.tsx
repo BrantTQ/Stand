@@ -108,7 +108,7 @@ export const StageNav: React.FC<StageNavProps> = ({
                     aria-hidden="true"
                   />
                 ) : null}
-                <span className="leading-snug">{stage.title}</span>
+                <span className="leading-snugs">{stage.title}</span>
               </div>
             </motion.button>
           );

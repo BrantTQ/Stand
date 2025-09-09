@@ -4,11 +4,11 @@
     "title": "Childhood",
     "icon": "/childhood.png",
     "domains": [
-      "family",
+      "wellbeing",
       "education",
-      "wellbeing"
+      "poverty"
     ],
-    "color": "#00adee"
+    "color": "#4FC3F7"
   },
   {
     "id": "adult",
@@ -16,32 +16,27 @@
     "icon": "/adult.png",
     "domains": [
       "family",
-      "work",
-      "health",
-      "education"
+      "inequality"
     ],
-    "color": "#7ad600"
+    "color": "#2A9D8F"
   },
   {
     "id": "senior",
     "title": "Senior Life",
     "icon": "/senior.png",
     "domains": [
-      "leisure",
       "health",
-      "family"
+      "wellbeing"
     ],
-    "color": "#e91aab"
+    "color": "#D4A373"
   },
   {
     "id": "ai_future",
     "title": "AI and the Future",
     "icon": "/ai.png",
     "domains": [
-      "technology",
-      "education",
-      "work"
+      "technology"
     ],
-    "color": "#2a2986"
+    "color": "#264653"
   }
 ]

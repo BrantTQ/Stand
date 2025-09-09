@@ -167,10 +167,10 @@ const ExpandableText = ({
     <>
       <div
         ref={containerRef}
-        className={`border-1 border-base-300 relative p-1 rounded-xl card w-full max-w-3xl bg-base-100 shadow-xl ${cardHeightClass} ${cardClassName}`}
+        className={`border-1 border-base-300 relative px-1 pb-1 pt-0 rounded-xl card w-full max-w-3xl bg-base-100 shadow-xl ${cardHeightClass} ${cardClassName}`}
         id={`${baseId}-card`}
       >
-        <div className="card-body px-4 py-1 h-full flex flex-col">
+        <div className="card-body px-4 pb-1 pt-0 h-full flex flex-col">
           <h3 className="card-title px-1 py-3 text-slate-800 text-xl border-b-1 border-base-300">{heading}</h3>
           <div className="relative flex-1">
             {/* Collapsed content: render HTML and keep line clamp */}
