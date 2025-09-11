@@ -11,6 +11,7 @@ import Breadcrumbs from "./components/Breadcrumbs";
 import TransitionScreen from "./pages/TransitionScreen";
 import blurbsData from "./data/blurbs.json";
 import AiFutureScreen from "./pages/AiFutureScreen"; // NEW
+import { initAnalytics, trackEnterApp, trackStageVisit, trackDomainStart, trackDomainEnd, trackQuizSkipped, trackExitToAttract } from "./analytics";
 
 function App() {
   const [currentStageId, setCurrentStageId] = useState<string | null>(null);
@@ -81,10 +82,70 @@ function App() {
     pageTitle = "Life Journey with Data";
   }
 
+  const domainEnterRef = useRef<number | null>(null);
+  const lastDomainRef = useRef<string | null>(null);
+  const lastStageRef = useRef<string | null>(null);
+
+  // Init analytics once
+  useEffect(() => {
+    initAnalytics({
+      endpoint: (import.meta as any).env?.VITE_ANALYTICS_ENDPOINT,
+      appVersion: (import.meta as any).env?.VITE_APP_VERSION || "1.0.0",
+    });
+  }, []);
+
   const handleInteraction = () => {
+    // entering app from attract
+    trackEnterApp();
     setAttractMode(false);
     setShowTransition(true);
   };
+
+  // Track stage visit when selected
+  useEffect(() => {
+    if (currentStageId) {
+      trackStageVisit(currentStageId);
+    }
+  }, [currentStageId]);
+
+  // Track domain duration: close previous, start new
+  useEffect(() => {
+    // Close previous domain, if any
+    if (
+      lastDomainRef.current &&
+      lastStageRef.current &&
+      domainEnterRef.current !== null &&
+      (selectedDomain !== lastDomainRef.current || currentStageId !== lastStageRef.current)
+    ) {
+      const durationMs = Date.now() - domainEnterRef.current;
+      trackDomainEnd(lastStageRef.current, lastDomainRef.current, durationMs);
+      domainEnterRef.current = null;
+      lastDomainRef.current = null;
+      lastStageRef.current = null;
+    }
+
+    // Start new domain timer
+    if (currentStageId && selectedDomain && !domainEnterRef.current) {
+      domainEnterRef.current = Date.now();
+      lastDomainRef.current = selectedDomain;
+      lastStageRef.current = currentStageId;
+      trackDomainStart(currentStageId, selectedDomain);
+    }
+  }, [currentStageId, selectedDomain]);
+
+  // Ensure we end timing if user exits to attract via idle or button
+  useEffect(() => {
+    return () => {
+      if (
+        lastDomainRef.current &&
+        lastStageRef.current &&
+        domainEnterRef.current !== null
+      ) {
+        const durationMs = Date.now() - domainEnterRef.current;
+        trackDomainEnd(lastStageRef.current, lastDomainRef.current, durationMs);
+      }
+    };
+  }, []);
 
   // UPDATED: control quiz flow; skip if already answered this stage or if no questions
   const handleDomainSelect = (domainId: string | null, options?: { skipQuiz?: boolean }) => {
@@ -146,6 +207,8 @@ function App() {
                         setShowQuestion(true);
                       }}
                       onSkip={() => {
+                        // analytics
+                        trackQuizSkipped(currentStageId, selectedDomain);
                         setAnsweredDomainsThisStage(prev => {
                           const next = new Set(prev);
                           next.add(selectedDomain);
@@ -169,7 +232,6 @@ function App() {
                         setSelectedDomain(null);
                       }}
                       onNext={() => {
-                        // Mark this domain as answered for the current stage and close question
                         setAnsweredDomainsThisStage(prev => {
                           const next = new Set(prev);
                           next.add(selectedDomain);
@@ -197,6 +259,8 @@ function App() {
                       }}
                       onBack={() => setCurrentStageId(null)}
                       onExitToAttract={() => {
+                        // analytics
+                        trackExitToAttract("button");
                         // Exit to attract screen and reset session UI
                         setShowTakeQuiz(false);
                         setShowQuestion(false);
@@ -207,9 +271,8 @@ function App() {
                     />
                   )
                 ) : currentStageId === "ai_future" ? (
-                  // NEW: AI Future video-only flow
                   <AiFutureScreen
-                    src="/videos/living_conditions.mp4" // change this path to your AI video if needed
+                    src="/videos/living_conditions.mp4"
                     onBack={() => {
                       setSelectedDomain(null);
                       setShowTakeQuiz(false);

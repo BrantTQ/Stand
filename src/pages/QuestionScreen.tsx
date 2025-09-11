@@ -1,11 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import questionsData from "../data/questions.json";
-import domainsData from "../data/domains.json";
-// import lifeStages from "../data/lifeStages.json";
 import blurbsData from "../data/blurbs.json";
 import { swapCard } from "../assets/animations/variants";
-import { q } from "framer-motion/client";
 
 interface QuestionScreenProps {
   currentStageId: string;
@@ -29,13 +26,6 @@ type Question = {
   answer: string;
 };
 
-type Domain = {
-  id: string;
-  label: string;
-  color?: string;
-  icon?: string;
-  // domains.json does not contain question IDs - those live in blurbs.json per stage
-};
 
 const triggerConfetti = async () => {
   try {
@@ -73,10 +63,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const timerRef = useRef<number | null>(null);
   const autoNavRef = useRef(false); // added: prevent double navigation when no questions
-  
 
-  // Domain + stage context
-  const domainObj: Domain | undefined = (domainsData as Domain[]).find(d => d.id === selectedDomain);
   
   const questionsMap = questionsData as Record<string, QuestionFromMap>;
 
@@ -155,9 +142,6 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
     return subset.slice(0, 4);
   }, [question]);
 
-  const accentStyle: React.CSSProperties | undefined = domainObj?.color
-    ? { borderColor: domainObj.color, color: domainObj.color }
-    : undefined;
 
   const handleChoiceClick = (choice: string) => {
     if (!question || isProcessing) return;

@@ -4,9 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useMemo, useState, useRef } from 'react';
 import DomainButtons from '../components/DomainButtons';
 import ExpandableText from '../components/ExpandableText';
+import { trackProjectStart, trackProjectEnd } from '../analytics';
 
 // Raw project shape from blurbs.json (updated to reflect new shapes)
 type RawProject = {
+  id?: string;  
   title?: string;
   introduction?: string;
   conclusion?: string;
@@ -34,6 +36,7 @@ type RawBlurbsFile = Record<string, RawStageEntry>;
 
 // Normalized shapes used by the component
 type Project = {
+  id: string; // always present after normalization
   title?: string;
   introduction?: string;
   conclusion?: string;
@@ -57,16 +60,12 @@ function normalizeBlurbs(raw: RawBlurbsFile): Blurb[] {
   Object.values(raw).forEach(stageEntry => {
     if (!stageEntry) return;
     const stageId = stageEntry.stage;
-    // support both `domains` and singular `domain`
     const domainsObj = stageEntry.domains || stageEntry.domain || {};
     Object.entries(domainsObj).forEach(([domainKey, domainValue]) => {
-      const projects: Project[] = (domainValue.projects || []).map(p => {
-        // image can be a string or { src, cite }
+      const projects: Project[] = (domainValue.projects || []).map((p, idx) => {
         const imageSrc = typeof p.image === 'string' ? p.image : p.image?.src;
         const imageSource = typeof p.image === 'object' ? p.image?.cite : undefined;
-        // author might be array; normalize to a comma-separated string
         const authorNormalized = Array.isArray(p.author) ? p.author.join(', ') : p.author;
-        // normalize qrCode: support string or array, but keep at most two entries
         let qr: string[] | undefined;
         if (Array.isArray(p.qrCode)) {
           qr = p.qrCode.filter(Boolean).slice(0, 2);
@@ -76,6 +75,7 @@ function normalizeBlurbs(raw: RawBlurbsFile): Blurb[] {
           qr = undefined;
         }
         return {
+          id: (p as any).id ?? `${stageId}:${domainKey}:${idx}`, // NEW: carry id or fallback
           title: p.title,
           introduction: p.introduction,
           conclusion: p.conclusion,
@@ -135,13 +135,14 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
 
   const activeBlurb = matchingBlurbs[0];
   const projects = activeBlurb?.projects ?? [];
+  const hasProjects = projects.length > 0;
+  const currentProject: Project | undefined = hasProjects ? projects[projectIndex] : undefined;
 
   useEffect(() => {
     setProjectIndex(0);
   }, [stageId, selectedDomain, activeBlurb]);
 
-  const hasProjects = projects.length > 0;
-  const currentProject: Project | undefined = hasProjects ? projects[projectIndex] : undefined;
+  
 
   const goPrev = () => {
     if (!hasProjects) return;
@@ -174,6 +175,44 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
     };
   }, [showImageModal]);
 
+
+  // NEW: per-project timing refs
+  const projectEnterRef = useRef<number | null>(null);
+  const lastProjectIdRef = useRef<string | null>(null);
+   useEffect(() => {
+    if (!hasProjects || !selectedDomain) return;
+
+    const projId = currentProject?.id ?? `${stageId}:${selectedDomain}:${projectIndex}`;
+
+    // If we were timing a different project, end it
+    if (
+      lastProjectIdRef.current &&
+      lastProjectIdRef.current !== projId &&
+      projectEnterRef.current !== null
+    ) {
+      const durationMs = Date.now() - projectEnterRef.current;
+      trackProjectEnd(stageId, selectedDomain, lastProjectIdRef.current, durationMs);
+      projectEnterRef.current = null;
+      lastProjectIdRef.current = null;
+    }
+
+    // Start timing the current project if not already started
+    if (projId && projectEnterRef.current === null) {
+      projectEnterRef.current = Date.now();
+      lastProjectIdRef.current = projId;
+      trackProjectStart(stageId, selectedDomain, projId, projectIndex);
+    }
+  }, [stageId, selectedDomain, projectIndex, hasProjects, currentProject?.id]);
+
+  // NEW: cleanup on unmount to close any open timing
+  useEffect(() => {
+    return () => {
+      if (selectedDomain && lastProjectIdRef.current && projectEnterRef.current !== null) {
+        const durationMs = Date.now() - projectEnterRef.current;
+        trackProjectEnd(stageId, selectedDomain, lastProjectIdRef.current, durationMs);
+      }
+    };
+  }, [stageId, selectedDomain]);
   return (
     <div className="flex flex-col h-full min-h-0">
       {/* New grid: header (row1), domain buttons (row2), cards (row3), footer (row4) */}

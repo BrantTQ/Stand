@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { trackScreensaverExit, trackScreensaverShown } from "../analytics";
 
 interface ScreenSaverProps {
   idleMs?: number;           // time until the screensaver appears
@@ -8,7 +9,7 @@ interface ScreenSaverProps {
 }
 
 const ScreenSaver: React.FC<ScreenSaverProps> = ({
-  idleMs = 10000, // default: 10 seconds
+  idleMs = 600000, // default: 10 seconds
   videoSrc = "/videos/living_conditions.mp4",
   className,
   onExit,
@@ -26,7 +27,10 @@ const ScreenSaver: React.FC<ScreenSaverProps> = ({
 
   const armTimer = useCallback(() => {
     clearTimer();
-    timerRef.current = window.setTimeout(() => setVisible(true), idleMs);
+    timerRef.current = window.setTimeout(() => {
+      setVisible(true);
+      trackScreensaverShown();
+    }, idleMs);
   }, [idleMs, clearTimer]);
 
   const exitScreensaver = useCallback(() => {
@@ -39,6 +43,7 @@ const ScreenSaver: React.FC<ScreenSaverProps> = ({
       }
     }
     setVisible(false);
+    trackScreensaverExit();
     armTimer();
     onExit?.();
   }, [armTimer, onExit]);
@@ -96,7 +101,7 @@ const ScreenSaver: React.FC<ScreenSaverProps> = ({
         playsInline
         aria-label="Life stages screensaver"
       />
-      <div className="absolute w-full bottom-0 md:right-6 pointer-events-none">
+      <div className="absolute w-full 2xl:bottom-30 md:bottom-0 md:right-6 pointer-events-none">
         <div className="text-center bg-radial from-teal-500 to-50% mt-3 py-5 text-white p-2">
           <p className="text-2xl font-extrabold">Touch to START</p>
         </div>
