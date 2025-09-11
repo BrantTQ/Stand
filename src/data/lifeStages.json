@@ -1,79 +1,43 @@
 [
   {
     "id": "early",
-    "title": "Early Childhood",
-    "icon": "\ud83d\udc76",
+    "title": "Childhood",
+    "icon": "/childhood.png",
     "domains": [
-      "family",
-      "education"
-    ],
-    "blurbs": [
-      "early_demo"
-    ],
-    "color": "#2a2986",
-    "metrics": []
-  },
-  {
-    "id": "primary",
-    "title": "Primary Education",
-    "icon": "\ud83c\udf92",
-    "domains": [
+      "wellbeing",
       "education",
-      "family"
+      "poverty"
     ],
-    "blurbs": [],
-    "color": "#2a2986",
-    "metrics": []
-  },
-  {
-    "id": "secondary",
-    "title": "Secondary Education",
-    "icon": "\ud83d\udcda",
-    "domains": [
-      "education",
-      "family"
-    ],
-    "blurbs": [],
-    "color": "#2a2986",
-    "metrics": []
-  },
-  {
-    "id": "tertiary",
-    "title": "Tertiary Education",
-    "icon": "\ud83c\udf93",
-    "domains": [
-      "education",
-      "work",
-      "family"
-    ],
-    "blurbs": [],
-    "color": "#2a2986",
-    "metrics": []
+    "color": "#4FC3F7"
   },
   {
     "id": "adult",
     "title": "Adult Life",
-    "icon": "\ud83d\udcbc",
+    "icon": "/adult.png",
     "domains": [
       "family",
-      "work",
-      "health"
+      "inequality"
     ],
-    "blurbs": [],
-    "color": "#2a2986",
-    "metrics": []
+    "color": "#2A9D8F"
   },
   {
     "id": "senior",
     "title": "Senior Life",
-    "icon": "\ud83d\udc74",
+    "icon": "/senior.png",
     "domains": [
-      "leisure",
       "health",
-      "family"
+      "wellbeing",
+      "pension"
     ],
-    "blurbs": [],
-    "color": "#2a2986",
-    "metrics": []
+    "color": "#D4A373"
+  },
+  {
+    "id": "ai_future",
+    "title": "AI and the Future",
+    "icon": "/ai.png",
+    "domains": [
+      "technology"
+    ],
+    "color": "#264653"
   }
 ]

@@ -1,32 +1,56 @@
 [
-  { 
-    "id": "leisure",
-    "label": "Leisure",
-    "color": "#e53e3e",
-    "icon": "🎉"
-  },
   {
     "id": "family",
     "label": "Family",
     "color": "#38a169",
-    "icon": "👨‍👩‍👧‍👦"
+    "icon": "/family.png"
   },
   {
     "id": "education",
     "label": "Education",
     "color": "#3182ce",
-    "icon": "🎓"
+    "icon": "/education.png"
   },
   {
     "id": "health",
     "label": "Health",
     "color": "#d69e2e",
-    "icon": "🩺"
+    "icon": "/health.png"
   },
   {
     "id": "work",
     "label": "Work",
     "color": "#e53e3e",
-    "icon": "💼"
+    "icon": "/work.gif"
+  },
+  {
+    "id": "wellbeing",
+    "label": "Wellbeing",
+    "color": "#3182ce",
+    "icon": "/wellbeing.png"
+  },
+  {
+    "id": "poverty",
+    "label": "Poverty",
+    "color": "#3182ce",
+    "icon": "/poverty.png"
+  },
+  {
+    "id": "inequality",
+    "label": "Inequality",
+    "color": "#38a169",
+    "icon": "/inequality.png"
+  },
+  {
+    "id": "technology",
+    "label": "Technology",
+    "color": "#805ad5",
+    "icon": "/technology.png"
+  },
+  {
+    "id": "pension",
+    "label": "Pension",
+    "color": "#805ad5",
+    "icon": "/pension.png"
   }
 ]

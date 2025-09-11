@@ -1,0 +1,202 @@
+{
+  "ch_wel_ggd_1": {
+    "question": "On average, how much do children aged 8 to 16 in Luxembourg agree with the statement “All is well in my life”, on a scale from 0 to 10?",
+    "choices": [
+      "8.1",
+      "6.5",
+      "9.8",
+      "4.5"
+    ],
+    "answer": "8.1"
+  },
+  "ch_wel_ggd_2": {
+    "question": "On average, girls are more satisfied with their lives than boys?",
+    "choices": [
+      "Boys and girls report similar level of well-being.",
+      "Yes, girls report higher level of well-being.",
+      "No, girls report lower level of well-being."
+    ],
+    "answer": "No, girls report lower level of well-being."
+  },
+  "ch_wel_ppc_1": {
+    "question": "Parents are often the people who know their children best. In Luxembourg, do you think parents on average overstate, understate or are able to correctly estimate their children’s wellbeing?",
+    "choices": [
+      "Parents understate their children's wellbeing (as compared to what children self-report)",
+      "Parents overstate their children's wellbeing (as compared to what children self-report)",
+      "Parents and children report similar levels of child wellbeing",
+      "I’m not sure, but I’d like to find out"
+    ],
+    "answer": "Parents understate their children's wellbeing (as compared to what children self-report)"
+  },
+  "ad_fam_efp_1": {
+    "question": "A major parental leave policy reform took place in Luxembourg in 2016. LISER evaluated the effect of the reform on parental leave take-up behaviour. Whose parental leave take-up increased the most after the reform?",
+    "choices": [
+      "Mothers",
+      "Fathers",
+      "None",
+      "Both equally"
+    ],
+    "answer": "Fathers"
+  },
+  "ad_fam_efp_2": {
+    "question": "LISER studies have analysed the factors that affect parental leave take-up among parents, including how employers’ characteristics influence uptake. In which type of firms is the take-up lowest?",
+    "choices": [
+      "The take-up does not differ depending on employer size",
+      "Employers with fewer than 50 employees",
+      "Employers with 50 to 100 employees",
+      "Employers with more than 100 employees"
+    ],
+    "answer": "Employers with fewer than 50 employees"
+  },
+  "ch_pov_cpp_1": {
+    "question": "According to our data, a child can feel poor…",
+    "choices": [
+      "Only if their family income is below the poverty line",
+      "Even if their family income is not below the poverty line",
+      "Only if they are materially deprived (ex. lack of clothes in good conditions, things needed for sport and leisure activities, books…)"
+    ],
+    "answer": "Even if their family income is not below the poverty line"
+  },
+  "ch_pov_cpp_2": {
+    "question": "Which factor is a strong predictor of children feeling poor, even when they are not?",
+    "choices": [
+      "Age",
+      "Number of siblings",
+      "Gender"
+    ],
+    "answer": "Gender"
+  },
+  "ch_pov_ecg_1": {
+    "question": "In 2024, Luxembourg ranks in terms of child poverty and social exclusion among:",
+    "choices": [
+      "The 8 EU best performers",
+      "The 8 EU worst performers"
+    ],
+    "answer": "The 8 EU worst performers"
+  },
+  "ch_pov_ecg_2": {
+    "question": "In 2024, In Luxembourg the vast majority of children “at risk of poverty or social exclusion” live:",
+    "choices": [
+      "In a low-income household",
+      "With jobless parents",
+      "In a severely deprived household"
+    ],
+    "answer": "In a low-income household"
+  },
+  "ad_ine_gicc_1": {
+    "question": "Which of these hypothetical green policies is supported by more women than men?",
+    "choices": [
+      "Increasing the VAT on red meat from 3% to 17%",
+      "Introducing a 5-euro highway toll",
+      "Rationing on fossil energy sources",
+      "None of the above"
+    ],
+    "answer": "Rationing on fossil energy sources"
+  },
+  "ad_ine_gicc_2": {
+    "question": "Why are women more vulnerable to the impacts of inflation in Luxembourg?",
+    "choices": [
+      "Women typically have less access to financial resources like savings to manage unexpected expenses",
+      "Women tend to allocate a larger share of their income to essential goods and services, such as food and heating",
+      "Single parents, who typically face lower average incomes and reduced capacity to absorb rising costs, are predominantly women",
+      "All of the above"
+    ],
+    "answer": "All of the above"
+  },
+  "ch_edu_esse_1": {
+    "question": "Which region in Luxembourg has the least number of secondary schools?",
+    "choices": [
+      "Région Centre",
+      "Région Sud",
+      "Région Nord",
+      "Région Est"
+    ],
+    "answer": "Région Est"
+  },
+  "ch_edu_esse_2": {
+    "question": "In which year did the law on primary education begin to include parents’ preferences for track placement (ESC, ESG, ESG-VO) when moving from primary to secondary school?",
+    "choices": [
+      "2003",
+      "2009",
+      "2015",
+      "2023"
+    ],
+    "answer": "2009"
+  },
+  "sn_hea_shar_1": {
+    "question": "The percentage of the total population that are over 50 years old in Luxembourg is",
+    "choices": [
+      "25%",
+      "35%",
+      "45%"
+    ],
+    "answer": "35%"
+  },
+  "sn_hea_shar_2": {
+    "question": "The percentage of the total population that are over 65 years old in Luxembourg is",
+    "choices": [
+      "Less than 10%",
+      "More than 14%",
+      "More than 20%"
+    ],
+    "answer": "More than 14%"
+  },
+  "sn_hea_papf_1": {
+    "question": "In Luxembourg, more than 1.25% of the total population is affected by dementia. This share is projected to...",
+    "choices": [
+      "Be the same in 2050",
+      "Reach 2.04% of the population",
+      "Reach 2.44% of the total population"
+    ],
+    "answer": "Reach 2.44% of the total population"
+  },
+  "sn_hea_papf_2": {
+    "question": "Luxembourg has similar dementia prevalence rates than",
+    "choices": [
+      "Belgium",
+      "Cyprus",
+      "France"
+    ],
+    "answer": "Cyprus"
+  },
+  "sn_wel_ppp_1": {
+    "question": "On average, what additional share of their pension savings did participants in our study say they would give up for a portable pension plan?",
+    "choices": [
+      "1.2%",
+      "3.6%",
+      "5.2%",
+      "2.4%"
+    ],
+    "answer": "3.6%"
+  },
+  "sn_wel_ppp_2": {
+    "question": "In our study, which group was more willing to pay extra for a portable pension plan?",
+    "choices": [
+      "People over 40",
+      "Cross-border workers living in Belgium",
+      "People who are not homeowners",
+      "Women"
+    ],
+    "answer": "People over 40"
+  },
+  "sn_wel_saa_1": {
+    "question": "Looking beyond the average score, the <strong>Active Ageing Index (AAI)</strong> also tells us how evenly older adults benefit from active ageing opportunities. Greater inequality in AAI scores means weaker overall performance.<br><br>Where do you think <strong>Luxembourg</strong> ranks among 28 European countries for <strong>AAI equality</strong>?",
+    "choices": [
+      "3rd",
+      "10th",
+      "6th",
+      "15th"
+    ],
+    "answer": "6th"
+  },
+  "sn_wel_saa_2": {
+    "question": "In <strong>LISER</strong>, we have estimated the <strong>Active Ageing Index</strong> for persons aged 55+ in 28 EU countries with data from 2016-2017.<br><br><strong>Guess the Rank!</strong><br>Based on its average <strong>Active Ageing Index (AAI)</strong> score, where do you think Luxembourg stands among 28 European countries?",
+    "choices": [
+      "12th",
+      "5th",
+      "18th",
+      "2nd"
+    ],
+    "answer": "5th"
+  }
+}
