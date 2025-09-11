@@ -249,7 +249,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: 'spring', stiffness: 220, damping: 28, mass: 0.9 }}
           whileDrag={{ scale: 0.995, cursor: 'grabbing' }}
-          onDragEnd={(e, info) => {
+          onDragEnd={(_e, info) => {
             const offsetX = info.offset.x;
             const velocityX = info.velocity.x;
             const swipePower = Math.abs(offsetX) * 0.35 + Math.abs(velocityX);
@@ -309,7 +309,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
               <img
                 src={currentProject.image}
                 alt={currentProject.title}
-                className="object-cover max-h-48 md:max-h-56 w-full min-h-56 border-base-300 transition-transform rounded-xl duration-200 hover:scale-[1.01]"
+                className="object-cover max-h-48 md:max-h-60 w-full min-h-56 border-base-300 transition-transform rounded-xl duration-200 hover:scale-[1.01]"
               />
             </div>
           ) : <div className="text-base-content/50">No image</div>}
@@ -330,44 +330,6 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
           )}
           </div>
   </div>
-
-          {/* <div className="card border-1 border-base-300 p-1 md:p-2 w-full h-full bg-base-100 shadow-xl rounded-xl flex flex-col">
-            <div className="card-body p-1 md:p-2 flex-1 flex flex-col items-center justify-center min-h-0">
-              <figure className="w-full flex flex-col items-center gap-2 flex-1 justify-center">
-          {currentProject?.image ? (
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={() => setShowImageModal(true)}
-              onKeyDown={e => {
-                if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault(); setShowImageModal(true);
-                }
-              }}
-              className="cursor-zoom-in outline-none focus:ring-2 focus:ring-primary rounded-md"
-              aria-label="Open image in larger view"
-            >
-              <img
-                src={currentProject.image}
-                alt={currentProject.title}
-                className="object-contain max-h-48 md:max-h-56 mx-auto transition-transform duration-200 hover:scale-[1.03]"
-              />
-            </div>
-          ) : <div className="text-base-content/50">No image</div>}
-          <p className="card-description font-small text-center text-[11px] md:text-xs">
-            Source: {currentProject?.image_source || '—'}
-          </p>
-          {currentProject?.image && (
-            <button
-              type="button"
-              className="btn rounded-full btn-sm bg-gray-200 hover:bg-gray-300 text-gray-700 focus:ring-2 text-sm font-medium"
-              onClick={() => setShowImageModal(true)}
-              aria-label="Zoom image"
-            >View</button>
-          )}
-              </figure>
-            </div>
-          </div> */}
         </motion.div>
 
         <motion.div
@@ -554,7 +516,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
                   className="mx-auto max-h-[70vh] object-contain"
                 />
                 <p className="mt-2 text-center text-sm text-base-content/70">
-                  Source: {currentProject?.image_source || '—'}
+                   {currentProject?.image_source ? <span>Source: {currentProject.image_source}</span> : ''}
                 </p>
               </div>
               <div className="px-5 py-3 border-t border-base-300 flex justify-end gap-2">

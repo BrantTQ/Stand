@@ -23,7 +23,8 @@ const StageScreen: React.FC<StageScreenProps> = ({
     setSelectedDomain(null);
   }, [currentStageId, setSelectedDomain]);
 
-  const showDomainModal = Boolean(currentStageId) && !selectedDomain;
+  const isAiFuture = currentStageId === "ai_future"; // NEW
+  const showDomainModal = Boolean(currentStageId) && !selectedDomain && !isAiFuture; // UPDATED
 
   // Decide if a picked domain has questions in the current stage
   const handleSelectDomain = (domainId: string) => {
@@ -36,7 +37,6 @@ const StageScreen: React.FC<StageScreenProps> = ({
     const q = domainsObj?.[domainId]?.questions;
     const hasQuestions = Array.isArray(q) && q.length > 0;
 
-    // If no questions, ask App to skip TakeQuiz/QuestionScreen and go straight to DomainScreen
     setSelectedDomain(domainId, { skipQuiz: !hasQuestions });
   };
 

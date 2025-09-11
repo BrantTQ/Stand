@@ -178,5 +178,25 @@
       "Women"
     ],
     "answer": "People over 40"
+  },
+  "sn_wel_saa_1": {
+    "question": "Looking beyond the average score, the <strong>Active Ageing Index (AAI)</strong> also tells us how evenly older adults benefit from active ageing opportunities. Greater inequality in AAI scores means weaker overall performance.<br><br>Where do you think <strong>Luxembourg</strong> ranks among 28 European countries for <strong>AAI equality</strong>?",
+    "choices": [
+      "3rd",
+      "10th",
+      "6th",
+      "15th"
+    ],
+    "answer": "6th"
+  },
+  "sn_wel_saa_2": {
+    "question": "In <strong>LISER</strong>, we have estimated the <strong>Active Ageing Index</strong> for persons aged 55+ in 28 EU countries with data from 2016-2017.<br><br><strong>Guess the Rank!</strong><br>Based on its average <strong>Active Ageing Index (AAI)</strong> score, where do you think Luxembourg stands among 28 European countries?",
+    "choices": [
+      "12th",
+      "5th",
+      "18th",
+      "2nd"
+    ],
+    "answer": "5th"
   }
 }

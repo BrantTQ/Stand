@@ -14,10 +14,8 @@ const Header: React.FC<HeaderProps> = ({ pageTitle }) => (
 <img
       src="/liser_logo.png"
       alt="LISER Logo"
-      className=" absolute h-23 w-[240px] right-4 top-0"
+      className=" absolute h-23 w-[240px] right-0 top-2"
     />
-  
-
     
   </header>
 );

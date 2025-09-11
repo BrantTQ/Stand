@@ -5,6 +5,7 @@ import domainsData from "../data/domains.json";
 // import lifeStages from "../data/lifeStages.json";
 import blurbsData from "../data/blurbs.json";
 import { swapCard } from "../assets/animations/variants";
+import { q } from "framer-motion/client";
 
 interface QuestionScreenProps {
   currentStageId: string;
@@ -72,6 +73,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const timerRef = useRef<number | null>(null);
   const autoNavRef = useRef(false); // added: prevent double navigation when no questions
+  
 
   // Domain + stage context
   const domainObj: Domain | undefined = (domainsData as Domain[]).find(d => d.id === selectedDomain);
@@ -195,6 +197,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
     return null;
   }
 
+  const content = (question.Title && question.Title.trim().length > 0) ? question.Title : '_No question available_';
   return (
     <AnimatePresence mode="wait">
     <div className="relative h-full w-full flex items-center justify-center bg-base-200">
@@ -207,16 +210,18 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
           layout
           className="card w-full max-w-3xl bg-base-100 shadow-2xl">
         <div className="card-body">
-          <div className="flex items-start justify-between gap-5">
-            <div className="pl-2 space-y-1">
-              <h2 className="card-title text-left text-2xl">{question.Title}</h2>
-              <p className="text-base-content/70">{question.description}</p>
-            </div>
-            <div className="hidden sm:block">
+          <div className="flex">
+            <div className="text-base-content/80 font-medium text-xl text-justify pl-2 space-y-1" 
+            dangerouslySetInnerHTML={{ __html: content }}
+            />
+              {/* <h2 className="card-title text-left text-2xl">{question.Title}</h2> */}
+              {/* <p className="text-base-content/80 font-medium text-2xl text-justify">{question.Title}</p> */}
+              
+            {/* <div className="hidden sm:block">
               <span className="badge badge-outline badge-lg" style={accentStyle} title={domainObj?.label}>
                 {domainObj?.label ?? "Dimension"}
               </span>
-            </div>
+            </div> */}
           </div>
 
           <div className="mt-4">

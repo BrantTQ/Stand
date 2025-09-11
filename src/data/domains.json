@@ -46,5 +46,11 @@
     "label": "Technology",
     "color": "#805ad5",
     "icon": "/technology.png"
+  },
+  {
+    "id": "pension",
+    "label": "Pension",
+    "color": "#805ad5",
+    "icon": "/pension.png"
   }
 ]

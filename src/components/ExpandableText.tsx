@@ -40,10 +40,8 @@ const ExpandableText = ({
   emptyPlaceholder = '—',
   cardClassName = 'flex flex-col',
   paragraphClassName = '',
-  modalTitle,
   readMoreLabel = 'Read more',
   closeLabel = 'Close',
-  maxHeightVarName = '--expandable-text-max-height',
   collapsedLines,
   disableExpand = false,
   idBase,
@@ -177,7 +175,7 @@ const ExpandableText = ({
             <div
               ref={paraRef}
               id={`${baseId}-paragraph`}
-              className={`line-clamp-10 overflow-hidden pr-1 ${paragraphClassName} prose prose-sm max-w-none text-justify`}
+              className={`line-clamp-10 2xl:line-clamp-9 overflow-hidden pr-1 ${paragraphClassName} prose prose-sm max-w-none text-justify`}
               dangerouslySetInnerHTML={{ __html: content }}
             />
             {isOverflowing && !disableExpand && (

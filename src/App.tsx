@@ -10,6 +10,7 @@ import Header from "./components/Header";
 import Breadcrumbs from "./components/Breadcrumbs";
 import TransitionScreen from "./pages/TransitionScreen";
 import blurbsData from "./data/blurbs.json";
+import AiFutureScreen from "./pages/AiFutureScreen"; // NEW
 
 function App() {
   const [currentStageId, setCurrentStageId] = useState<string | null>(null);
@@ -57,7 +58,7 @@ function App() {
       setAttractMode(true);
       setCurrentStageId(null);
       setSelectedDomain(null);
-    }, 1745000);
+    }, 600000); // 10 minutes
   };
 
   useEffect(() => {
@@ -101,6 +102,14 @@ function App() {
     }
   };
 
+  // Ensure AI Future stage never goes to domain/question UI
+  useEffect(() => {
+    if (currentStageId === "ai_future") {
+      setSelectedDomain(null);
+      setShowTakeQuiz(false);
+      setShowQuestion(false);
+    }
+  }, [currentStageId]);
 
   return (
     <div className="viewport-frame">
@@ -149,7 +158,6 @@ function App() {
                         setShowTakeQuiz(false);
                         setSelectedDomain(null);
                       }}
-                     
                     />
                   ) : showQuestion ? (
                     <QuestionScreen
@@ -198,6 +206,17 @@ function App() {
                       }}
                     />
                   )
+                ) : currentStageId === "ai_future" ? (
+                  // NEW: AI Future video-only flow
+                  <AiFutureScreen
+                    src="/videos/living_conditions.mp4" // change this path to your AI video if needed
+                    onBack={() => {
+                      setSelectedDomain(null);
+                      setShowTakeQuiz(false);
+                      setShowQuestion(false);
+                      setCurrentStageId(null);
+                    }}
+                  />
                 ) : (
                   <StageScreen
                     currentStageId={currentStageId}
@@ -212,11 +231,10 @@ function App() {
                 <hr className="max-w-full h-[2px] border-0 rounded-full bg-gradient-to-l from-blue-950 to-blue-50 via-blue-400" />
                 <div className=" flex flex-row-reverse text-gray-500 text-left ">
                   <p className="text-sm text-gray-600 dark:text-neutral-500">
-                    © 2025 LISER Information Systems.
+                    © 2025 LISER Living Conditions <strong>|</strong> Information Systems.
                   </p>
                 </div>
               </div>
-
             </div>
           )}
         </AnimatePresence>

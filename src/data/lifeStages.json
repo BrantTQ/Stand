@@ -26,7 +26,8 @@
     "icon": "/senior.png",
     "domains": [
       "health",
-      "wellbeing"
+      "wellbeing",
+      "pension"
     ],
     "color": "#D4A373"
   },

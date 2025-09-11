@@ -1,4 +1,4 @@
-import React, { act } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import domains from "../data/domains.json";
 import lifeStages from "../data/lifeStages.json";
@@ -46,7 +46,6 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({
 }) => {
   const stage = lifeStages.find(s => s.id === selectedStageId);
   const allowed = stage?.domains || [];
-  const stageColor = stage?.color || "#2a2a86";
 
   // Filter domains to only those allowed in the current stage, if any
 
@@ -97,12 +96,6 @@ const DomainButtons: React.FC<DomainButtonsProps> = ({
                   color: isActive ? "#fff" : "#364153"
                 }}
                 onClick={() => onSelect(domain.id)}
-                // whileHover={{ scale: 1.08 }}
-                // whileTap={{ scale: 0.94 }}
-                // animate={{
-                //   scale: isActive ? 1 : 1,
-                //   boxShadow: isActive ? `0 0 0 4px ${domain.color}44` : "none"
-                // }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 exit="exit"
                 layout

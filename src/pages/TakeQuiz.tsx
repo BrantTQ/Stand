@@ -1,20 +1,6 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import lifeStages from "../data/lifeStages.json";
-import domainsData from "../data/domains.json";
 import { swapCard } from "../assets/animations/variants";
-
-type Domain = {
-  id: string;
-  label: string;
-  color?: string;
-  icon?: string;
-};
-
-type Stage = {
-  id: string;
-  title: string;
-};
 
 interface TakeQuizProps {
   currentStageId: string;
@@ -29,14 +15,7 @@ const TakeQuiz: React.FC<TakeQuizProps> = ({
   selectedDomain,
   onStart,
   onSkip,
-  onBack,
 }) => {
-  const stage = (lifeStages as Stage[]).find(s => s.id === currentStageId);
-  const domain = (domainsData as Domain[]).find(d => d.id === selectedDomain);
-
-  const accentStyle: React.CSSProperties | undefined = domain?.color
-    ? { borderColor: domain.color, color: domain.color }
-    : undefined;
 
   return (
     <AnimatePresence mode="wait">
@@ -58,17 +37,9 @@ const TakeQuiz: React.FC<TakeQuizProps> = ({
                   Answer one quick question to test your knowledge, or skip to explore insights.
                 </p>
               </div>
-              {/* <div className="hidden sm:block">
-                <span className="badge badge-outline badge-lg" style={accentStyle} title={domain?.label}>
-                  {domain?.label ?? "Dimension"}
-                </span>
-              </div> */}
             </div>
 
             <div className="border-t border-base-200 pt-3 mt-4 flex flex-col sm:flex-row gap-3">
-                {/* <button type="button" className="btn btn-ghost" onClick={onBack}>
-                ← Back
-              </button> */}
               <div className="flex-1" />
               <button type="button" className="btn rounded-full btn-primary" onClick={onStart}>
                 Start now

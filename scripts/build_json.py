@@ -29,7 +29,8 @@ life_stages = [
     "icon": "/senior.png",
     "domains": [
       "health",
-      "wellbeing"
+      "wellbeing",
+      "pension"
     ],
     "color": "#D4A373"
   },
@@ -179,7 +180,7 @@ blurbs = {
             "introduction": "Dementia represents a global health challenge that will continue to grow for decades to come. The progressive ageing of the EU population (21% aged over 65 in 2021) and the increase in life expectancy make dementia, a major contributor to disability among the older population. The consistent feature of the dementia syndrome is that patients depend on caregivers as well as health services. Therefore, dementia has a significant impact on public expenditure for healthcare and for long-term care. \nIn this paper, we extended a dynamic model adapted to the specificities of the healthcare system in Luxembourg to estimate the long-term effect of dementia prevalence among individuals aged 50+ on public expenditure for healthcare and long-term care in the country under different scenarios.",
             "conclusion": "The prevalence of dementia is expected to grow from 3.8% in 2025 to 5.3% in 2070. \nThe prevalence of Alzheimer, the most common type of dementia, is expected to grow from 2.8% in 2025 to 4.1% in 2070.\nPublic expenditure on healthcare for individuals affected by dementia in 2070 is projected to be three times its value in 2025.\nPublic expenditure on long-term care for these patients in 2070 is projected to be almost eight times its value in 2025.\nFrom a public health policy perspective, our results could contribute to ex-ante evaluation of preventive strategies to reduce the incidence of dementia. From an economic perspective, our results could contribute to identifying the priorities to limit the impact of an ageing population on public finances.",
             "image": {
-                      "src": "/energy_pooled.png",
+                      "src": "project_images/sn_hea_pap.png",
                       "cite": ""
                       },  
             "qrCode": ["project_qr_codes/sn_hea_papf_qr_1.svg"],
@@ -190,7 +191,7 @@ blurbs = {
             "introduction": "The population ageing process represents one of the most important demographic processes of the last decades in Europe and beyond. As people are getting older, while birth rate is declining and life expectancy increasing, the ageing of the population is expected to accelerate. The same applies for Luxembourg, which has one of the highest life expectancies in Europe. The ageing of the population will have a high impact on the economy and the way our society will be organised. \nSHARE, the Survey of Health, Ageing and Retirement in Europe, is a research infrastructure for studying the effects of health, social, economic and environmental policies over the life-course of European citizens and beyond.",
             "conclusion": "<p>Since its creation in 2004:</p><ul class=\"list-disc list-inside\"><li>SHARE has set new standards in research and scientific data collection</li><li>SHARE has provided policymakers with reliable and comparable data on which they can base their decisions to address socio-economic and public health challenges using scientific evidence and thus contribute to improving the living conditions of European citizens.</li></ul> <br/> <p>More than 20 years of existence:</p><ul class=\"list-disc list-inside\"><li>28 country teams, 160.000 participants, more than 600.000 interviews collected</li><li>Luxembourg joined the SHARE project in 2013</li><li>Six waves of data already collected</li><li>More than 3000 participants</li><li>More than 80 scientific publications using the Luxembourgish data of SHARE</li></ul>",
             "image": {
-                "src": "/energy_pooled.png",
+                "src": "project_images/sn_hea_share.png",
                 "cite": ""
             },
             "qrCode": ["project_qr_codes/sn_hea_shar_qr_1.svg", "project_qr_codes/sn_hea_shar_qr_2.svg"],
@@ -211,7 +212,12 @@ blurbs = {
                 },
                 "qrCode": ["project_qr_codes/sn_wel_saa_qr_1.svg"],
                 "author": ["Javier Olivera"]
-            },
+            }          
+        ],
+        "questions":["sn_wel_saa_1","sn_wel_saa_2"] 
+      },
+      "pension": {
+        "projects": [
             {
                 "title":"Portability of pension plans",
                 "introduction":"In April 2024, LISER conducted a discrete choice experiment to explore how willing people are to join a portable voluntary pension plan that can move with them across the EU. The study was inspired by the <strong>Pan-European Personal Pension Product (PEPP)</strong>, an EU initiative designed to make supplementary pensions more flexible and transferable between member states. Participants compared alternative pension plans, some with portability and others without, while also facing varying potential losses in pension balance due to management fees. The research reveals how portability and costs influence people’s decisions to save for retirement across borders.",
@@ -260,19 +266,6 @@ blurbs = {
       
     }
   }
-}
-
-
-graph = {
-    "nodes": [
-        {"id": "s1", "label": "Childcare enrolment", "stage": "early", "domain": "family"},
-        {"id": "s2", "label": "Maths score", "stage": "childhood", "domain": "education"},
-        {"id": "s3", "label": "AI literacy", "stage": "ai_future", "domain": "education"},
-    ],
-    "edges": [
-        {"source": "s1", "target": "s2", "type": "correlation"},
-        {"source": "s2", "target": "s3", "type": "trend"}
-    ]
 }
 
 questions= {
@@ -456,9 +449,27 @@ questions= {
             "Women"
         ],
         "answer": "People over 40"
+    },
+    "sn_wel_saa_1":{
+        "question": "Looking beyond the average score, the <strong>Active Ageing Index (AAI)</strong> also tells us how evenly older adults benefit from active ageing opportunities. Greater inequality in AAI scores means weaker overall performance.<br><br>Where do you think <strong>Luxembourg</strong> ranks among 28 European countries for <strong>AAI equality</strong>?",
+        "choices": [
+            "3rd",
+            "10th",
+            "6th",
+            "15th"
+        ],
+        "answer": "6th"
+    },
+    "sn_wel_saa_2":{
+        "question": "In <strong>LISER</strong>, we have estimated the <strong>Active Ageing Index</strong> for persons aged 55+ in 28 EU countries with data from 2016-2017.<br><br><strong>Guess the Rank!</strong><br>Based on its average <strong>Active Ageing Index (AAI)</strong> score, where do you think Luxembourg stands among 28 European countries?",
+        "choices": [
+            "12th",
+            "5th",
+            "18th",
+            "2nd"
+        ],
+        "answer": "5th"
     }
-    
-
 }
 
 domains = [
@@ -509,13 +520,18 @@ domains = [
       "label": "Technology",
       "color": "#805ad5",
       "icon": "/technology.png"
+    },
+    {
+      "id": "pension",
+      "label": "Pension",
+      "color": "#805ad5",
+      "icon": "/pension.png"
     }
 ]
 
 
 json.dump(life_stages, open("src/data/lifeStages.json", "w", encoding="utf-8"), indent=2, ensure_ascii=False)
 json.dump(blurbs, open("src/data/blurbs.json", "w", encoding="utf-8"), indent=2, ensure_ascii=False)
-json.dump(graph, open("src/data/graph.json", "w", encoding="utf-8"), indent=2, ensure_ascii=False)
 json.dump(questions, open("src/data/questions.json", "w", encoding="utf-8"), indent=2, ensure_ascii=False)
 json.dump(domains, open("src/data/domains.json", "w", encoding="utf-8"), indent=2, ensure_ascii=False)
 print("Synthetic data written.")
