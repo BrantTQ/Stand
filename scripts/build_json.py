@@ -36,8 +36,8 @@ life_stages = [
   },
   {
     "id": "ai_future",
-    "title": "AI and the Future",
-    "icon": "/ai.png",
+    "title": "and the Future",
+    "icon": "",
     "domains": [
       "technology",
     ],

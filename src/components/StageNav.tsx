@@ -107,7 +107,7 @@ export const StageNav: React.FC<StageNavProps> = ({
                     className={`${iconSize} mb-2  object-contain pointer-events-none select-none`}
                     aria-hidden="true"
                   />
-                ) : null}
+                ) : <p className="mb-2 text-white font-medium font-mono text-8xl">AI</p>}
                 <span className="leading-snugs">{stage.title}</span>
               </div>
             </motion.button>

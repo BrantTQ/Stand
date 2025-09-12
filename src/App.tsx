@@ -10,7 +10,8 @@ import Header from "./components/Header";
 import Breadcrumbs from "./components/Breadcrumbs";
 import TransitionScreen from "./pages/TransitionScreen";
 import blurbsData from "./data/blurbs.json";
-import AiFutureScreen from "./pages/AiFutureScreen"; // NEW
+import AiFutureScreen from "./pages/AiFutureScreen";
+import Dashboard from "./admin/Dashboard";
 import { initAnalytics, trackEnterApp, trackStageVisit, trackDomainStart, trackDomainEnd, trackQuizSkipped, trackExitToAttract } from "./analytics";
 
 function App() {
@@ -172,11 +173,42 @@ function App() {
     }
   }, [currentStageId]);
 
+
+  const [showAdmin, setShowAdmin] = useState<boolean>(() => {
+    return window.location.search.includes("admin=1");
+  });
+
+  // Optional secret key combo (Shift + A three times within 2s)
+  useEffect(() => {
+    let count = 0;
+    let timer: number | null = null;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "a" && e.shiftKey) {
+        count++;
+        if (timer) window.clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          count = 0;
+          timer = null;
+        }, 2000);
+        if (count >= 3) {
+          setShowAdmin(s => !s);
+          count = 0;
+        }
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => {
+      window.removeEventListener("keydown", handler);
+      if (timer) window.clearTimeout(timer);
+    };
+  }, []);
+
   return (
     <div className="viewport-frame">
-      <div className="app-stage">
-        <AnimatePresence mode="wait">
-          {attractMode ? (
+      {showAdmin ? (<Dashboard onClose={() => setShowAdmin(false)} />) : (
+        <div className="app-stage">
+          <AnimatePresence mode="wait">
+          {attractMode  ? (
             <AttractScreen onInteraction={handleInteraction} />
           ) : showTransition ? (
             <TransitionScreen
@@ -302,6 +334,7 @@ function App() {
           )}
         </AnimatePresence>
       </div>
+      )}
     </div>
   );
 }
