@@ -1,6 +1,4 @@
-import { useMotionTemplate, useMotionValue, motion, animate } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
-import { Stars } from "@react-three/drei";
+import { useMotionValue, motion, animate } from "framer-motion";
 import { useEffect } from "react";
 import ScreenSaver from "../components/ScreenSaver";
 
