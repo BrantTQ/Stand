@@ -27,13 +27,13 @@ interface DomainButtonsProps {
 const sizeClassMap = {
   md: "h-28 w-28 text-xs sm:text-sm rounded-full border-3",
   sm: "h-20 w-20 text-[10px] sm:text-sm rounded-full",
-  xs: "h-8 w-24 text-[12px] rounded-2xl border-2 text-gray-700"
+  xs: "h-8 w-30 text-[14px] rounded-2xl border-2 text-gray-800"
 };
 
 const iconSizeMap = {
   md: "w-10 h-10 ",
   sm: "w-6 h-6",
-  xs: "w-4 h-4 invisible"
+  xs: "w-6 h-6 invisible"
 };
 
 const DomainButtons: React.FC<DomainButtonsProps> = ({
