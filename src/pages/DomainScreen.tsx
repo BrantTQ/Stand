@@ -6,6 +6,10 @@ import DomainButtons from '../components/DomainButtons';
 import ExpandableText from '../components/ExpandableText';
 import { trackProjectStart, trackProjectEnd } from '../analytics';
 
+// Prevent duplicate rapid project_view_start events (e.g., React 18 StrictMode double-mount in dev)
+const recentProjectStartMap: Record<string, number> = {};
+const PROJECT_START_DEDUP_WINDOW_MS = 1200; // window within which duplicate starts are ignored
+
 // Raw project shape from blurbs.json (updated to reflect new shapes)
 type RawProject = {
   id?: string;  
@@ -198,21 +202,43 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
 
     // Start timing the current project if not already started
     if (projId && projectEnterRef.current === null) {
-      projectEnterRef.current = Date.now();
+      const now = Date.now();
+      projectEnterRef.current = now;
       lastProjectIdRef.current = projId;
-      trackProjectStart(stageId, selectedDomain, projId, projectIndex);
+      const startKey = `${stageId}::${selectedDomain}::${projId}`;
+      const last = recentProjectStartMap[startKey];
+      const isDuplicateWithinWindow = last !== undefined && now - last < PROJECT_START_DEDUP_WINDOW_MS;
+      if (!isDuplicateWithinWindow) {
+        trackProjectStart(stageId, selectedDomain, projId, projectIndex);
+        recentProjectStartMap[startKey] = now;
+      }
     }
   }, [stageId, selectedDomain, projectIndex, hasProjects, currentProject?.id]);
 
-  // NEW: cleanup on unmount to close any open timing
+  // Cleanup on real unmount (StrictMode safe) to close any open timing.
+  // React 18 StrictMode mounts, unmounts, and remounts components immediately in dev.
+  // We detect the initial dev "fake" unmount (mountCount < 2 && DEV) and skip sending analytics.
+  const mountCountRef = useRef(0);
   useEffect(() => {
+    mountCountRef.current += 1; // increment on each mount (twice in dev StrictMode initial cycle)
     return () => {
+      const isDev = (import.meta as any)?.env?.DEV;
+      const isStrictModeInitialFakeUnmount = isDev && mountCountRef.current < 2; // first synthetic cleanup
+      if (isStrictModeInitialFakeUnmount) {
+        return; // skip sending premature project_end
+      }
       if (selectedDomain && lastProjectIdRef.current && projectEnterRef.current !== null) {
         const durationMs = Date.now() - projectEnterRef.current;
-        trackProjectEnd(stageId, selectedDomain, lastProjectIdRef.current, durationMs);
+        // Only record if user spent a meaningful time (>150ms) to avoid noise
+        if (durationMs > 150) {
+          trackProjectEnd(stageId, selectedDomain, lastProjectIdRef.current, durationMs);
+        }
+        projectEnterRef.current = null;
+        lastProjectIdRef.current = null;
       }
     };
-  }, [stageId, selectedDomain]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // run once per actual mount cycle
   return (
     <div className="flex flex-col h-full min-h-0">
       {/* New grid: header (row1), domain buttons (row2), cards (row3), footer (row4) */}
