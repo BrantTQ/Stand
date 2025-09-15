@@ -1,4 +1,5 @@
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
+import { useState, useCallback } from "react";
 
 import ScreenSaver from "../components/ScreenSaver";
 
@@ -7,9 +8,23 @@ interface AttractScreenProps {
 }
 
 const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
- 
+  // To suppress synthetic click events immediately after screensaver exit
+  // (especially on touch devices), we track a timestamp until which clicks
+  // should be ignored.
+  const [suppressUntil, setSuppressUntil] = useState<number>(0);
 
-  // const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
+  const handleScreensaverExit = useCallback(() => {
+    // Suppress interactions for a brief moment (e.g. 400ms)
+    setSuppressUntil(Date.now() + 400);
+  }, []);
+
+  const handleAttractClick = useCallback(() => {
+    if (Date.now() < suppressUntil) {
+      // Ignore the synthetic click immediately after screensaver exit
+      return;
+    }
+    onInteraction();
+  }, [onInteraction, suppressUntil]);
 
   return (
     <motion.div
@@ -20,10 +35,14 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
       className="absolute top-0 left-0 h-full w-full bg-cover bg-[#ffffff] bg-center"
     >
       {/* Full-screen screensaver overlay; intercepts events when visible */}
-      <ScreenSaver idleMs={30000} videoSrc="/videos/living_conditions.mp4" />
+      <ScreenSaver
+        idleMs={30000}
+        videoSrc="/videos/living_conditions.mp4"
+        onExit={handleScreensaverExit}
+      />
 
       <div
-        onClick={onInteraction}
+        onClick={handleAttractClick}
         className="relative flex flex-col items-center justify-center h-screen w-full cursor-pointer backdrop-blur-xs"
       >
         <div className="flex items-center justify-center w-full">
