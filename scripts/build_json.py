@@ -98,6 +98,18 @@ blurbs = {
       "poverty": {
           "projects": [
               {
+                  "id": "ch_pov_ecg",
+                  "title": "European Child Guarantee (ECG)-LUX",
+                  "introduction": "The European Child Guarantee (ECG) Council Recommendation requires each Member State to guarantee access for children in need to free childcare, education, healthcare and school meals, as well as adequate housing and healthy nutrition. Exploiting administrative and survey data, LISER assesses progress and challenges towards the ECG objectives in Luxembourg in biannual reports to the European Commission.",
+                  "conclusion": "Luxembourg has developed numerous policies to ensure free access for all children to the services covered by the European Child Guarantee. However, challenges remain in securing effective access for the most vulnerable children and guaranteeing equal opportunities for all children.",
+                  "image":{
+                      "src": "project_images/ch_pov_ecg.png",
+                      "cite": ""
+                  },
+                  "qrCode": ["project_qr_codes/ch_pov_ecg_qr_1.svg"],
+                  "author": ["Anne-Catherine Guio", "Eric Marlier"]
+              },
+              {
                   "id": "ch_pov_cpp",
                   "title": "Children’s poverty perception",
                   "introduction": "Growing up in poverty can limit children’s opportunities and affect how they learn, feel, and plan for the future. Policies often focus on reducing measurable inequalities like low income or lack of resources. But there’s another side: how children see their own situation. Feeling poor can impact confidence, well-being, and life choices—sometimes as much as actual poverty. Our project asks: Do children who feel poor actually live in poverty?  By comparing perceptions with reality, we aim to understand this gap and design policies that address both material and emotional needs.",
@@ -108,19 +120,8 @@ blurbs = {
                   },
                   "qrCode": ["project_qr_codes/ch_pov_cpp_qr_1.svg"],
                   "author": ["Audrey Bousselin"]
-              },
-              {
-                  "id": "ch_pov_ecg",
-                  "title": "European Child Guarantee (ECG)-LUX",
-                  "introduction": "The European Child Guarantee (ECG) Council Recommendation requires each Member State to guarantee access for children in need to free childcare, education, healthcare and school meals, as well as adequate housing and healthy nutrition. Exploiting administrative and survey data, LISER assesses progress and challenges towards the ECG objectives in Luxembourg in biannual reports to the European Commission.",
-                  "conclusion": "In Luxembourg, in 2024, a quarter of children under 18—around 33,000—were “at risk of poverty or social exclusion”. Luxembourg ranks 20th in the EU league table. In 2021, the government committed to reducing this number by 2030. \nThe vast majority of those children are income-poor in Luxembourg. Only a small minority are affected by severe material and social deprivation or live in a (quasi-)jobless household, without also being income-poor. The income poverty threshold varies with household composition. It is around 3,300€/month for a lone parent with one child and 5,300€ for a household with two adults and two children.",
-                  "image":{
-                      "src": "project_images/child_poverty_eu_child_guarantee.png",
-                      "cite": ""
-                  },
-                  "qrCode": ["project_qr_codes/ch_pov_ecg_qr_1.svg"],
-                  "author": ["Anne-Catherine Guio", "Eric Marlier"]
               }
+              
           ],
            "questions":["ch_pov_cpp_1","ch_pov_cpp_2","ch_pov_ecg_1","ch_pov_ecg_2"]
       }
