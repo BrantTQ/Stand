@@ -1,24 +1,13 @@
-import { useMotionValue, motion, animate } from "framer-motion";
-import { useEffect } from "react";
+import {motion} from "framer-motion";
+
 import ScreenSaver from "../components/ScreenSaver";
 
 interface AttractScreenProps {
   onInteraction: () => void;
 }
 
-const COLORS_TOP = ["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"];
-
 const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
-  const color = useMotionValue(COLORS_TOP[0]);
-
-  useEffect(() => {
-    animate(color, COLORS_TOP, {
-      ease: "easeInOut",
-      duration: 10,
-      repeat: Infinity,
-      repeatType: "mirror",
-    });
-  }, []);
+ 
 
   // const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
 
@@ -52,14 +41,14 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
               </div>
               <h1 className="text-4xl font-extrabold font-sans">Life-Course Data Explorer</h1>
             </div>
-            <div className="text-center mt-8 py-2 text-[hsl(10,100%,84%)]">
+            <div className="text-center mt-8 py-2 text-[#ffbbad]">
               <p className="animate-bounce text-xl font-medium">Touch anywhere to continue</p>
             </div>
           </div>
         </div>
         <div className="absolute 2xl:bottom-25 md:bottom-0 md:right-6">
           <img
-            src="/information_systems.png"
+            src="/info_sys.png"
             alt="Powered By LISER Information Systems"
             className="h-42 w-42 object-contain"
           />
