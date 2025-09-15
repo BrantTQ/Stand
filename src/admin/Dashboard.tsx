@@ -180,8 +180,6 @@ const Dashboard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     };
   }, [live]);
 
-  const maxStageViews = stageStats.reduce((m, r) => Math.max(m, r.stageViews || 0), 0);
-
   // Chart data
   const stageBarData = {
     labels: stageStats.map(s => s.stageId),
@@ -244,6 +242,7 @@ const Dashboard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         <label className="text-white text-xs flex items-center gap-1">
           Live
           <input
+            id="liveToggle"
             type="checkbox"
             className="toggle toggle-primary toggle-sm"
             checked={live}
@@ -257,13 +256,14 @@ const Dashboard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         <label className="text-white text-sm flex items-center gap-2">
           Since (hours):
           <input
+            id="sinceHours"
             type="number"
             min={0}
             value={sinceHours ?? ""}
             onChange={(e) =>
               setSinceHours(e.target.value === "" ? undefined : parseFloat(e.target.value))
             }
-            className="input input-sm input-bordered w-24"
+            className="input text-black input-sm input-bordered w-24"
             disabled={live}
           />
         </label>
@@ -326,13 +326,25 @@ const Dashboard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             : <div className="text-xs opacity-60">No daily</div>}
         </SectionCard>
 
-        <SectionCard title="Domain Dwell (ms)">
+        <SectionCard title="Dimension Dwell (ms)">
           <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
             {domainStats.map(d => (
               <div key={d.stageId + d.domainId}>
                 <div className="flex justify-between text-[11px] mb-0.5">
                   <span>{d.stageId}/{d.domainId}</span>
-                  <span>{d.totalDurationMs} (avg {d.avgDurationMs})</span>
+                    <span>
+                    {(() => {
+                      const fmt = (ms: number) => {
+                      const s = ms / 1000;
+                      if (s < 60) return `${s.toFixed(1)}s`;
+                      const m = s / 60;
+                      if (m < 60) return `${m.toFixed(1)}m`;
+                      const h = m / 60;
+                      return `${h.toFixed(2)}h`;
+                      };
+                      return `${fmt(d.totalDurationMs)} (avg ${fmt(d.avgDurationMs)})`;
+                    })()}
+                    </span>
                 </div>
                 <div className="h-1.5 w-full bg-base-200 rounded">
                   <div
