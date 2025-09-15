@@ -57,7 +57,7 @@ export default function Breadcrumbs({
                   setShowQuestion(false);
                 }}
               >
-                {stageTitle}
+                {currentStageId === "ai_future" ?  `AI ${stageTitle}` : stageTitle}
               </button>
             </li>
           )}

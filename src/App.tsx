@@ -79,7 +79,11 @@ function App() {
   if (selectedDomain && currentStageId) {
     const stageObj = lifeStages.find(s => s.id === currentStageId);
     pageTitle = stageObj ? stageObj.title : "Dimension Details";
-  } else {
+  } 
+  else if(currentStageId==="ai_future"){
+    pageTitle = "AI and the Future";
+  } 
+  else {
     pageTitle = "Life Journey with Data";
   }
 
@@ -326,7 +330,7 @@ function App() {
                 <hr className="max-w-full h-[2px] border-0 rounded-full bg-gradient-to-l from-blue-950 to-blue-50 via-blue-400" />
                 <div className=" flex flex-row-reverse text-gray-500 text-left ">
                   <p className="text-sm text-gray-600 dark:text-neutral-500">
-                    © 2025 LISER Living Conditions <strong>|</strong> Information Systems.
+                    © 2025 LISER Living Condition.
                   </p>
                 </div>
               </div>
