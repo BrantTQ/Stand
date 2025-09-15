@@ -239,6 +239,8 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // run once per actual mount cycle
+
+  const swipe="<<swipe left or right to change project or use buttons below>>"
   return (
     <div className="flex flex-col h-full min-h-0">
       {/* New grid: header (row1), domain buttons (row2), cards (row3), footer (row4) */}
@@ -266,7 +268,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
         {/* Row 2: Header (spans all columns) */}
         <div className="col-span-1 lg:col-span-3">
           <div className="flex flex-col px-3 lg:flex-row lg:items-center lg:justify-between mb-1">
-            <h2 className="text-lg text-slate-800 md:text-xl font-semibold text-center lg:text-left px-4 lg:px-0">
+            <h2 className="text-lg text-slate-800 md:text-xl md:max-w-lg font-semibold text-center lg:text-left px-4 lg:px-0">
               {currentProject?.title || 'No content for this stage/domain'}
             </h2>
             {onBack ? (
@@ -282,8 +284,8 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
                   onClick={onBack}
                   aria-label="Go to stage selection"
                 >
-                  <img src="/home_button.svg" alt="Home" className="w-4 h-4" />
-                  <span>Restart</span>
+                  <img src="/restart.svg" alt="Home" className="w-4 h-4" />
+                  <span>Back to Life Stages</span>
                 </button>
 
                 {/* Exit: ask for confirmation before going to attract screen */}
@@ -421,7 +423,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
 
         {/* Row 4: Footer controls */}
         <div className="col-span-1 lg:col-span-3 grid grid-cols-3 items-end">
-            <div className="justify-self-start py-2 pl-2">
+            <div className="justify-self-start py-2 pl-2 md:max-w-sm">
             {(() => {
               const author = currentProject?.author?.trim();
               if (!author) return null;
@@ -435,10 +437,11 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
               );
             })()}
             </div>
-            <div className="flex items-center gap-0 justify-center mb-4 py-2 lg:mt-0">
+            <div className={`flex  items-center gap-0 justify-center lg:mt-0 ${hasProjects && projects.length > 1 ? 'flex-col mb-2 gap-2 py-2' : 'mb-4 py-2'}`}>
             {hasProjects && projects.length > 1 ? (
               <>
-              <button className="btn bg-transparent border-0 btn-xs md:btn-sm p-1" onClick={goPrev} aria-label="Previous project">
+              <div className="pb-2"><p className=' text-sm text-neutral-500 text-center'><em>{swipe}</em></p></div>
+              <div><button className="btn bg-transparent border-0 btn-xs md:btn-sm p-1" onClick={goPrev} aria-label="Previous project">
                 <img src="/back.png" alt="Previous" className="w-12 h-12" />
               </button>
               <span className="text-xs md:text-sm text-base-content/70">
@@ -446,7 +449,8 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
               </span>
               <button className="btn bg-transparent border-0 btn-xs md:btn-sm p-1" onClick={goNext} aria-label="Next project">
                <img src="/next.png" alt="Next" className="w-12 h-12" />
-              </button>
+              </button></div>
+              
               </>
             ) : (
               <>
