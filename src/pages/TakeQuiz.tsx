@@ -41,7 +41,7 @@ const TakeQuiz: React.FC<TakeQuizProps> = ({
 
             <div className="border-t border-base-200 pt-3 mt-4 flex flex-col sm:flex-row gap-3">
               <div className="flex-1" />
-              <button type="button" className="btn rounded-full btn-primary" onClick={onStart}>
+              <button type="button" className="btn rounded-full bg-[#2a2986] text-[#fff]" onClick={onStart}>
                 Start now
               </button>
               <button type="button" className="btn rounded-full border border-transparent bg-gray-200 text-gray-700" onClick={onSkip}>

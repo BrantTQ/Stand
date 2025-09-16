@@ -235,6 +235,16 @@ const Dashboard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     scales: { x: { beginAtZero: true, max: 100 } }
   };
 
+  // Duration formatter (ms -> s / m / h)
+  const formatDuration = (ms: number) => {
+    const s = ms / 1000;
+    if (s < 60) return `${s.toFixed(1)}s`;
+    const m = s / 60;
+    if (m < 60) return `${m.toFixed(1)}m`;
+    const h = m / 60;
+    return `${h.toFixed(2)}h`;
+  };
+
   return (
     <div className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex flex-col p-4 overflow-y-auto">
       <div className="flex flex-wrap gap-4 items-center mb-4">
@@ -284,7 +294,7 @@ const Dashboard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         </div>
         )}
         <div className="flex flex-wrap gap-2">
-          {["raw","stage","domain","project","question"].map(kind => (
+          {["raw","stage","domain","project","question","summary"].map(kind => (  // <-- added summary
             <button
               key={kind}
               className="btn btn-xs"
@@ -326,7 +336,7 @@ const Dashboard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             : <div className="text-xs opacity-60">No daily</div>}
         </SectionCard>
 
-        <SectionCard title="Dimension Dwell (ms)">
+        <SectionCard title="Dimension">
           <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
             {domainStats.map(d => (
               <div key={d.stageId + d.domainId}>
@@ -361,13 +371,16 @@ const Dashboard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </div>
         </SectionCard>
 
-        <SectionCard title="Project Dwell (Top)">
+        <SectionCard title="Project">
           <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
             {projectStats.slice(0, 30).map(p => (
               <div key={p.stageId + p.domainId + p.projectId} className="text-[11px]">
                 <div className="flex justify-between mb-0.5">
                   <span className="truncate max-w-[140px]">{p.projectId}</span>
-                  <span>{p.totalDurationMs}</span>
+                  <span>
+                    {formatDuration(p.totalDurationMs)}
+                    {p.avgDurationMs != null && ` (avg ${formatDuration(p.avgDurationMs)})`}
+                  </span>
                 </div>
                 <div className="h-1.5 w-full bg-base-200 rounded">
                   <div
@@ -385,9 +398,22 @@ const Dashboard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         </SectionCard>
 
         <SectionCard title="Question Accuracy (%)">
-          {questionStats.length
-            ? <Bar data={questionAccuracyData} options={chartOptionsHorizontal} />
-            : <div className="text-xs opacity-60">No question data</div>}
+          {questionStats.length ? (
+            <div className="space-y-3">
+              <Bar data={questionAccuracyData} options={chartOptionsHorizontal} />
+              <div className="max-h-40 overflow-y-auto text-[11px] space-y-1">
+                {questionStats.map(q => (
+                  <div key={q.questionId} className="flex justify-between">
+                    <span className="truncate max-w-[120px]">{q.questionId}</span>
+                    <span>
+                      {q.correctCount}/{q.totalAnswers} correct
+                      {typeof q.wrongCount === "number" && ` (${q.wrongCount} wrong)`} – {q.percentCorrect}%
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : <div className="text-xs opacity-60">No question data</div>}
         </SectionCard>
 
         <SectionCard title="Quiz Skips">

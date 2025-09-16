@@ -308,7 +308,7 @@ function App() {
                   )
                 ) : currentStageId === "ai_future" ? (
                   <AiFutureScreen
-                    src="/videos/living_conditions.mp4"
+                    src="/videos/ai_future.mp4"
                     onBack={() => {
                       setSelectedDomain(null);
                       setShowTakeQuiz(false);

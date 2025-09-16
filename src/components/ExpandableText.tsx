@@ -165,17 +165,17 @@ const ExpandableText = ({
     <>
       <div
         ref={containerRef}
-        className={`border-1 border-base-300 relative px-1 pb-1 pt-0 rounded-xl card w-full max-w-3xl bg-base-100 shadow-xl ${cardHeightClass} ${cardClassName}`}
+        className={`border-1 border-[#2a2986] relative px-1 pb-1 pt-0 rounded-xl card w-full max-w-3xl bg-base-100 shadow-xl ${cardHeightClass} ${cardClassName}`}
         id={`${baseId}-card`}
       >
-        <div className="card-body px-4 pb-1 pt-0 h-full flex flex-col">
+        <div className="card-body px-2 pb-1 pt-0 h-full flex flex-col">
           <h3 className="card-title px-1 py-3 text-slate-800 text-xl border-b-1 border-base-300">{heading}</h3>
           <div className="relative flex-1">
             {/* Collapsed content: render HTML and keep line clamp */}
             <div
               ref={paraRef}
               id={`${baseId}-paragraph`}
-              className={`line-clamp-10 2xl:line-clamp-9 overflow-hidden pr-1 ${paragraphClassName} prose prose-sm max-w-none text-justify`}
+              className={`line-clamp-9 2xl:line-clamp-9 overflow-hidden pr-1 ${paragraphClassName} prose prose-sm max-w-none text-justify`}
               dangerouslySetInnerHTML={{ __html: content }}
             />
             {isOverflowing && !disableExpand && (
@@ -184,7 +184,7 @@ const ExpandableText = ({
                   <button
                     type="button"
                     onClick={openModal}
-                    className="btn rounded-full btn-sm bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium"
+                    className="btn rounded-full btn-sm bg-[#2a2986] hover:bg-gray-300 text-[#fff] text-sm font-medium"
                     aria-haspopup="dialog"
                     aria-controls={`${baseId}-modal`}
                     aria-label={`Expand full ${heading.toLowerCase()}`}

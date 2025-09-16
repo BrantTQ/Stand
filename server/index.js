@@ -4,6 +4,7 @@ import Database from "better-sqlite3";
 import path from "path";
 import { fileURLToPath } from "url";
 import 'dotenv/config';
+import cors from "cors";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,9 +29,28 @@ CREATE INDEX IF NOT EXISTS idx_events_domain ON events(domainId);
 `);
 
 const app = express();
-app.use(express.json({ limit: "2mb" }));
-app.use(morgan("tiny"));
 
+// Skip morgan for OPTIONS
+app.use(morgan("tiny", {
+  skip: (req) => req.method === "OPTIONS"
+}));
+
+app.use(cors({
+  origin: (origin, cb) => cb(null, true),          // keep permissive for now
+  methods: ["GET","POST","OPTIONS"],
+  allowedHeaders: ["Content-Type","x-admin-key"],
+  maxAge: 600,                                      // cache preflight 10 min
+  optionsSuccessStatus: 204
+}));
+
+// Fast path OPTIONS (after cors so headers are set)
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+
+app.use(express.json({ limit: "2mb" }));
+// app.use(cors({ origin: ["capacitor://localhost","https://localhost","http://localhost:5173", "http://10.187.16.236:4000"], methods: ["GET","POST"], allowedHeaders: ["Content-Type","x-admin-key"] }));
 const ADMIN_KEY = process.env.ANALYTICS_ADMIN_KEY || "";
 
 // --- Admin middleware ---
@@ -132,6 +152,19 @@ const ingestHandler = (req, res) => {
 app.post("/analytics/events", ingestHandler);
 app.post("/api/analytics/events", ingestHandler);
 
+// Alt no-preflight ingest (text/plain simple request)
+app.post("/api/analytics/events-plain",
+  express.text({ limit: "2mb" }),
+  (req, res) => {
+    try {
+      req.body = JSON.parse(req.body);
+    } catch {
+      return res.status(400).json({ error: "invalid json" });
+    }
+    ingestHandler(req, res);
+  }
+);
+
 app.get("/analytics/health", (_req, res) => res.json({ ok: true }));
 app.get("/api/analytics/health", (_req, res) => res.json({ ok: true }));
 
@@ -217,6 +250,7 @@ app.get("/api/analytics/question-stats", requireAdmin, (req, res) => {
     SELECT
       json_extract(payload,'$.questionId') AS questionId,
       SUM(CASE WHEN json_extract(payload,'$.correct')=1 THEN 1 ELSE 0 END) AS correctCount,
+      SUM(CASE WHEN json_extract(payload,'$.correct')=0 THEN 1 ELSE 0 END) AS wrongCount,   -- added
       COUNT(*) AS totalAnswers,
       ROUND(100.0 * SUM(CASE WHEN json_extract(payload,'$.correct')=1 THEN 1 ELSE 0 END) / COUNT(*), 1) AS percentCorrect
     FROM events
@@ -351,6 +385,31 @@ app.get("/api/analytics/export", requireAdmin, (req, res) => {
         percentCorrect: r.totalAnswers ? Math.round((r.correctCount / r.totalAnswers) * 1000) / 10 : 0
       }));
       break;
+    case "summary": {   // <-- added
+      const total = db.prepare(`SELECT COUNT(*) c FROM events WHERE 1=1 ${clause}`).get(args).c;
+      const sessions = db.prepare(`SELECT COUNT(DISTINCT sessionId) c FROM events WHERE 1=1 ${clause}`).get(args).c;
+      const types = db.prepare(`
+        SELECT type,
+               COUNT(*) c,
+               ROUND(100.0 * COUNT(*) / ?, 2) percentOfTotal
+        FROM events
+        WHERE 1=1 ${clause}
+        GROUP BY type
+        ORDER BY c DESC
+      `).all([total, ...(args || [])]);
+
+      // First row: overall totals (type field = 'ALL')
+      rows = [
+        { type: "ALL", count: total, distinctSessions: sessions, percentOfTotal: 100 },
+        ...types.map(t => ({
+          type: t.type,
+            count: t.c,
+            distinctSessions: "",          // blank to keep CSV simple
+            percentOfTotal: t.percentOfTotal
+        }))
+      ];
+      break;
+    }
     default:
       return res.status(400).json({ error: "invalid kind" });
   }

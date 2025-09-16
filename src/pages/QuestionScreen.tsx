@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import questionsData from "../data/questions.json";
 import blurbsData from "../data/blurbs.json";
 import { swapCard } from "../assets/animations/variants";
+import { trackQuestionAnswered } from "../analytics"; // <-- added
 
 interface QuestionScreenProps {
   currentStageId: string;
@@ -150,9 +151,38 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
     const correct = choice === question.answer;
 
+    // --- NEW: analytics event ---
+    try {
+      const selectedOptionIndex = displayedChoices.findIndex(c => c === choice);
+      trackQuestionAnswered({
+        stageId: currentStageId,
+        domainId: selectedDomain,
+        questionId: question.id,
+        correct,
+        selectedOptionIndex: selectedOptionIndex >= 0 ? selectedOptionIndex : undefined,
+        totalOptions: displayedChoices.length
+      });
+    } catch {
+      // swallow analytics errors
+    }
+
+    // --- NEW: persist running counts in localStorage ---
+    try {
+      const keyCorrect = "quiz.correctCount";
+      const keyWrong = "quiz.wrongCount";
+      if (correct) {
+        const v = parseInt(localStorage.getItem(keyCorrect) || "0", 10) + 1;
+        localStorage.setItem(keyCorrect, String(v));
+      } else {
+        const v = parseInt(localStorage.getItem(keyWrong) || "0", 10) + 1;
+        localStorage.setItem(keyWrong, String(v));
+      }
+    } catch {
+      // ignore storage issues
+    }
+
     // Fire confetti on correct answer
     if (correct) {
-      // fire-and-forget; no need to await
       triggerConfetti();
     }
 

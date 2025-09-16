@@ -19,5 +19,16 @@ export default defineConfig({
         changeOrigin: true,     
       },
     },
-  }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Put heavy deps in their own chunks
+          "framer-motion": ["framer-motion"],
+          "react-vendors": ["react", "react-dom"],
+        },
+      },
+    },
+  },
 })

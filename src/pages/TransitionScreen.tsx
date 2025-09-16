@@ -3,12 +3,12 @@ import { AnimatePresence, motion } from "framer-motion";
 
 type TransitionScreenProps = {
   onFinished: () => void;
-  src?: string; // optional override; defaults to /videos/transition.mp4
+  src?: string;
   className?: string;
-  showSkip?: boolean; // show a Skip button (default true)
-  skipLabel?: string; // custom label for skip button
-  autoHideSkip?: boolean; // enable auto-hide behavior (default true)
-  autoHideDelayMs?: number; // inactivity delay before hiding skip (default 2500 ms)
+  showSkip?: boolean;
+  skipLabel?: string;
+  autoHideSkip?: boolean;
+  autoHideDelayMs?: number;
 };
 
 const TransitionScreen = ({
@@ -22,13 +22,12 @@ const TransitionScreen = ({
 }: TransitionScreenProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isFadingOut, setIsFadingOut] = useState(false);
-  const [hasCompleted, setHasCompleted] = useState(false); // prevent double-calls
+  const [hasCompleted, setHasCompleted] = useState(false);
+  const [loading, setLoading] = useState(true); // <-- added
 
-  // Visibility state for skip button (independent from fade-out)
   const [skipVisible, setSkipVisible] = useState(true);
   const hideTimerRef = useRef<number | null>(null);
 
-  // Clear any existing hide timer
   const clearHideTimer = () => {
     if (hideTimerRef.current) {
       window.clearTimeout(hideTimerRef.current);
@@ -64,34 +63,39 @@ const TransitionScreen = ({
     };
 
     const onLoaded = () => {
+      setLoading(false); // <-- hide loader
       tryPlay();
     };
-
-    const onError = () => setIsFadingOut(true);
+    const onError = () => {
+      setLoading(false);
+      setIsFadingOut(true);
+    };
+    const onWaiting = () => setLoading(true); // buffering
+    const onPlaying = () => setLoading(false);
 
     v.addEventListener("loadeddata", onLoaded);
     v.addEventListener("error", onError);
+    v.addEventListener("waiting", onWaiting);
+    v.addEventListener("playing", onPlaying);
+
     return () => {
       v.removeEventListener("loadeddata", onLoaded);
       v.removeEventListener("error", onError);
+      v.removeEventListener("waiting", onWaiting);
+      v.removeEventListener("playing", onPlaying);
     };
   }, []);
 
   // Set up global interaction listeners to re-show skip button
   useEffect(() => {
     if (!autoHideSkip || !showSkip) return;
-
     const handlePointerMove = () => showAndReschedule();
     const handleKeyDown = () => showAndReschedule();
-    const handleClick = () => showAndReschedule(); // taps / clicks
-
+    const handleClick = () => showAndReschedule();
     window.addEventListener("pointermove", handlePointerMove);
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("click", handleClick);
-
-    // Initial schedule
     scheduleHide();
-
     return () => {
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("keydown", handleKeyDown);
@@ -102,11 +106,7 @@ const TransitionScreen = ({
 
   const initiateSkip = () => {
     if (hasCompleted) return;
-    if (videoRef.current) {
-      try {
-        videoRef.current.pause();
-      } catch {}
-    }
+    videoRef.current?.pause();
     setIsFadingOut(true);
   };
 
@@ -129,8 +129,8 @@ const TransitionScreen = ({
         className={`fixed inset-0 bg-black ${className ?? ""}`}
       >
         {/* Skip Button */}
-        {showSkip && !isFadingOut && skipVisible && (
-          <div className="absolute top-4 right-4 z-20">
+        {showSkip && !isFadingOut && skipVisible && !loading && (   /* hide skip while loading */
+          <div className="absolute top-4 right-4 z-30">
             <button
               type="button"
               onClick={initiateSkip}
@@ -151,7 +151,16 @@ const TransitionScreen = ({
           onEnded={() => setIsFadingOut(true)}
           className="w-full h-full object-cover"
           preload="auto"
+          poster=""
         />
+
+        {loading && !isFadingOut && (
+          <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/70 pointer-events-none">
+            <div className="flex flex-col items-center gap-4">
+              <div className="h-16 w-16 animate-spin rounded-full border-4 border-teal-400 border-t-transparent" />
+            </div>
+          </div>
+        )}
       </motion.div>
     </AnimatePresence>
   );

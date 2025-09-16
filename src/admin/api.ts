@@ -1,4 +1,4 @@
-const ADMIN_KEY = import.meta.env.VITE_ADMIN_KEY || "";
+const ADMIN_KEY = import.meta.env.VITE_ADMIN_KEY || "zxcasdqwe123";
 const API_BASE = import.meta.env.VITE_ANALYTICS_API_BASE || "/api/analytics";
 
 async function get<T>(path: string): Promise<T> {

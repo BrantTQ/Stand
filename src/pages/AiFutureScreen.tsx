@@ -6,9 +6,10 @@ interface AiFutureScreenProps {
   onBack: () => void; // go back to stage select
 }
 
-const AiFutureScreen: React.FC<AiFutureScreenProps> = ({ src = "/videos/living_conditions.mp4", onBack }) => {
+const AiFutureScreen: React.FC<AiFutureScreenProps> = ({ src = "/videos/ai_future.mp4", onBack }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [ended, setEnded] = useState(false);
+  const [loading, setLoading] = useState(true);            // <-- added
 
   const handleReplay = useCallback(() => {
     if (videoRef.current) {
@@ -23,8 +24,8 @@ const AiFutureScreen: React.FC<AiFutureScreenProps> = ({ src = "/videos/living_c
   }, []);
 
   useEffect(() => {
-    // Reset state when the component mounts
     setEnded(false);
+    setLoading(true);                                      // reset loader on src change
   }, [src]);
 
   return (
@@ -45,9 +46,24 @@ const AiFutureScreen: React.FC<AiFutureScreenProps> = ({ src = "/videos/living_c
             controls
             playsInline
             autoPlay
+            onLoadedData={() => setLoading(false)}         // <-- hide when enough data
+            onCanPlay={() => setLoading(false)}
+            onCanPlayThrough={() => setLoading(false)}
+            onWaiting={() => setLoading(true)}             // buffering
+            onPlaying={() => setLoading(false)}
             onEnded={() => setEnded(true)}
+            preload="auto"
+            poster=""
           />
         </div>
+
+        {loading && !ended && (                            // <-- loader overlay
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="flex flex-col items-center gap-4">
+              <div className="h-16 w-16 animate-spin rounded-full border-4 border-teal-400 border-t-transparent" />
+            </div>
+          </div>
+        )}
 
         {ended && (
           <div className="absolute inset-0 flex items-center justify-center">

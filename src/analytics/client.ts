@@ -6,7 +6,8 @@ type InitOptions = {
   appVersion?: string;
 };
 
-let ENDPOINT = "/api/analytics";
+const DEFAULT_ENDPOINT = "http://10.187.16.236:4000/api/analytics/events";
+let ENDPOINT = DEFAULT_ENDPOINT;
 let SESSION_ID = "";
 let APP_VERSION = "0.0.0";
 let queue: AnalyticsEvent[] = [];
@@ -24,7 +25,7 @@ export function initAnalytics(opts?: InitOptions) {
   ENDPOINT =
     opts?.endpoint ||
     (import.meta as any).env?.VITE_ANALYTICS_ENDPOINT ||
-    "/api/analytics";
+    DEFAULT_ENDPOINT;
   SESSION_ID =
     opts?.sessionId || localStorage.getItem("analytics.sessionId") || uuid();
   localStorage.setItem("analytics.sessionId", SESSION_ID);

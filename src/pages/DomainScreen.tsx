@@ -109,7 +109,7 @@ interface DomainScreenProps {
 }
 
 const uniformParagraphClasses =
-  'text-[15px] text-slate-600 text-justify mt-1 md:mt-1 leading-relaxed px-3 md:px-3';
+  'text-lg text-slate-600 text-justify mt-1 md:mt-1 leading-relaxed px-3 md:px-3';
 
 const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitToAttract }: DomainScreenProps) => {
   const stage = lifeStages.find(s => s.id === stageId);
@@ -246,7 +246,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
       {/* New grid: header (row1), domain buttons (row2), cards (row3), footer (row4) */}
       <div
         className="
-          grid gap-3 flex-1 min-h-0
+          grid gap-1 flex-1 min-h-0
           grid-cols-1
           lg:grid-cols-3
           grid-rows-[auto_auto_1fr_auto]
@@ -268,11 +268,11 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
         {/* Row 2: Header (spans all columns) */}
         <div className="col-span-1 lg:col-span-3">
           <div className="flex flex-col px-3 lg:flex-row lg:items-center lg:justify-between mb-1">
-            <h2 className="text-lg text-slate-800 md:text-xl md:max-w-lg font-semibold text-center lg:text-left px-4 lg:px-0">
+            <h2 className="text-lg text-slate-800 md:text-xl w-2xl md:max-w-3xl font-semibold text-center lg:text-left px-4 lg:px-0">
               {currentProject?.title || 'No content for this stage/domain'}
             </h2>
             {onBack ? (
-            <div className="col-span-1 grid grid-cols-3 mb-1">
+            <div className="col-span-1 mb-1">
               <div className="justify-self-start"/>
               <div/>
                
@@ -307,7 +307,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
 
         {/* Row 3: Content cards (3 columns on lg) */}
         <motion.div
-          className="col-span-1 lg:col-span-3 grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 min-h-0"
+          className="col-span-1 lg:col-span-3 grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-3 min-h-0"
           drag={hasProjects && projects.length > 1 ? 'x' : false}
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.18}
@@ -359,7 +359,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
           transition={{ duration: 0.3, delay: 0.05 }}
           className="flex flex-col min-h-auto mb-1"
         >
-          <div className="card grid grid-cols-1 gap-1 border-1 border-base-300 w-full h-full bg-base-100 shadow-xl rounded-xl">
+          <div className="card grid grid-cols-1 gap-1 border-1 border-[#2a2986] w-full h-full bg-base-100 shadow-xl rounded-xl">
           {currentProject?.image ? (
             <div
               role="button"
@@ -390,7 +390,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
           {currentProject?.image && (
             <button
               type="button"
-              className="btn rounded-full btn-sm w-1/2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium"
+              className="btn rounded-full btn-sm w-1/2 bg-[#2a2986] hover:bg-gray-300 text-[#fff] text-sm font-medium"
               onClick={() => setShowImageModal(true)}
               aria-label="Zoom image"
             >View</button>

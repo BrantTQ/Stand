@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { trackScreensaverExit, trackScreensaverShown } from "../analytics";
 
+
 interface ScreenSaverProps {
   idleMs?: number;           // time until the screensaver appears
   videoSrc?: string;         // path to the looping video
@@ -17,6 +18,7 @@ const ScreenSaver: React.FC<ScreenSaverProps> = ({
   const [visible, setVisible] = useState(false);
   const timerRef = useRef<number | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [loading, setLoading] = useState(true);         // <-- added
 
   const clearTimer = useCallback(() => {
     if (timerRef.current) {
@@ -67,6 +69,7 @@ const ScreenSaver: React.FC<ScreenSaverProps> = ({
   // Autoplay video when screensaver shows
   useEffect(() => {
     if (visible && videoRef.current) {
+      setLoading(true);                                 // reset when showing
       const playPromise = videoRef.current.play();
       if (playPromise && typeof playPromise.then === "function") {
         playPromise.catch(() => {
@@ -100,7 +103,21 @@ const ScreenSaver: React.FC<ScreenSaverProps> = ({
         loop
         playsInline
         aria-label="Life stages screensaver"
+        onLoadedData={() => setLoading(false)}
+        onCanPlay={() => setLoading(false)}
+        onCanPlayThrough={() => setLoading(false)}
+        onWaiting={() => setLoading(true)}
+        onPlaying={() => setLoading(false)}
+        preload="auto"
+        poster=""
       />
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+          <div className="flex flex-col items-center gap-4">
+            <div className="h-14 w-14 animate-spin rounded-full border-4 border-teal-300 border-t-transparent" />
+          </div>
+        </div>
+      )}
       <div className="absolute w-full 2xl:bottom-30 md:bottom-0 md:right-6 pointer-events-none">
         <div className="text-center bg-radial from-teal-500 to-50% mt-3 py-5 text-white p-2">
           <p className="text-2xl font-extrabold">Touch to START</p>

@@ -48,7 +48,7 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
         <div className="flex items-center justify-center w-full">
           <div className="bg-[#0097b2] rounded-2xl px-12 py-10 shadow-xl border border-white/20 max-w-4xl w-full">
             <div className="w-full text-center text-[#fff]">
-              <h1 className="text-7xl font-medium leading-tight bg-gradient-to-br from-white to-gray-400 mb-4 bg-clip-text font-mono">
+              <h1 className="text-6xl font-medium leading-tight bg-gradient-to-br from-white to-gray-400 mb-4 bg-clip-text font-mono">
           LIVING CONDITIONS
               </h1>
               <div className="flex justify-center m-2">
@@ -72,7 +72,7 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
             className="h-42 w-42 object-contain"
           />
         </div>
-        <img src="/liser_logo.png" alt="LISER Logo" className=" absolute h-26 w-[230px] md:left-4 top-5" />
+        <img src="/liser_logo.png" alt="LISER Logo" className=" absolute h-24 w-[225px] md:left-2 top-3" />
         {/* <div className="absolute inset-0 z-0">
           <Canvas>
             <Stars radius={70} count={7000} factor={4} fade speed={2} />
