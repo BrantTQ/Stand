@@ -42,7 +42,7 @@ const AiFutureScreen: React.FC<AiFutureScreenProps> = ({ src = "/videos/ai_futur
           <video
             ref={videoRef}
             src={src}
-            className="h-full w-full object-cover bg-black"
+            className="h-full w-full object-contain bg-black"
             controls
             playsInline
             autoPlay

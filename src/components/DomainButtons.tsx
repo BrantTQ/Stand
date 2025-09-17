@@ -27,7 +27,7 @@ interface DomainButtonsProps {
 const sizeClassMap = {
   md: "h-28 w-28 text-xs sm:text-sm rounded-full border-3",
   sm: "h-20 w-20 text-[10px] sm:text-sm rounded-full",
-  xs: "h-8 w-30 text-[14px] rounded-2xl border-2 text-gray-800"
+  xs: "h-8 w-36 text-[14px] rounded-2xl border-2 text-gray-800"
 };
 
 const iconSizeMap = {

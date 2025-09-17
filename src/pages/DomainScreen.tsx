@@ -502,16 +502,16 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
               exit={{ opacity: 0 }}
             />
             <motion.div
-              className="relative bg-base-100 rounded-xl shadow-2xl max-w-md w-full overflow-hidden"
+              className="relative bg-base-100 rounded-xl shadow-2xl max-w-lg w-full overflow-hidden"
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1, transition: { type: 'spring', stiffness: 220, damping: 24 } }}
               exit={{ scale: 0.95, opacity: 0, transition: { duration: 0.18 } }}
             >
               <div className="px-5 pt-4 pb-3 border-b border-base-300">
-                <h3 id="exit-confirm-title" className="font-semibold text-lg">
+                <h3 id="exit-confirm-title" className="font-semibold text-xl">
                   Exit to attract screen?
                 </h3>
-                <p className="mt-1 text-sm text-base-content/70">
+                <p className="mt-1 text-md text-base-content/70">
                   You’ll leave the current view and return to the attract screen.
                 </p>
               </div>

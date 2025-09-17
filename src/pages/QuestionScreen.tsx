@@ -265,7 +265,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
                         disabled={isProcessing}
                         aria-label={choice}
                       />
-                      <span className="flex-1 text-base">{choice}</span>
+                      <span className="flex-1 text-base font-medium text-justify">{choice}</span>
                     </div>
                   </motion.label>
                 );
@@ -307,7 +307,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
         <h3 id="hs-bordered-success-style-label" className="text-gray-800 font-semibold dark:text-white">
           Correct.
         </h3>
-        <p className="text-sm text-gray-700 dark:text-neutral-400">
+        <p className="text-md text-gray-700 dark:text-neutral-400">
           {feedback.message}
         </p>
       </div>
@@ -329,7 +329,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
         <h3 id="hs-bordered-red-style-label" className="text-gray-800 font-semibold dark:text-white">
           Sorry!
         </h3>
-        <p className="text-sm text-gray-700 dark:text-neutral-400">
+        <p className="text-md text-gray-700 dark:text-neutral-400">
           {feedback.message}
         </p>
       </div>
