@@ -366,7 +366,7 @@ questions= {
         "answer": "Région Est"
     },
     "ch_edu_esse_2":{
-        "question": "In which year did the law on primary education begin to include parents’ preferences for track placement (ESC, ESG, ESG-VO) when moving from primary to secondary school?",
+        "question": "In what year did the law first require schools to consider parents’ preferences for secondary-track placement (ESC, ESG, ESG-VO) after primary school?",
         "choices": [
             "2003",
             "2009",
@@ -412,7 +412,7 @@ questions= {
         "answer": "Cyprus"
     },
     "sn_wel_ppp_1":{
-        "question": "On average, what additional share of their pension savings did participants in our study say they would give up for a portable pension plan?",
+        "question": "On average, what additional share of their pension savings did participants in our study say they would give up for a pension plan fully portable across the European Union?",
         "choices": [
             "1.2%",
             "3.6%",
@@ -422,7 +422,7 @@ questions= {
         "answer": "3.6%"
     },
     "sn_wel_ppp_2":{
-        "question": "In our study, which group was more willing to pay extra for a portable pension plan?",
+        "question": "In our study, which group was more willing to pay extra for a pension plan fully portable across the European Union?",
         "choices": [
             "People over 40",
             "Cross-border workers living in Belgium",
@@ -442,7 +442,7 @@ questions= {
         "answer": "6th"
     },
     "sn_wel_saa_2":{
-        "question": "In <strong>LISER</strong>, we have estimated the <strong>Active Ageing Index</strong> for persons aged 55+ in 28 EU countries with data from 2016-2017.<br><br><strong>Guess the Rank!</strong><br>Based on its average <strong>Active Ageing Index (AAI)</strong> score, where do you think Luxembourg stands among 28 European countries?",
+        "question": "Where do you think Luxembourg ranks among 28 European countries in terms of both the average level and the equality of the AAI?",
         "choices": [
             "12th",
             "5th",

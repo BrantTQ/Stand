@@ -297,7 +297,7 @@ function App() {
                 <hr className="max-w-full h-[2px] border-0 rounded-full bg-gradient-to-l from-blue-950 to-blue-50 via-blue-400" />
                 <div className=" flex flex-row-reverse text-gray-500 text-left ">
                   <p className="text-xs text-gray-600 dark:text-neutral-500">
-                    © 2025 LISER Living Conditions.
+                    © 2025 LISER Living Conditions <span className="font-medium">|</span> <span className="font-mono">IS</span>
                   </p>
                 </div>
               </div>
