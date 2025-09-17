@@ -111,7 +111,7 @@ interface DomainScreenProps {
 const uniformParagraphClasses =
   'text-lg text-slate-600 text-justify mt-1 md:mt-1 leading-relaxed px-3 md:px-3';
 
-const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitToAttract }: DomainScreenProps) => {
+const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain}: DomainScreenProps) => {
   const stage = lifeStages.find(s => s.id === stageId);
   const normalizedBlurbs: Blurb[] = useMemo(
     () => normalizeBlurbs(blurbsData as unknown as RawBlurbsFile),
@@ -120,7 +120,6 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
 
   const [projectIndex, setProjectIndex] = useState(0);
   const [showImageModal, setShowImageModal] = useState(false);
-  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const imageCloseBtnRef = useRef<HTMLButtonElement | null>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
 
@@ -280,23 +279,12 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
               <div className="flex justify-end items-center gap-2">
                 {/* Restart: immediate return to stage selection (no confirm) */}
                 <button
-                  className="btn btn-sm px-3 py-1.5 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium focus:outline-none focus:ring-2 flex items-center gap-2"
+                  className="btn btn-sm btn-error px-3 py-1.5 rounded-full text-gray-700 text-sm font-medium focus:outline-none focus:ring-2 flex items-center gap-2"
                   onClick={onBack}
                   aria-label="Go to stage selection"
                 >
                   <img src="/restart.svg" alt="Home" className="w-4 h-4" />
                   <span>Back to Life Stages</span>
-                </button>
-
-                {/* Exit: ask for confirmation before going to attract screen */}
-                <button
-                  className="btn btn-sm px-3 py-1.5 rounded-full btn-error text-white text-sm font-medium focus:outline-none focus:ring-2 flex items-center gap-2"
-                  onClick={() => setShowExitConfirm(true)}
-                  aria-label="Exit to attract screen"
-                  disabled={!onExitToAttract}
-                >
-                  ✕
-                  <span>Exit</span>
                 </button>
                 </div>
             </div>
@@ -359,7 +347,7 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
           transition={{ duration: 0.3, delay: 0.05 }}
           className="flex flex-col min-h-auto mb-1"
         >
-          <div className="card grid grid-cols-1 gap-1 border-1 border-[#2a2986] w-full h-full bg-base-100 shadow-xl rounded-xl">
+          <div className="card grid grid-cols-1 gap-1 border-2 border-[#2a2986] w-full h-full bg-base-100 shadow-xl rounded-xl">
           {currentProject?.image ? (
             <div
               role="button"
@@ -481,63 +469,6 @@ const DomainScreen = ({ stageId, selectedDomain, onBack, onSelectDomain, onExitT
           </div>
         </div>
       </div>
-
-      {/* NEW: Exit confirmation modal (replaces previous restart modal) */}
-      <AnimatePresence>
-        {showExitConfirm && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="exit-confirm-title"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-              onClick={() => setShowExitConfirm(false)}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            />
-            <motion.div
-              className="relative bg-base-100 rounded-xl shadow-2xl max-w-lg w-full overflow-hidden"
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1, transition: { type: 'spring', stiffness: 220, damping: 24 } }}
-              exit={{ scale: 0.95, opacity: 0, transition: { duration: 0.18 } }}
-            >
-              <div className="px-5 pt-4 pb-3 border-b border-base-300">
-                <h3 id="exit-confirm-title" className="font-semibold text-xl">
-                  Exit to attract screen?
-                </h3>
-                <p className="mt-1 text-md text-base-content/70">
-                  You’ll leave the current view and return to the attract screen.
-                </p>
-              </div>
-              <div className="px-5 py-3 flex justify-end gap-2">
-                <button
-                  type="button"
-                  className="btn btn-sm"
-                  onClick={() => setShowExitConfirm(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-error text-white"
-                  onClick={() => {
-                    setShowExitConfirm(false);
-                    onExitToAttract?.();
-                  }}
-                >
-                  Yes, exit
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Image Zoom Modal (unchanged) */}
       <AnimatePresence>

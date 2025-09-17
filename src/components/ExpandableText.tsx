@@ -165,7 +165,7 @@ const ExpandableText = ({
     <>
       <div
         ref={containerRef}
-        className={`border-1 border-[#2a2986] relative px-1 pb-1 pt-0 rounded-xl card w-full max-w-3xl bg-base-100 shadow-xl ${cardHeightClass} ${cardClassName}`}
+        className={`border-2 border-[#2a2986] relative px-1 pb-1 pt-0 rounded-xl card w-full max-w-3xl bg-base-100 shadow-xl ${cardHeightClass} ${cardClassName}`}
         id={`${baseId}-card`}
       >
         <div className="card-body px-2 pb-1 pt-0 h-full flex flex-col">

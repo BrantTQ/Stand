@@ -46,7 +46,7 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
         className="relative flex flex-col items-center justify-center h-screen w-full cursor-pointer backdrop-blur-xs"
       >
         <div className="flex items-center justify-center w-full">
-          <div className="bg-[#0097b2] rounded-2xl px-12 py-10 shadow-xl border border-white/20 max-w-4xl w-full">
+          <div className="bg-[#0097b2] rounded-2xl px-12 py-10 shadow-xl border border-white/20 max-w-5xl w-full">
             <div className="w-full text-center text-[#fff]">
               <h1 className="text-7xl font-medium leading-tight bg-gradient-to-br from-white to-gray-400 mb-4 bg-clip-text font-mono">
           LIVING CONDITIONS
@@ -58,7 +58,7 @@ const AttractScreen = ({ onInteraction }: AttractScreenProps) => {
             className="h-40 w-40 items-center-safe justify-center"
           />
               </div>
-              <h1 className="text-4xl font-extrabold font-sans">Life-Course Data Explorer</h1>
+              <h1 className="text-4xl font-extrabold font-sans">Life Course Data Explorer</h1>
             </div>
             <div className="text-center mt-8 py-2 text-[#ffbbad]">
               <p className="animate-bounce text-xl font-medium">Touch anywhere to continue</p>

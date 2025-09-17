@@ -197,7 +197,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
       setFeedback(null);
       onNext?.();
       setIsProcessing(false);
-    }, 4000);
+    }, 2000); //2 secs
   };
 
   useEffect(() => {
@@ -339,19 +339,6 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
   
 </div>
       )}
-
-      {/* {feedback && (
-        <div
-          role="alert"
-          className="toast fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50"
-        >
-          <div
-            className={`alert ${feedback.type === "success" ? "alert-success" : "alert-error"}`}
-          >
-            <span>{feedback.message}</span>
-          </div>
-        </div>
-      )} */}
     </div>
     </AnimatePresence>
   );

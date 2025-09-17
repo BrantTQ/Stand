@@ -60,7 +60,7 @@ const downloadCsv = async (kind: string, sinceHours?: number) => {
   }
 };
 
-const Dashboard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+function Dashboard() {
   const [sinceHours, setSinceHours] = useState<number | undefined>(24);
   const [summary, setSummary] = useState<Summary | null>(null);
   const [stageStats, setStageStats] = useState<any[]>([]);
@@ -259,7 +259,7 @@ const Dashboard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             onChange={() => setLive(l => !l)}
           />
         </label>
-        <button className="btn btn-sm btn-error" onClick={onClose}>Close</button>
+        
       </div>
 
       <div className="flex flex-wrap items-center gap-3 mb-4">
@@ -454,6 +454,6 @@ const Dashboard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       </div>
     </div>
   );
-};
+}
 
 export default Dashboard;

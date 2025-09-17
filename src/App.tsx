@@ -11,7 +11,6 @@ import Breadcrumbs from "./components/Breadcrumbs";
 import TransitionScreen from "./pages/TransitionScreen";
 import blurbsData from "./data/blurbs.json";
 import AiFutureScreen from "./pages/AiFutureScreen";
-import Dashboard from "./admin/Dashboard";
 import { initAnalytics, trackEnterApp, trackStageVisit, trackDomainStart, trackDomainEnd, trackQuizSkipped, trackExitToAttract } from "./analytics";
 
 function App() {
@@ -60,7 +59,7 @@ function App() {
       setAttractMode(true);
       setCurrentStageId(null);
       setSelectedDomain(null);
-    }, 600000); // 10 minutes
+    }, 360000); // 6 minutes
   };
 
   useEffect(() => {
@@ -177,39 +176,11 @@ function App() {
     }
   }, [currentStageId]);
 
-
-  const [showAdmin, setShowAdmin] = useState<boolean>(() => {
-    return window.location.search.includes("admin=1");
-  });
-
-  // Optional secret key combo (Shift + A three times within 2s)
-  useEffect(() => {
-    let count = 0;
-    let timer: number | null = null;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === "a" && e.shiftKey) {
-        count++;
-        if (timer) window.clearTimeout(timer);
-        timer = window.setTimeout(() => {
-          count = 0;
-          timer = null;
-        }, 2000);
-        if (count >= 3) {
-          setShowAdmin(s => !s);
-          count = 0;
-        }
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => {
-      window.removeEventListener("keydown", handler);
-      if (timer) window.clearTimeout(timer);
-    };
-  }, []);
+  
 
   return (
     <div className="viewport-frame">
-      {showAdmin ? (<Dashboard onClose={() => setShowAdmin(false)} />) : (
+      
         <div className="app-stage">
           <AnimatePresence mode="wait">
           {attractMode  ? (
@@ -294,16 +265,6 @@ function App() {
                         setShowTakeQuiz(hasQuestions && !alreadyAnswered);
                       }}
                       onBack={() => setCurrentStageId(null)}
-                      onExitToAttract={() => {
-                        // analytics
-                        trackExitToAttract("button");
-                        // Exit to attract screen and reset session UI
-                        setShowTakeQuiz(false);
-                        setShowQuestion(false);
-                        setSelectedDomain(null);
-                        setCurrentStageId(null);
-                        setAttractMode(true);
-                      }}
                     />
                   )
                 ) : currentStageId === "ai_future" ? (
@@ -336,7 +297,7 @@ function App() {
                 <hr className="max-w-full h-[2px] border-0 rounded-full bg-gradient-to-l from-blue-950 to-blue-50 via-blue-400" />
                 <div className=" flex flex-row-reverse text-gray-500 text-left ">
                   <p className="text-xs text-gray-600 dark:text-neutral-500">
-                    © 2025 LISER Living Condition.
+                    © 2025 LISER Living Conditions.
                   </p>
                 </div>
               </div>
@@ -344,7 +305,7 @@ function App() {
           )}
         </AnimatePresence>
       </div>
-      )}
+      
     </div>
   );
 }
