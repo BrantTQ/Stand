@@ -1,15 +1,37 @@
 import express from "express";
 import morgan from "morgan";
-import Database from "better-sqlite3";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import 'dotenv/config';
 import cors from "cors";
+import initSqlJs from "sql.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dbPath = path.join(__dirname, "analytics.db");
-const db = new Database(dbPath);
+
+// Initialize sql.js (WASM) and load or create the database
+const SQL = await initSqlJs({
+  locateFile: (file) => path.join(__dirname, "node_modules", "sql.js", "dist", file),
+});
+
+const fileBuffer = fs.existsSync(dbPath) ? fs.readFileSync(dbPath) : null;
+const db = new SQL.Database(fileBuffer || undefined);
+
+// Helper to persist DB to disk (debounced)
+function saveDb() {
+  const data = db.export();
+  fs.writeFileSync(dbPath, Buffer.from(data));
+}
+let saveTimer = null;
+function saveDbDebounced(delay = 200) {
+  if (saveTimer) return;
+  saveTimer = setTimeout(() => {
+    saveTimer = null;
+    saveDb();
+  }, delay);
+}
 
 db.exec(`
 CREATE TABLE IF NOT EXISTS events (
@@ -74,11 +96,25 @@ function broadcast(data, event = "update") {
 }
 
 // Quick async-ish aggregate (cheap)
-function currentSummary() {
-  const row = db.prepare(`SELECT COUNT(*) c FROM events`).get();
-  const sess = db.prepare(`SELECT COUNT(DISTINCT sessionId) c FROM events`).get();
-  const types = db.prepare(`SELECT type, COUNT(*) c FROM events GROUP BY type`).all();
-  return { totalEvents: row.c, distinctSessions: sess.c, byType: types };
+// Lightweight query helpers for sql.js
+function all(sql, params = []) {
+  const stmt = db.prepare(sql);
+  stmt.bind(params);
+  const rows = [];
+  while (stmt.step()) rows.push(stmt.getAsObject());
+  stmt.free();
+  return rows;
+}
+function get(sql, params = []) {
+  const rows = all(sql, params);
+  return rows[0] ?? null;
+}
+
+async function currentSummary() {
+  const row = get(`SELECT COUNT(*) c FROM events`);
+  const sess = get(`SELECT COUNT(DISTINCT sessionId) c FROM events`);
+  const types = all(`SELECT type, COUNT(*) c FROM events GROUP BY type`);
+  return { totalEvents: row?.c || 0, distinctSessions: sess?.c || 0, byType: types };
 }
 
 // Periodic heartbeat so clients know stream alive
@@ -114,36 +150,43 @@ function sinceClause(sinceHoursRaw) {
 }
 
 // --- Ingest handler (also triggers SSE broadcast) ---
-const ingestHandler = (req, res) => {
+const ingestHandler = async (req, res) => {
   const { sessionId, appVersion, events } = req.body || {};
   if (!Array.isArray(events)) {
     return res.status(400).json({ error: "events must be an array" });
   }
-  const insert = db.prepare(`
-    INSERT OR IGNORE INTO events (id, sessionId, ts, type, stageId, domainId, appVersion, payload)
-    VALUES (@id, @sessionId, @ts, @type, @stageId, @domainId, @appVersion, @payload)
-  `);
-  const tx = db.transaction(rows => {
-    rows.forEach(evt => {
-      insert.run({
-        id: evt.id,
-        sessionId: evt.sessionId || sessionId,
-        ts: evt.ts,
-        type: evt.type,
-        stageId: evt.stageId ?? null,
-        domainId: evt.domainId ?? null,
-        appVersion: appVersion ?? null,
-        payload: evt.payload ? JSON.stringify(evt.payload) : null,
+  try {
+    db.exec('BEGIN');
+    const stmt = db.prepare(`
+      INSERT OR IGNORE INTO events (id, sessionId, ts, type, stageId, domainId, appVersion, payload)
+      VALUES (:id, :sessionId, :ts, :type, :stageId, :domainId, :appVersion, :payload)
+    `);
+    for (const evt of events) {
+      stmt.run({
+        ":id": evt.id,
+        ":sessionId": evt.sessionId || sessionId,
+        ":ts": evt.ts,
+        ":type": evt.type,
+        ":stageId": evt.stageId ?? null,
+        ":domainId": evt.domainId ?? null,
+        ":appVersion": appVersion ?? null,
+        ":payload": evt.payload ? JSON.stringify(evt.payload) : null,
       });
-    });
-  });
-  tx(events);
+    }
+    stmt.free();
+    db.exec('COMMIT');
+    saveDbDebounced();
+  } catch (e) {
+    try { db.exec('ROLLBACK'); } catch {}
+    return res.status(500).json({ error: 'failed to store events' });
+  }
 
   // Broadcast only a light delta (count + last type)
+  const summary = await currentSummary();
   broadcast({
     ts: Date.now(),
     lastTypes: [...new Set(events.map(e => e.type))],
-    summary: currentSummary()
+    summary
   }, "delta");
 
   res.json({ ok: true, stored: events.length });
@@ -173,21 +216,21 @@ function buildSinceClause(sinceHours) {
   return sinceClause(sinceHours);
 }
 
-app.get("/api/analytics/summary", requireAdmin, (req, res) => {
+app.get("/api/analytics/summary", requireAdmin, async (req, res) => {
   const { clause, param } = buildSinceClause(req.query.sinceHours);
   const args = param ? [param] : [];
-  const total = db.prepare(`SELECT COUNT(*) c FROM events WHERE 1=1 ${clause}`).get(args).c;
-  const sessions = db.prepare(`SELECT COUNT(DISTINCT sessionId) c FROM events WHERE 1=1 ${clause}`).get(args).c;
-  const byType = db.prepare(`SELECT type, COUNT(*) c FROM events WHERE 1=1 ${clause} GROUP BY type ORDER BY c DESC`).all(args);
-  res.json({ totalEvents: total, distinctSessions: sessions, byType });
+  const totalRow = get(`SELECT COUNT(*) c FROM events WHERE 1=1 ${clause}`, args);
+  const sessionsRow = get(`SELECT COUNT(DISTINCT sessionId) c FROM events WHERE 1=1 ${clause}`, args);
+  const byType = all(`SELECT type, COUNT(*) c FROM events WHERE 1=1 ${clause} GROUP BY type ORDER BY c DESC`, args);
+  res.json({ totalEvents: totalRow?.c || 0, distinctSessions: sessionsRow?.c || 0, byType });
 });
 
 // Stage stats
-app.get("/api/analytics/stage-stats", requireAdmin, (req, res) => {
+app.get("/api/analytics/stage-stats", requireAdmin, async (req, res) => {
   const sinceHours = parseFloat(req.query.sinceHours);
   const { clause, param } = buildSinceClause(!isNaN(sinceHours) ? sinceHours : null);
   const args = param ? [param] : [];
-  const rows = db.prepare(`
+  const rows = all(`
     SELECT
       stageId,
       SUM(CASE WHEN type='stage_view' THEN 1 ELSE 0 END) AS stageViews,
@@ -196,105 +239,135 @@ app.get("/api/analytics/stage-stats", requireAdmin, (req, res) => {
     WHERE stageId IS NOT NULL ${clause}
     GROUP BY stageId
     ORDER BY stageViews DESC
-  `).all(args);
+  `, args);
   res.json(rows);
 });
 
 // Domain dwell (from domain_view_end)
-app.get("/api/analytics/domain-stats", requireAdmin, (req, res) => {
+app.get("/api/analytics/domain-stats", requireAdmin, async (req, res) => {
   const sinceHours = parseFloat(req.query.sinceHours);
   const { clause, param } = buildSinceClause(!isNaN(sinceHours) ? sinceHours : null);
   const args = param ? [param] : [];
-  const rows = db.prepare(`
-    SELECT
-      stageId,
-      domainId,
-      COUNT(*) AS closes,
-      ROUND(AVG(CAST(json_extract(payload,'$.durationMs') AS REAL))) AS avgDurationMs,
-      SUM(CAST(json_extract(payload,'$.durationMs') AS INTEGER)) AS totalDurationMs
+  // Fetch raw rows and aggregate in JS (no JSON1 in sql.js by default)
+  const raw = all(`
+    SELECT stageId, domainId, payload
     FROM events
     WHERE type='domain_view_end' ${clause}
-    GROUP BY stageId, domainId
-    ORDER BY totalDurationMs DESC
-  `).all(args);
+  `, args);
+
+  const map = new Map();
+  for (const r of raw) {
+    let dur = 0;
+    try { dur = Number(JSON.parse(r.payload || '{}').durationMs) || 0; } catch {}
+    const key = `${r.stageId || ''}|||${r.domainId || ''}`;
+    const acc = map.get(key) || { stageId: r.stageId, domainId: r.domainId, closes: 0, totalDurationMs: 0 };
+    acc.closes += 1;
+    acc.totalDurationMs += dur;
+    map.set(key, acc);
+  }
+  const rows = [...map.values()].map(x => ({
+    ...x,
+    avgDurationMs: x.closes ? Math.round(x.totalDurationMs / x.closes) : 0,
+  })).sort((a,b) => b.totalDurationMs - a.totalDurationMs);
   res.json(rows);
 });
 
 // Project dwell (project_view_end)
-app.get("/api/analytics/project-stats", requireAdmin, (req, res) => {
+app.get("/api/analytics/project-stats", requireAdmin, async (req, res) => {
   const sinceHours = parseFloat(req.query.sinceHours);
   const { clause, param } = buildSinceClause(!isNaN(sinceHours) ? sinceHours : null);
   const args = param ? [param] : [];
-  const rows = db.prepare(`
-    SELECT
-      stageId,
-      domainId,
-      json_extract(payload,'$.projectId') AS projectId,
-      COUNT(*) AS closes,
-      ROUND(AVG(CAST(json_extract(payload,'$.durationMs') AS REAL))) AS avgDurationMs,
-      SUM(CAST(json_extract(payload,'$.durationMs') AS INTEGER)) AS totalDurationMs
+  const raw = all(`
+    SELECT stageId, domainId, payload
     FROM events
     WHERE type='project_view_end' ${clause}
-    GROUP BY stageId, domainId, projectId
-    ORDER BY totalDurationMs DESC
-  `).all(args);
+  `, args);
+  const map = new Map();
+  for (const r of raw) {
+    let dur = 0, projectId = null;
+    try {
+      const j = JSON.parse(r.payload || '{}');
+      dur = Number(j.durationMs) || 0;
+      projectId = j.projectId ?? null;
+    } catch {}
+    const key = `${r.stageId || ''}|||${r.domainId || ''}|||${projectId || ''}`;
+    const acc = map.get(key) || { stageId: r.stageId, domainId: r.domainId, projectId, closes: 0, totalDurationMs: 0 };
+    acc.closes += 1;
+    acc.totalDurationMs += dur;
+    map.set(key, acc);
+  }
+  const rows = [...map.values()].map(x => ({
+    ...x,
+    avgDurationMs: x.closes ? Math.round(x.totalDurationMs / x.closes) : 0,
+  })).sort((a,b) => b.totalDurationMs - a.totalDurationMs);
   res.json(rows);
 });
 
 // Question accuracy
-app.get("/api/analytics/question-stats", requireAdmin, (req, res) => {
+app.get("/api/analytics/question-stats", requireAdmin, async (req, res) => {
   const sinceHours = parseFloat(req.query.sinceHours);
   const { clause, param } = buildSinceClause(!isNaN(sinceHours) ? sinceHours : null);
   const args = param ? [param] : [];
-  const rows = db.prepare(`
-    SELECT
-      json_extract(payload,'$.questionId') AS questionId,
-      SUM(CASE WHEN json_extract(payload,'$.correct')=1 THEN 1 ELSE 0 END) AS correctCount,
-      SUM(CASE WHEN json_extract(payload,'$.correct')=0 THEN 1 ELSE 0 END) AS wrongCount,   -- added
-      COUNT(*) AS totalAnswers,
-      ROUND(100.0 * SUM(CASE WHEN json_extract(payload,'$.correct')=1 THEN 1 ELSE 0 END) / COUNT(*), 1) AS percentCorrect
+  const raw = all(`
+    SELECT payload
     FROM events
     WHERE type='question_answered' ${clause}
-    GROUP BY questionId
-    ORDER BY percentCorrect DESC, totalAnswers DESC
-  `).all(args);
+  `, args);
+  const map = new Map();
+  for (const r of raw) {
+    let questionId = null, correct = 0;
+    try {
+      const j = JSON.parse(r.payload || '{}');
+      questionId = j.questionId ?? null;
+      correct = j.correct ? 1 : 0;
+    } catch {}
+    if (questionId == null) continue;
+    const acc = map.get(questionId) || { questionId, correctCount: 0, wrongCount: 0, totalAnswers: 0 };
+    acc.totalAnswers += 1;
+    if (correct) acc.correctCount += 1; else acc.wrongCount += 1;
+    map.set(questionId, acc);
+  }
+  const rows = [...map.values()].map(a => ({
+    ...a,
+    percentCorrect: a.totalAnswers ? Math.round((a.correctCount / a.totalAnswers) * 1000) / 10 : 0
+  })).sort((x,y) => y.percentCorrect - x.percentCorrect || y.totalAnswers - x.totalAnswers);
   res.json(rows);
 });
 
 // Quiz skipped counts
-app.get("/api/analytics/quiz-skips", requireAdmin, (req, res) => {
+app.get("/api/analytics/quiz-skips", requireAdmin, async (req, res) => {
   const sinceHours = parseFloat(req.query.sinceHours);
   const { clause, param } = buildSinceClause(!isNaN(sinceHours) ? sinceHours : null);
   const args = param ? [param] : [];
-  const rows = db.prepare(`
+  const rows = all(`
     SELECT stageId, domainId, COUNT(*) AS skips
     FROM events
     WHERE type='quiz_skipped' ${clause}
     GROUP BY stageId, domainId
     ORDER BY skips DESC
-  `).all(args);
+  `, args);
   res.json(rows);
 });
 
 // Screensaver activity
-app.get("/api/analytics/screensaver", requireAdmin, (req, res) => {
+app.get("/api/analytics/screensaver", requireAdmin, async (req, res) => {
   const sinceHours = parseFloat(req.query.sinceHours);
   const { clause, param } = buildSinceClause(!isNaN(sinceHours) ? sinceHours : null);
   const args = param ? [param] : [];
-  const rows = db.prepare(`
+  const rows = all(`
     SELECT type, COUNT(*) AS c
     FROM events
     WHERE type IN ('screensaver_shown','screensaver_exit') ${clause}
     GROUP BY type
-  `).all(args);
+  `, args);
   res.json(rows);
 });
 
 // Daily timeline (UTC days)
-app.get("/api/analytics/daily", requireAdmin, (req, res) => {
+app.get("/api/analytics/daily", requireAdmin, async (req, res) => {
   const days = parseInt(req.query.days) || 7;
   const cutoff = Date.now() - days * 86400000;
-  const rows = db.prepare(`
+  const rows = all(`
     SELECT
       strftime('%Y-%m-%d', ts/1000, 'unixepoch') AS day,
       COUNT(*) AS events,
@@ -303,26 +376,26 @@ app.get("/api/analytics/daily", requireAdmin, (req, res) => {
     WHERE ts >= ?
     GROUP BY day
     ORDER BY day ASC
-  `).all([cutoff]);
+  `, [cutoff]);
   res.json(rows);
 });
 
 // Top sessions by activity
-app.get("/api/analytics/top-sessions", requireAdmin, (req, res) => {
+app.get("/api/analytics/top-sessions", requireAdmin, async (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
-  const rows = db.prepare(`
+  const rows = all(`
     SELECT sessionId, COUNT(*) AS events
     FROM events
     GROUP BY sessionId
     ORDER BY events DESC
     LIMIT ?
-  `).all([limit]);
+  `, [limit]);
   res.json(rows);
 });
 
 // --- CSV Export ---
 // GET /analytics/export?kind=raw|stage|domain|project|question&sinceHours=24
-app.get("/api/analytics/export", requireAdmin, (req, res) => {
+app.get("/api/analytics/export", requireAdmin, async (req, res) => {
   const { kind = "raw", sinceHours } = req.query;
   const { clause, param } = sinceClause(sinceHours);
   const args = param ? [param] : [];
@@ -330,65 +403,96 @@ app.get("/api/analytics/export", requireAdmin, (req, res) => {
   let rows = [];
   switch (kind) {
     case "raw":
-      rows = db.prepare(`
+      rows = all(`
         SELECT id, sessionId, ts, type, stageId, domainId, appVersion, payload
         FROM events
         WHERE 1=1 ${clause}
         ORDER BY ts ASC
-      `).all(args);
+      `, args);
       break;
     case "stage":
-      rows = db.prepare(`
+      rows = all(`
         SELECT stageId, COUNT(*) stageViews
         FROM events
         WHERE type='stage_view' ${clause} AND stageId IS NOT NULL
         GROUP BY stageId
         ORDER BY stageViews DESC
-      `).all(args);
+      `, args);
       break;
     case "domain":
-      rows = db.prepare(`
-        SELECT stageId, domainId,
-          COUNT(*) closes,
-          SUM(CAST(json_extract(payload,'$.durationMs') AS INTEGER)) totalDurationMs
-        FROM events
-        WHERE type='domain_view_end' ${clause}
-        GROUP BY stageId, domainId
-        ORDER BY totalDurationMs DESC
-      `).all(args);
+      {
+        const raw = all(`
+          SELECT stageId, domainId, payload
+          FROM events
+          WHERE type='domain_view_end' ${clause}
+        `, args);
+        const map = new Map();
+        for (const r of raw) {
+          let dur = 0;
+          try { dur = Number(JSON.parse(r.payload || '{}').durationMs) || 0; } catch {}
+          const key = `${r.stageId || ''}|||${r.domainId || ''}`;
+          const acc = map.get(key) || { stageId: r.stageId, domainId: r.domainId, closes: 0, totalDurationMs: 0 };
+          acc.closes += 1;
+          acc.totalDurationMs += dur;
+          map.set(key, acc);
+        }
+        rows = [...map.values()].sort((a,b) => b.totalDurationMs - a.totalDurationMs);
+      }
       break;
     case "project":
-      rows = db.prepare(`
-        SELECT stageId, domainId,
-          json_extract(payload,'$.projectId') projectId,
-          COUNT(*) closes,
-          SUM(CAST(json_extract(payload,'$.durationMs') AS INTEGER)) totalDurationMs
-        FROM events
-        WHERE type='project_view_end' ${clause}
-        GROUP BY stageId, domainId, projectId
-        ORDER BY totalDurationMs DESC
-      `).all(args);
+      {
+        const raw = all(`
+          SELECT stageId, domainId, payload
+          FROM events
+          WHERE type='project_view_end' ${clause}
+        `, args);
+        const map = new Map();
+        for (const r of raw) {
+          let dur = 0, projectId = null;
+          try {
+            const j = JSON.parse(r.payload || '{}');
+            dur = Number(j.durationMs) || 0;
+            projectId = j.projectId ?? null;
+          } catch {}
+          const key = `${r.stageId || ''}|||${r.domainId || ''}|||${projectId || ''}`;
+          const acc = map.get(key) || { stageId: r.stageId, domainId: r.domainId, projectId, closes: 0, totalDurationMs: 0 };
+          acc.closes += 1;
+          acc.totalDurationMs += dur;
+          map.set(key, acc);
+        }
+        rows = [...map.values()].sort((a,b) => b.totalDurationMs - a.totalDurationMs);
+      }
       break;
     case "question":
-      rows = db.prepare(`
-        SELECT
-          json_extract(payload,'$.questionId') questionId,
-          SUM(CASE WHEN json_extract(payload,'$.correct')=1 THEN 1 ELSE 0 END) correctCount,
-          COUNT(*) totalAnswers
-        FROM events
-        WHERE type='question_answered' ${clause}
-        GROUP BY questionId
-        ORDER BY totalAnswers DESC
-      `).all(args);
-      rows = rows.map(r => ({
-        ...r,
-        percentCorrect: r.totalAnswers ? Math.round((r.correctCount / r.totalAnswers) * 1000) / 10 : 0
-      }));
+      {
+        const raw = all(`
+          SELECT payload
+          FROM events
+          WHERE type='question_answered' ${clause}
+        `, args);
+        const map = new Map();
+        for (const r of raw) {
+          try {
+            const j = JSON.parse(r.payload || '{}');
+            const qid = j.questionId;
+            if (qid == null) continue;
+            const correct = j.correct ? 1 : 0;
+            const acc = map.get(qid) || { questionId: qid, correctCount: 0, totalAnswers: 0 };
+            acc.totalAnswers += 1;
+            acc.correctCount += correct;
+            map.set(qid, acc);
+          } catch {}
+        }
+        rows = [...map.values()].map(r => ({
+          ...r,
+          percentCorrect: r.totalAnswers ? Math.round((r.correctCount / r.totalAnswers) * 1000) / 10 : 0,
+        })).sort((a,b) => b.totalAnswers - a.totalAnswers);
+      }
       break;
     case "summary": {   // <-- added
-      const total = db.prepare(`SELECT COUNT(*) c FROM events WHERE 1=1 ${clause}`).get(args).c;
-      const sessions = db.prepare(`SELECT COUNT(DISTINCT sessionId) c FROM events WHERE 1=1 ${clause}`).get(args).c;
-      const types = db.prepare(`
+      const total = (get(`SELECT COUNT(*) c FROM events WHERE 1=1 ${clause}`, args))?.c || 0;
+      const sessions = (get(`SELECT COUNT(DISTINCT sessionId) c FROM events WHERE 1=1 ${clause}`, args))?.c || 0;
+      const types = all(`
         SELECT type,
                COUNT(*) c,
                ROUND(100.0 * COUNT(*) / ?, 2) percentOfTotal
@@ -396,7 +500,7 @@ app.get("/api/analytics/export", requireAdmin, (req, res) => {
         WHERE 1=1 ${clause}
         GROUP BY type
         ORDER BY c DESC
-      `).all([total, ...(args || [])]);
+      `, [total, ...(args || [])]);
 
       // First row: overall totals (type field = 'ALL')
       rows = [
@@ -422,7 +526,7 @@ app.get("/api/analytics/export", requireAdmin, (req, res) => {
 
 // --- SSE Stream ---
 // Client connects: GET /analytics/stream
-app.get("/api/analytics/stream", (req, res, next) => {
+app.get("/api/analytics/stream", async (req, res) => {
   if (ADMIN_KEY) {
     const headerKey = req.headers["x-admin-key"];
     const token = req.query.token;
@@ -436,7 +540,8 @@ app.get("/api/analytics/stream", (req, res, next) => {
     Connection: "keep-alive",
     "Access-Control-Allow-Origin": "*"
   });
-  res.write(`event: init\ndata: ${JSON.stringify({ summary: currentSummary(), ts: Date.now() })}\n\n`);
+  const summary = await currentSummary();
+  res.write(`event: init\ndata: ${JSON.stringify({ summary, ts: Date.now() })}\n\n`);
   sseClients.add(res);
   req.on("close", () => sseClients.delete(res));
 });
